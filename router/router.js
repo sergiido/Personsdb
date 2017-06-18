@@ -57,7 +57,8 @@ module.exports = function(app) {
 
 	 app.get('/jsondata', function(req, res) {
 	 	var data = db.get('users').value();
-		res.json({ dbdata: data });
+	 	res.header('Access-Control-Allow-Origin', '*');
+		res.send(JSON.stringify(data));
 	});	
 
 	
