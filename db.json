@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": 1497807271097,
+      "name": "Sergii",
+      "login": "sergii",
+      "pwd": "123",
+      "role": "user",
+      "created": 1497807271097,
+      "active": true
+    },
+    {
+      "id": 1497808153473,
+      "name": "Natalia",
+      "login": "nata",
+      "pwd": "1234",
+      "role": "user",
+      "created": 1497808153473,
+      "active": true
+    }
+  ]
+}
