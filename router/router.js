@@ -57,8 +57,7 @@ module.exports = function(app) {
 
 	 app.get('/jsondata', function(req, res) {
 	 	var data = db.get('users').value();
-		res.setHeader('Content-Type', 'application/json');
-		res.send(JSON.stringify({ dbdata: data }));
+		res.json({ dbdata: data });
 	});	
 
 	
