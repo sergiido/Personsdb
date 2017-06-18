@@ -1,0 +1,62 @@
+doctype
+html
+  head
+    title #{title}
+    link(rel="stylesheet", href="/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/styleApp.css")
+    link(rel="stylesheet", href="/css/fontlogin.css")
+    script(type="text/javascript", src="/js/jquery-3.1.1.js")
+    script(type="text/javascript", src="/js/bootstrap.min.js")
+    script(type="text/javascript", src="/js/notify.js")
+    script(type="text/javascript", src="/js/app.js")
+
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  body
+    .appWrapper
+      .infoArea
+        h2.form-signin-heading.customfont &#xe83f; Application
+        p(style="color:white;") Logged user: #{userDetails.name} as #{userDetails.role}
+      .popupWrapper
+        if userDetails.role== 'admin'
+          .form-app
+            h3.form-signin-heading.customfont &#xe83f; Add a user
+            form(action="/add", method="post")
+              div
+                input(name="name", type="text", placeholder="name", required="")
+                input(name="login", type="text", placeholder="login", required="", autofocus="")
+                input(name="pwd", type="password", placeholder="pwd")
+                select(name="roles")
+                  option(value="admin") admin
+                  option(value="user" selected) user
+                button.btn.btn-primary.customfont(type="submit") &#xf234; Add
+        else
+          p User info area
+        hr
+        table
+          th #
+          th name
+          th login
+          th pwd
+          th role
+          th created
+          th active
+          th actions
+          - var i=1
+          each item in dbdata
+            tr(id= item.id)
+              td #{i++}
+              td
+                div(contenteditable)= item.name
+              td= item.login
+              td= item.pwd
+              td= item.role
+              - var date = new Date(item.created)
+              td= date.getDate() +"/"+parseInt(date.getMonth()+1) +"/"+date.getFullYear() +" "+ date.getHours()+":"+date.getMinutes()
+              td= item.active
+              td
+                button.customfont(onclick="update(this)" item= item.id style="color: orange") &#xe804;
+                a.customfont(href='/delete/#{item.id}?_method=DELETE' style="color: #DF0101") &#xe802;
+         //p #{item}: #{db[item]}
+        p
+          a(href= '/logout') Logout

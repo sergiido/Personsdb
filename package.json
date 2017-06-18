@@ -1,0 +1,22 @@
+{
+  "name": "students",
+  "version": "1.0.0",
+  "description": "Students db",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engine": {
+    "node": "*",
+    "npm": "*"
+},
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "cookie-parser": "*",
+    "express": "~4.14.0",
+    "jade": "*",
+    "method-override": "^2.3.7",
+    "serve-favicon": "^2.3.2",
+    "lowdb": "*"
+  }
+}

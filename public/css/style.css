@@ -1,0 +1,63 @@
+html {
+    min-height: 100%;
+}
+
+body {
+    background: linear-gradient(#204854, #284c2e);
+}
+
+p{
+	position: relative;
+}
+
+h2{
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.wrapper {
+	margin-top: 10%;
+	margin-bottom: 40px;
+}
+
+.customfont{
+	font-family: 'fontlogin';
+}
+
+.inputicons{
+	position: absolute;
+	z-index: 1;
+	top: 12px;
+	left: 10px;
+	font-size: 1.2em;
+	color: grey;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: grey;
+  border: 3px solid rgba(0,0,0,0.2);
+  border-bottom: 2px solid grey;
+}
+
+.checkbox {
+	margin-bottom: 20px;
+	margin-left: 22px;
+	font-weight: lighter;
+}
+
+.form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+input[type="text"], input[type="password"]{
+	padding-left: 30px;
+	color: grey;
+	background-color: lightgrey;
+}

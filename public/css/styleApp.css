@@ -1,0 +1,89 @@
+html {
+    min-height: 100%;
+}
+
+body {
+    background: linear-gradient(#204854, #284c2e);
+}
+
+p {
+	position: relative;
+}
+
+h2 {
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+th {
+	background-color: #2471a3;
+	padding: 4px 10px;
+	text-align: center;
+	border: 1px solid grey;
+}
+
+table{
+	margin: 0 auto;
+}
+
+table tr:hover{
+	background-color: #117a65;
+}
+
+table td{
+	border: 1px solid lightgrey;
+	padding: 4px 10px;
+	color: white;
+}
+
+.appWrapper {
+	border: 1px solid yellow;
+}
+
+.popupWrapper {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.customfont{
+	font-family: 'fontlogin';
+}
+
+.inputicons{
+	position: absolute;
+	z-index: 1;
+	top: 12px;
+	left: 10px;
+	font-size: 1.2em;
+	color: grey;
+}
+
+.form-app {
+  width: 400px;
+  padding: 15px 35px 35px;
+  margin: 0 auto;
+  background-color: grey;
+  border: 3px solid rgba(0,0,0,0.2);
+  border-bottom: 2px solid grey;
+}
+
+input, select{
+	padding-left: 10px;
+	color: grey;
+	background-color: lightgrey;
+	margin-top: 5px;
+}
+
+select {
+	height: 26px;
+}
+
+a {
+	padding-right: 10px;
+}
+
+button {
+	background-color: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 3px;
+	margin-top: 5px;
+}

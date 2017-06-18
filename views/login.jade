@@ -1,0 +1,25 @@
+doctype
+html
+  head
+    title #{title}
+    link(rel="stylesheet", href="/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/fontlogin.css")
+    link(rel="stylesheet", href="/css/fontlogin-codes.css")
+    link(rel="stylesheet", href="/css/style.css")
+    script(type="text/javascript", src="/js/bootstrap.min.js")
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  body
+    .wrapper
+      form.form-signin(action="/login", method="post" autocomplete="off")
+        h2.form-signin-heading.customfont &#xe83f; #{message}
+        p
+          span.customfont.inputicons &#xe800;
+          input.form-control(name="name", type="text", placeholder="name", required="", autofocus="")
+        p
+          span.customfont.inputicons &#xf13e;
+          input.form-control(name="pwd", type="password", placeholder="pwd")
+        span(style="color: red;") #{errMsg}
+        label.checkbox.
+          <input name="rememberMe", type="checkbox" /> Remember me
+        button.btn.btn-large.btn-primary.btn-block(type="submit") Log in
