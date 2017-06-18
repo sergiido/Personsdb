@@ -5,10 +5,6 @@ const fileAsync = require('lowdb/lib/storages/file-async');
 
 module.exports = function(app) {
 
-	app.get('/', (req, res) => {
-        res.render('login', {title: 'myApp', 'message': 'Login', 'errMsg': ''});
-	});
-
 	app.get('/', checkAuth, (req,res) => {
 		res.redirect('/app');
 	});
