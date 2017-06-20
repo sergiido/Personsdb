@@ -1,3 +1,3 @@
-# personsDB
+# Persons list
 
-based on lowdb
+The application is based on lowdb json storage file.
