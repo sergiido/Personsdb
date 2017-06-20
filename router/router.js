@@ -10,7 +10,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/login', (req, res) => {
-		if (loogedUser.loggedin != true){
+		if (typeof req.session.user == 'undefined'){
         	res.render('login', {title: 'myApp', 'message': 'Login', 'errMsg': ''});
 		} else {
 			res.redirect('/app');
@@ -30,20 +30,27 @@ module.exports = function(app) {
 			role: 'user',
 			id: 2
 		}
-	}
-
-	var loogedUser = {
-		name: null,
-		role: null,
-		loggedin: false
 	};
 
 	app.post('/login', (req, res) => {
+		// console.log(req.body);
+		// console.log(req.body.name + ':' + req.body.pwd + ':' + req.body.rememberMe);
 		if (authUserList.hasOwnProperty(req.body.name)) {
-			loogedUser.name = authUserList[req.body.name].name;
-			loogedUser.role = authUserList[req.body.name].role;
-			loogedUser.loggedin = true;
+			if (req.body.rememberMe == 'on') {
+				var oneMin = 60000;
+				req.session.cookie.expires = new Date(Date.now() + oneMin*10);
+    			req.session.cookie.maxAge = oneMin*10;
+			} else {
+				req.session.cookie.expires = false; // enable the cookie to remain for only the duration of the user-agent
+			}
+			req.session.user = {
+				id:   authUserList[req.body.name]._id,
+				name: authUserList[req.body.name].name,
+				role: authUserList[req.body.name].role
+			};
 			res.redirect('/app');
+	// var userLoginDb = db.get('users').find({ login: req.body.name });
+	// console.log("--- from db: " + userLoginDb.login);
 		} else {
 			res.render('login', {title: 'myApp', message: 'Login', errMsg: 'login or pwd is not valid'});
 		}
@@ -51,18 +58,16 @@ module.exports = function(app) {
 
 	 app.get('/app', checkAuth, function(req, res) {
 	 	var data = db.get('users').value();
-		res.render('app', {userDetails: loogedUser, dbdata: data});
-
+		res.render('app', {userDetails: req.session.user, dbdata: data});
 	});
 
 	 app.get('/jsondata', function(req, res) {
 	 	var data = db.get('users').value();
 	 	res.header('Access-Control-Allow-Origin', '*');
 		res.send(JSON.stringify(data));
-	});	
+	});
 
-	
-	app.post('/add', (req, res) => {
+	app.post('/add', checkAuth, (req, res) => {
 		db.get('users').push({
 		id: Date.now(),
 		name: req.body.name,
@@ -76,11 +81,14 @@ module.exports = function(app) {
 	});
 
  	app.get('/logout', function(req, res) {
- 		loogedUser.loggedin = false;
+		if (req.session.user) {
+			// res.clearCookie('rememberme');
+			delete req.session.user;
+		}
 		res.redirect('/login');
 	});
 
-	app.delete('/delete/:id', function (req, res) {
+	app.delete('/delete/:id', checkAuth, function (req, res) {
 		console.log(req.params.id);
 		const id = parseInt(req.params.id);
     	db.get('users').remove({ id }).write();
@@ -88,7 +96,7 @@ module.exports = function(app) {
 	});
 
 	function checkAuth(req, res, next) {
-		if (loogedUser.loggedin != true) {
+		if (typeof req.session.user == 'undefined') {
 			res.redirect('/login');
 		} else {
 			next();
