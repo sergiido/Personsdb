@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fontlogin';
-  src: url('../font/fontlogin.eot?60049546');
-  src: url('../font/fontlogin.eot?60049546#iefix') format('embedded-opentype'),
-       url('../font/fontlogin.woff2?60049546') format('woff2'),
-       url('../font/fontlogin.woff?60049546') format('woff'),
-       url('../font/fontlogin.ttf?60049546') format('truetype'),
-       url('../font/fontlogin.svg?60049546#fontlogin') format('svg');
+  src: url('../font/fontlogin.eot?75022587');
+  src: url('../font/fontlogin.eot?75022587#iefix') format('embedded-opentype'),
+       url('../font/fontlogin.woff2?75022587') format('woff2'),
+       url('../font/fontlogin.woff?75022587') format('woff'),
+       url('../font/fontlogin.ttf?75022587') format('truetype'),
+       url('../font/fontlogin.svg?75022587#fontlogin') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontlogin';
-    src: url('../font/fontlogin.svg?60049546#fontlogin') format('svg');
+    src: url('../font/fontlogin.svg?75022587#fontlogin') format('svg');
   }
 }
 */
@@ -60,8 +60,15 @@
 .icon-cancel-circled:before { content: '\e802'; } /* '' */
 .icon-attach:before { content: '\e803'; } /* '' */
 .icon-pencil:before { content: '\e804'; } /* '' */
+.icon-off:before { content: '\e805'; } /* '' */
+.icon-list-alt:before { content: '\e806'; } /* '' */
+.icon-briefcase:before { content: '\e807'; } /* '' */
+.icon-doc-text:before { content: '\e808'; } /* '' */
+.icon-traffic-cone:before { content: '\e809'; } /* '' */
 .icon-tree:before { content: '\e83f'; } /* '' */
 .icon-lock:before { content: '\f13e'; } /* '' */
 .icon-female:before { content: '\f182'; } /* '' */
 .icon-male:before { content: '\f183'; } /* '' */
+.icon-database:before { content: '\f1c0'; } /* '' */
 .icon-user-plus:before { content: '\f234'; } /* '' */
+.icon-address-card:before { content: '\f2bb'; } /* '' */
