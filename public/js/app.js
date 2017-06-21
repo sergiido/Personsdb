@@ -12,7 +12,7 @@ function update(updateBtn){
 		action: "Update"
 	};
 	sendAjax(reqDataObj, function(res){
-		console.log(res.obj);
+		console.log(res);
 	});
 	// href='/update/#{item._id}?_method=PUT'
 }
