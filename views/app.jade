@@ -1,7 +1,7 @@
 doctype
 html
   head
-    title #{title}
+    title People list
     link(rel="stylesheet", href="/css/bootstrap.min.css")
     link(rel="stylesheet", href="/css/styleApp.css")
     link(rel="stylesheet", href="/css/fontlogin.css")
@@ -14,30 +14,31 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
   body
     .appWrapper
-      .infoArea
-        h2.form-signin-heading.customfont &#xe83f; Application
+      #infoArea
+        h2.form-signin-heading.customfont
+          span(style="color:#38610B") &#xe83f;
+          span Persons db
         p(style="color:white;") Logged user: #{userDetails.name} as #{userDetails.role}
       .popupWrapper
-        if userDetails.role== 'admin'
-          .form-app
-            h3.form-signin-heading.customfont &#xe83f; Add a user
-            form(action="/add", method="post")
-              div
-                input(name="name", type="text", placeholder="name", required="")
-                input(name="login", type="text", placeholder="login", required="", autofocus="")
-                input(name="pwd", type="password", placeholder="pwd")
-                select(name="roles")
-                  option(value="admin") admin
-                  option(value="user" selected) user
-                button.btn.btn-primary.customfont(type="submit") &#xf234; Add
-        else
-          p User info area
+        .form-app
+          h3.form-signin-heading.customfont &#xe83f; Add a user
+          form(action="/add", method="post")
+            div
+              input.col-xs-4(name="name", type="text", placeholder="name", required="")
+              input.col-xs-5(name="secondname", type="text", placeholder="secondname", required="")
+              input.col-xs-3(name="age", type="text", placeholder="age", required="")
+              input.col-xs-4(name="login", type="text", placeholder="login", required="", autofocus="")
+              input.col-xs-4(name="pwd", type="password", placeholder="pwd")
+              select(name="roles")
+                option(value="admin") admin
+                option(value="user" selected) user
+              button.btn.btn-primary.customfont(type="submit") &#xf234; Add
         hr
         table
           th #
           th name
-          th login
-          th pwd
+          th second name
+          th age
           th role
           th created
           th active
@@ -48,15 +49,20 @@ html
               td #{i++}
               td
                 div(contenteditable)= item.name
-              td= item.login
-              td= item.pwd
+              td= item.secondname
+              td= item.age
               td= item.role
               - var date = new Date(item.created)
               td= date.getDate() +"/"+parseInt(date.getMonth()+1) +"/"+date.getFullYear() +" "+ date.getHours()+":"+date.getMinutes()
               td= item.active
               td
-                button.customfont(onclick="update(this)" item= item.id style="color: orange") &#xe804;
-                a.customfont(href='/delete/#{item.id}?_method=DELETE' style="color: #DF0101") &#xe802;
+                if userDetails.role== 'admin'
+                  button.customfont(onclick="update(this)" item= item.id style="color: orange") &#xe804;
+                  a.customfont.size16(href='/delete/#{item.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+                else
+                  span no access
          //p #{item}: #{db[item]}
+        span
+          a(href= '/jsondata' target='_blank') get JSON
         p
           a(href= '/logout') Logout
