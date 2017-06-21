@@ -19,13 +19,13 @@ module.exports = function(app) {
 
 	var authUserList = {
 		admin: {
-			name: 'Adminname',
+			name: 'Admincheg',
 			pwd: '12345',
 			role: 'admin',
 			id: 1
 		},
 		user:{
-			name: 'Username',
+			name: 'Usernamcheg',
 			pwd: '54321',
 			role: 'user',
 			id: 2
@@ -35,7 +35,9 @@ module.exports = function(app) {
 	app.post('/login', (req, res) => {
 		// console.log(req.body);
 		// console.log(req.body.name + ':' + req.body.pwd + ':' + req.body.rememberMe);
-		if (authUserList.hasOwnProperty(req.body.name)) {
+		// console.log(authUserList[req.body.name]['pwd']);
+
+		if (authUserList.hasOwnProperty(req.body.name) && (authUserList[req.body.name]['pwd'] == req.body.pwd)) {
 			if (req.body.rememberMe == 'on') {
 				var oneMin = 60000;
 				req.session.cookie.expires = new Date(Date.now() + oneMin*10);
@@ -44,19 +46,30 @@ module.exports = function(app) {
 				req.session.cookie.expires = false; // enable the cookie to remain for only the duration of the user-agent
 			}
 			req.session.user = {
-				id:   authUserList[req.body.name]._id,
+				id:   authUserList[req.body.name].id,
 				name: authUserList[req.body.name].name,
 				role: authUserList[req.body.name].role
 			};
 			res.redirect('/app');
-	// var userLoginDb = db.get('users').find({ login: req.body.name });
-	// console.log("--- from db: " + userLoginDb.login);
 		} else {
-			res.render('login', {title: 'myApp', message: 'Login', errMsg: 'login or pwd is not valid'});
+			var userLoginDb = db.get('users').find({ login: req.body.name }).value();
+			if ((userLoginDb != null)&&(userLoginDb.pwd == req.body.pwd)) {
+				req.session.cookie.expires = false;
+				req.session.user = {
+					id:   userLoginDb.id,
+					name: userLoginDb.name,
+					role: userLoginDb.role
+				};
+				res.redirect('/app');
+			} else {
+				res.render('login', {title: 'myApp', message: 'Login', errMsg: 'login or pwd is not valid'});
+			}
 		}
 	});
 
 	 app.get('/app', checkAuth, function(req, res) {
+	// Set some defaults if your JSON file is empty
+	// db.defaults({ posts: [], user: {} }).write()
 	 	var data = db.get('users').value();
 		res.render('app', {userDetails: req.session.user, dbdata: data});
 	});
@@ -71,6 +84,8 @@ module.exports = function(app) {
 		db.get('users').push({
 		id: Date.now(),
 		name: req.body.name,
+		secondname: req.body.secondname,
+		age: req.body.age,
 		login: req.body.login,
 		pwd: req.body.pwd,
 		role: req.body.roles,
@@ -93,6 +108,22 @@ module.exports = function(app) {
 		const id = parseInt(req.params.id);
     	db.get('users').remove({ id }).write();
 		res.redirect('/app');
+	});
+
+	app.put('/update/:id', checkAuth, function (req, res) {
+		// console.log(req.params.id);
+		// console.log(req.body._id);
+		const id = parseInt(req.params.id);
+		var record = db.get('users').find({ id: id }).value();
+		console.log(record);
+			if (record == 'undefined') {
+				res.status(400).json({
+					err: {status: 400, data: err, message: "failed to update..."}
+				});
+			} else {
+				res.status(200).json(record);
+				// res.send(obj);
+			}
 	});
 
 	function checkAuth(req, res, next) {
