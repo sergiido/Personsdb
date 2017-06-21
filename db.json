@@ -3,19 +3,56 @@
     {
       "id": 1497807271097,
       "name": "Sergii",
+      "secondname": "Johnson",
+      "age": 30,
       "login": "sergii",
       "pwd": "123",
-      "role": "user",
+      "role": "admin",
       "created": 1497807271097,
       "active": true
     },
     {
-      "id": 1497808153473,
-      "name": "Natalia",
-      "login": "nata",
-      "pwd": "1234",
+      "id": 1497811614506,
+      "name": "Yulia",
+      "secondname": "Weilsy",
+      "age": 27,
+      "login": "yulia",
+      "pwd": "pass1",
       "role": "user",
-      "created": 1497808153473,
+      "created": 1497811614506,
+      "active": true
+    },
+    {
+      "id": 1497818395071,
+      "name": "Alex",
+      "secondname": "McLaud",
+      "age": 35,
+      "login": "alex",
+      "pwd": "1256",
+      "role": "user",
+      "created": 1497818395071,
+      "active": true
+    },
+    {
+      "id": 1497979594180,
+      "name": "Stan",
+      "secondname": "Kircsh",
+      "age": 40,
+      "login": "stan",
+      "pwd": "ijgvbnri",
+      "role": "user",
+      "created": 1497979594180,
+      "active": true
+    },
+    {
+      "id": 1497992666130,
+      "name": "Olya",
+      "secondname": "Peltrou",
+      "age": "23",
+      "login": "olyap",
+      "pwd": "2577",
+      "role": "user",
+      "created": 1497992666130,
       "active": true
     }
   ]
