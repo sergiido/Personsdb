@@ -6,6 +6,9 @@ const session = require('express-session');
 const low = require('lowdb');
 const app = express();
 
+const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -32,6 +35,6 @@ app.use(session({
 
 require('./router/router')(app);
 
-app.listen(8888, 'localhost', () => {
-	console.log("Server: localhost, port 8888");
+app.listen(port, ip, () => {
+	console.log("Server: running");
 });
