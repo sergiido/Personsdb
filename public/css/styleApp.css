@@ -22,7 +22,8 @@ th {
 }
 
 table{
-	margin: 0 auto;
+	margin-left: 50px;
+	margin-top: 50px;
 }
 
 table tr:hover{
@@ -35,8 +36,10 @@ table td{
 	color: white;
 }
 
-.appWrapper {
-	border: 1px solid yellow;
+#appWrapper {
+	border: 1px solid grey;
+	float: left;
+	padding: 0 20px;
 }
 
 #infoArea {
@@ -44,7 +47,7 @@ table td{
 	text-align: center;
 }
 
-.popupWrapper {
+#popupWrapper {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
@@ -97,4 +100,12 @@ button {
 
 .size16 {
 	font-size: 20px;
+}
+
+.logo{
+	margin-right: 10px;
+}
+
+#rigthband, #leftband {
+	float: left;
 }
