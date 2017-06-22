@@ -77,6 +77,11 @@ module.exports = function(app) {
 	 app.get('/jsondata', function(req, res) {
 	 	var data = db.get('users').value();
 	 	res.header('Access-Control-Allow-Origin', '*');
+	 	//console.log (data.length);
+	 	data.forEach(function(obj){
+			delete obj.login;
+	 		delete obj.pwd; //remove pwd key
+	 	});
 		res.send(JSON.stringify(data));
 	});
 
