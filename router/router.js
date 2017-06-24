@@ -1,7 +1,9 @@
 const low = require('lowdb');
 // https://github.com/typicode/lowdb
-const db = low('db.json', { storage: fileAsync});
+// https://github.com/typicode/lowdb/tree/master/examples
+const db = low('users.json', { storage: fileAsync});
 const fileAsync = require('lowdb/lib/storages/file-async');
+
 
 module.exports = function(app) {
 
@@ -25,7 +27,7 @@ module.exports = function(app) {
 			id: 1
 		},
 		user:{
-			name: 'Usernamcheg',
+			name: 'Usercheg',
 			pwd: '54321',
 			role: 'user',
 			id: 2
@@ -62,7 +64,7 @@ module.exports = function(app) {
 				};
 				res.redirect('/app');
 			} else {
-				res.render('login', {title: 'myApp', message: 'Login', errMsg: 'login or pwd is not valid'});
+				res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid'});
 			}
 		}
 	});
@@ -75,29 +77,39 @@ module.exports = function(app) {
 	});
 
 	 app.get('/jsondata', function(req, res) {
-	 	var data = db.get('users').value();
+	 	var data = db.get('users').cloneDeep().value();
 	 	res.header('Access-Control-Allow-Origin', '*');
-	 	//console.log (data.length);
+	 	// console.log (data.length);
 	 	data.forEach(function(obj){
-			delete obj.login;
 	 		delete obj.pwd; //remove pwd key
 	 	});
 		res.send(JSON.stringify(data));
 	});
 
 	app.post('/add', checkAuth, (req, res) => {
-		db.get('users').push({
-		id: Date.now(),
-		name: req.body.name,
-		secondname: req.body.secondname,
-		age: req.body.age,
-		login: req.body.login,
-		pwd: req.body.pwd,
-		role: req.body.roles,
-		created: Date.now(),
-		active: true
-		}).write();
-		res.redirect('/app');
+		// console.log("add: " + req.body.name);
+		const record = db.get('users').push({
+			id: Date.now(),
+			name: req.body.name,
+			secondname: req.body.secondname,
+			age: req.body.age,
+			gender: req.body.gender,
+			group: req.body.group,
+			login: req.body.login,
+			pwd: req.body.pwd,
+			role: req.body.roles,
+			created: Date.now(),
+			active: true
+		})//.last()
+		//.assign({ id: Date.now() })
+		.write();
+		if (record == 'undefined') {
+			res.status(400).json({
+				err: {status: 400, data: err, message: "failed to add"}
+			});
+		} else {
+			res.status(200).json(record);
+		}
 	});
 
  	app.get('/logout', function(req, res) {
@@ -109,9 +121,14 @@ module.exports = function(app) {
 	});
 
 	app.delete('/delete/:id', checkAuth, function (req, res) {
-		console.log(req.params.id);
-		const id = parseInt(req.params.id);
-    	db.get('users').remove({ id }).write();
+		// console.log(req.params.id);
+		const allowedUsers = ['admin'];
+		if (allowedUsers.indexOf(req.session.user.role) != -1) {
+			console.log ("delete is allowed");
+			const id = parseInt(req.params.id);
+			db.get('users').remove({ id }).write();
+		} else (
+			console.log("delete is denied"));
 		res.redirect('/app');
 	});
 
@@ -121,14 +138,14 @@ module.exports = function(app) {
 		const id = parseInt(req.params.id);
 		var record = db.get('users').find({ id: id }).value();
 		console.log(record);
-			if (record == 'undefined') {
-				res.status(400).json({
-					err: {status: 400, data: err, message: "failed to update..."}
-				});
-			} else {
-				res.status(200).json(record);
-				// res.send(obj);
-			}
+		if (record == 'undefined') {
+			res.status(400).json({
+				err: {status: 400, data: err, message: "failed to update..."}
+			});
+		} else {
+			res.status(200).json(record);
+			// res.send(obj);
+		}
 	});
 
 	function checkAuth(req, res, next) {
@@ -138,5 +155,6 @@ module.exports = function(app) {
 			next();
 		}
 	}
+
 
 }
