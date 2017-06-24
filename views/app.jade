@@ -60,7 +60,7 @@ html
             span.customfont.fontSize2 &#xe805;
             span Logout
       #tableWrapper
-        table
+        table#userTable
           th #
           th name
           th second name
@@ -102,3 +102,4 @@ html
                   a.customfont.size16(href='/delete/#{item.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
                 else
                   span no access
+         //p #{item}: #{db[item]}
