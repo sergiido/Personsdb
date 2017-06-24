@@ -100,7 +100,7 @@ module.exports = function(app) {
 			role: req.body.roles,
 			created: Date.now(),
 			active: true
-		})//.last()
+		}).last()
 		//.assign({ id: Date.now() })
 		.write();
 		if (record == 'undefined') {
@@ -124,11 +124,10 @@ module.exports = function(app) {
 		// console.log(req.params.id);
 		const allowedUsers = ['admin'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-			console.log ("delete is allowed");
+			// console.log ("delete is allowed");
 			const id = parseInt(req.params.id);
 			db.get('users').remove({ id }).write();
-		} else (
-			console.log("delete is denied"));
+		}
 		res.redirect('/app');
 	});
 
