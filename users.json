@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1498307837744,
+      "name": "Sergii",
+      "secondname": "Johnson",
+      "age": 30,
+      "gender": "male",
+      "group": "group1",
+      "login": "sergii",
+      "pwd": "123",
+      "role": "admin",
+      "created": 1497807271097,
+      "active": true
+    },
+    {
+      "id": 1498077629752,
+      "name": "Tester",
+      "secondname": "Testenko",
+      "age": "33",
+      "gender": "female",
+      "group": "group2",
+      "login": "test",
+      "pwd": "test",
+      "role": "user",
+      "created": 1498077629753,
+      "active": true
+    },
+    {
+      "id": 1498309112760,
+      "name": "Viewer",
+      "secondname": "Viewerko",
+      "age": "35",
+      "gender": "empty",
+      "group": "group2",
+      "login": "viewer",
+      "pwd": "123",
+      "role": "viewer",
+      "created": 1498309112760,
+      "active": true
+    }
+  ]
+}
