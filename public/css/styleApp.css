@@ -15,18 +15,16 @@ h2 {
 }
 
 th {
-	background-color: #6E6E6E;
+	background-color: rgba(0, 0, 0, 0.2);
 	padding: 4px 10px;
 	text-align: center;
-	border: 1px solid grey;
+	border: 1px solid lightgrey;
+	color: lightgrey;
 }
 
-table {
-	margin: 0 auto;
-}
 
-table tr:hover{
-	background-color: #117a65;
+tbody tr:hover td{
+	background-color: rgba(255, 255, 255, 0.1);
 }
 
 table td{
@@ -42,6 +40,7 @@ table td{
 #infoArea {
 	margin: 0 auto;
 	text-align: center;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 #popupWrapper {
@@ -52,7 +51,7 @@ table td{
 	position: absolute;
 	left: 0;
 	/*top: 30%;*/
-	width: 100px;
+	/*width: 100px;*/
 	padding-top: 10px;
 	padding-bottom: 10px;
 	padding-right: 10px;
@@ -62,9 +61,12 @@ table td{
 #addPerson {
 	color: lightgrey;
 }
+#addGroup {
+	color: lightgrey;
+}
 
-#tableWrapper{
-	margin-left: 100px;
+.tableWrapper{
+
 }
 
 .customfont{
@@ -144,7 +146,7 @@ button {
 	background-color: rgba(255, 255, 255, 0.1);
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	border-radius: 3px;
-	margin-top: 5px;
+	margin-top: 1px;
 }
 
 div.button {
@@ -228,4 +230,17 @@ div.button:hover .customfont{
 .male {
 	color: #58ACFA;
 	text-align: center;
+}
+
+
+.tabName {
+	color: lightgrey;
+}
+/*Bootstipe override*/
+.nav {
+	padding-left: 150px;
+	margin-bottom: 20px;
+}
+.tab-content {
+	padding-left: 14%;
 }
