@@ -1,0 +1,94 @@
+h3.tabName Maintenance
+#popupWrapper.modal
+  .modalContent
+    span.close &times;
+    .form-app
+      h3.form-signin-heading.customfont &#xf2bb; Add person
+      form(name="addperson" onsubmit="event.preventDefault(); addPerson();")
+        div
+          input(name="name", type="text", placeholder="name", size="10", required="")
+          input(name="secondname", type="text", placeholder="secondname", size="12", required="")
+        div
+          input(name="age", type="number", min="0" max="100", placeholder="age", style="width: 4em", required="")
+          select.customfont(name="gender")
+            option(value="empty" selected)
+            option.customfont.male(value="male") &#xf183;
+            option.customfont.female(value="female") &#xf182;
+          select(name="group")
+            option(value="#{groups[0].id}" selected) #{groups[0].name}
+            - for (var i = 1; i < groups.length; i++)
+              option(value="#{groups[i].id}") #{groups[i].name}
+        div
+          input(name="login", type="text", placeholder="login", size="10", required="", autofocus="")
+          input(name="pwd", type="password", placeholder="pwd", size="10")
+          select(name="roles")
+            option(value="editor" selected) editor
+            option(value="user") user
+            option(value="admin") admin
+          button.btn.btn-primary.customfont(type="submit") &#xf234; Add
+#actionBand
+  if userDetails.role== 'admin' || userDetails.role== 'editor'
+    div#addPerson.button
+      span.customfont.fontSize2 &#xf234;
+      span Add person
+    div#addGroup.button
+      span.customfont.fontSize2 &#xf2ba;
+      span Add group
+  div.button
+    a(href= '/jsondata' target='_blank' style="color: lightgrey")
+      span.customfont.fontSize2 &#xe800;
+      span JSON
+  div.button
+    a(href= '/logout' style="color: #FE2E2E")
+      span.customfont.fontSize2 &#xe805;
+      span Logout
+.tableWrapper
+  table#userTable
+    th #
+    th name
+    th second name
+    th age
+    th gender
+    th group
+    if userDetails.role== 'admin'
+      th login
+      th pwd
+    th role
+    th created
+    th active
+    th actions
+    tbody
+      - var i=1
+      each user in users
+        tr(id= user.id)
+          td #{i++}
+          td= user.name
+            // div(contenteditable)= user.name
+          td= user.secondname
+          td= user.age
+          if user.gender== 'male'
+            td.customfont.male &#xf183;
+          else if user.gender=='female'
+            td.customfont.female &#xf182;
+          else
+            td(align="center") -
+          - var val= '-'
+          each group in groups
+            if user.groupid== group.id
+              - val= group.name
+          td= val
+          if userDetails.role== 'admin'
+            td= user.login
+            td= user.pwd
+          td= user.role
+          - var date = new Date(user.created)
+          td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
+          td= user.active
+          td
+            if userDetails.role== 'admin'
+              button.customfont(onclick="updateUser(this)" item= user.id style="color: orange") &#xe804;
+              button.customfont(onclick="deleteUser('#{user.id}')" style="color: #FE2E2E") &#xe802;
+              // a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+            else
+              span no access
+   //p #{user}: #{db[user]}

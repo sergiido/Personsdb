@@ -1,0 +1,17 @@
+h3.tabName Marks
+select(name="group")
+  option(value="#{groups[0].id}" selected) #{groups[0].name}
+  - for (var i = 1; i < groups.length; i++)
+    option(value="#{groups[i].id}") #{groups[i].name}
+button.btn.btn-primary.customfont(onclick="getGroup()", type="button") &#xe813; Search
+.tableWrapper
+  table#marksTable
+    th #
+    th mark id
+    th name
+    th s.name
+    th group id
+    th hw1
+    th hw2
+    th cw
+    tbody
