@@ -1,4 +1,6 @@
 const low = require('lowdb');
+// https://github.com/typicode/lowdb
+// https://github.com/typicode/lowdb/tree/master/examples
 const usersdb = low('db/users.json', { storage: fileAsync});
 const marksdb = low('db/marks.json', { storage: fileAsync});
 const groupsdb = low('db/groups.json', { storage: fileAsync});
@@ -39,6 +41,9 @@ module.exports = function(app) {
 	};
 
 	app.post('/login', (req, res) => {
+		// console.log(req.body);
+		// console.log(req.body.login + ':' + req.body.pwd + ':' + req.body.rememberMe);
+		// console.log(authUserList[req.body.login]['pwd']);
 
 		if (authUserList.hasOwnProperty(req.body.login) && (authUserList[req.body.login]['pwd'] == req.body.pwd)) {
 			if (req.body.rememberMe == 'on') {
@@ -60,7 +65,7 @@ module.exports = function(app) {
 				req.session.cookie.expires = false;
 				req.session.user = {
 					id:   userLoginDb.id,
-					name: userLoginDb.name,
+					name: userLoginDb.name +" "+ userLoginDb.secondname,
 					role: userLoginDb.role
 				};
 				res.redirect('/app');
@@ -93,12 +98,15 @@ module.exports = function(app) {
 	});
 
 	app.get('/app', checkAuth, function(req, res) {
+	// Set some defaults if your JSON file is empty
+	// usersdb.defaults({ posts: [], user: {} }).write()
 		var users = usersdb.get('users').value();
 		var groups = groupsdb.get('groups').value();
 		res.render('app', {userDetails: req.session.user, users: users, groups: groups});
 	});
 
-	app.get('/jsondata', function(req, res) {
+
+	app.get('/json/maint', function(req, res) {
 		var data = usersdb.get('users').cloneDeep().value();
 		res.header('Access-Control-Allow-Origin', '*');
 		// console.log (data.length);
@@ -124,7 +132,9 @@ module.exports = function(app) {
 				role: req.body.roles,
 				created: Date.now(),
 				active: true
-			}).last().write();
+			}).last()
+			//.assign({ id: Date.now() })
+			.write();
 			if (record == 'undefined') {
 				res.status(400).json({
 					err: {status: 400, data: err, message: "failed to add"}
@@ -185,9 +195,9 @@ module.exports = function(app) {
 		}
 	}
 
-	 app.get('/marks/group/:id', function(req, res) {
+	 app.get('/marks/group/:id', checkAuth, function(req, res) {
 	 	const id = parseInt(req.params.id);
-		// var group = groupsdb.get('groups').find({ id: id }).value();
+		var group = groupsdb.get('groups').find({ id: id }).value();
 		var users = usersdb.get('users').filter({groupid: id}).value();
 		var marks = marksdb.get('marks').value();
 		if (users == 'undefined') {
@@ -197,19 +207,29 @@ module.exports = function(app) {
 		} else {
 			var output = [];
 			users.forEach(function(user){
+				var obj = {
+					id: null,
+					name: user.name,
+					secondname: user.secondname,
+					group: group.name,
+					hw1: null,
+					hw2: null,
+					cw: null
+				};
 				marks.forEach(function(mark){
 					if (user.id == mark.userid) {
-						output.push({
+						obj = {
 							id: mark.id,
 							name: user.name,
 							secondname: user.secondname,
-							group: "no group",
+							group: group.name,
 							hw1: mark.hw1.mark,
 							hw2: mark.hw2.mark,
 							cw: mark.cw.mark
-						});
+						};
 					}
 				});
+				output.push(obj);
 			});
 			res.status(200).json(output);
 		}

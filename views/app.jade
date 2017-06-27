@@ -22,12 +22,21 @@ block content
       p(style="color:white;") Logged user: #{userDetails.name} as #{userDetails.role}
 
     ul.nav.nav-tabs
-      li.active
-        a(data-toggle="tab", href="#maintenance") Maintenance
+      if (userDetails.role == 'user')
+        li.active
+          a(data-toggle="tab", href="#squeeze") Squeeze
+      else
+        li.active
+          a(data-toggle="tab", href="#maintenance") Maintenance
       li
         a(data-toggle="tab", href="#marks") Marks
+
     div.tab-content
-      #maintenance.tab-pane.fade.in.active
-        include maint.jade
+      if (userDetails.role != 'user')
+        #maintenance.tab-pane.fade.in.active
+          include maint.jade
+      else
+        #squeeze.tab-pane.fade.in.active
+          include squeeze.jade
       #marks.tab-pane.fade
         include marks.jade

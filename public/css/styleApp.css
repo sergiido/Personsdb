@@ -47,7 +47,7 @@ table td{
 	background-color: rgba(0, 0, 0, 0.3);
 }
 
-#actionBand {
+.actionBand {
 	position: absolute;
 	left: 0;
 	/*top: 30%;*/

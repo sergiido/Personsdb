@@ -1,9 +1,20 @@
 h3.tabName Marks
-select(name="group")
-  option(value="#{groups[0].id}" selected) #{groups[0].name}
-  - for (var i = 1; i < groups.length; i++)
-    option(value="#{groups[i].id}") #{groups[i].name}
-button.btn.btn-primary.customfont(onclick="getGroup()", type="button") &#xe813; Search
+.actionBand
+  if (userDetails.role != 'user')
+    div.button
+      a(href= '/json/marks' target='_blank' style="color: lightgrey")
+        span.customfont.fontSize2 &#xe800;
+        span JSON
+  div.button
+    a(href= '/logout' style="color: #FE2E2E")
+      span.customfont.fontSize2 &#xe805;
+      span Logout
+if (userDetails.role != 'user')
+  select(name="group")
+    option(value="#{groups[0].id}" selected) #{groups[0].name}
+    - for (var i = 1; i < groups.length; i++)
+      option(value="#{groups[i].id}") #{groups[i].name}
+  button.btn.btn-primary.customfont(onclick="getGroup()", type="button") &#xe813; Search
 .tableWrapper
   table#marksTable
     th #

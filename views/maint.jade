@@ -1,4 +1,20 @@
 h3.tabName Maintenance
+.actionBand
+  if userDetails.role== 'admin' || userDetails.role== 'editor'
+    div#addPerson.button
+      span.customfont.fontSize2 &#xf234;
+      span Add person
+    div#addGroup.button
+      span.customfont.fontSize2 &#xf2ba;
+      span Add group
+    div.button
+      a(href= '/json/maint' target='_blank' style="color: lightgrey")
+        span.customfont.fontSize2 &#xe800;
+        span JSON
+  div.button
+    a(href= '/logout' style="color: #FE2E2E")
+      span.customfont.fontSize2 &#xe805;
+      span Logout
 #popupWrapper.modal
   .modalContent
     span.close &times;
@@ -26,22 +42,6 @@ h3.tabName Maintenance
             option(value="user") user
             option(value="admin") admin
           button.btn.btn-primary.customfont(type="submit") &#xf234; Add
-#actionBand
-  if userDetails.role== 'admin' || userDetails.role== 'editor'
-    div#addPerson.button
-      span.customfont.fontSize2 &#xf234;
-      span Add person
-    div#addGroup.button
-      span.customfont.fontSize2 &#xf2ba;
-      span Add group
-  div.button
-    a(href= '/jsondata' target='_blank' style="color: lightgrey")
-      span.customfont.fontSize2 &#xe800;
-      span JSON
-  div.button
-    a(href= '/logout' style="color: #FE2E2E")
-      span.customfont.fontSize2 &#xe805;
-      span Logout
 .tableWrapper
   table#userTable
     th #
@@ -91,4 +91,3 @@ h3.tabName Maintenance
               // a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
             else
               span no access
-   //p #{user}: #{db[user]}

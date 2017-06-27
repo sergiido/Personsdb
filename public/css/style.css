@@ -34,7 +34,7 @@ h2{
 
 .form-signin {
   max-width: 380px;
-  padding: 15px 35px 45px;
+  padding: 15px 35px 25px;
   margin: 0 auto;
   background-color: grey;
   border: 3px solid rgba(0,0,0,0.2);
@@ -42,8 +42,6 @@ h2{
 }
 
 .checkbox {
-	margin-bottom: 20px;
-	margin-left: 22px;
 	font-weight: lighter;
 }
 
