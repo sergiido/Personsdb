@@ -120,7 +120,7 @@ module.exports = function(app) {
 		// console.log("add: " + req.body.name);
 		const allowedUsers = ['admin', 'viewer'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-			const record = usersdb.get('users').push({
+			const newUser = usersdb.get('users').push({
 				id: Date.now(),
 				name: req.body.name,
 				secondname: req.body.secondname,
@@ -135,6 +135,38 @@ module.exports = function(app) {
 			}).last()
 			//.assign({ id: Date.now() })
 			.write();
+			if (newUser == 'undefined') {
+				res.status(400).json({
+					err: {status: 400, data: err, message: "failed to add"}
+				});
+			} else {
+				var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
+				var output = {
+					name: newUser.name,
+					secondname: newUser.secondname,
+					age: newUser.age,
+					gender: newUser.gender,
+					groupid: group.name,
+					login: newUser.login,
+					pwd: newUser.pwd,
+					role: newUser.role,
+					created: newUser.created,
+					active: newUser.active
+				};
+				res.status(200).json(output);
+			}
+		}
+	});
+
+	app.post('/addgroup', checkAuth, (req, res) => {
+		const allowedUsers = ['admin', 'viewer'];
+		if (allowedUsers.indexOf(req.session.user.role) != -1) {
+			const record = groupsdb.get('groups').push({
+				id: Date.now(),
+				name: req.body.name,
+				created: Date.now(),
+				active: true
+			}).last().write();
 			if (record == 'undefined') {
 				res.status(400).json({
 					err: {status: 400, data: err, message: "failed to add"}
@@ -162,7 +194,7 @@ module.exports = function(app) {
 			var result = usersdb.get('users').remove({ id }).write();
 			if (result == 'undefined') {
 				res.status(400).json({
-					err: {status: 400, data: err, message: "failed to delete..."}
+					err: {status: 400, data: err, message: "failed to delete"}
 				});
 			} else {
 				res.status(200).json(result);
@@ -175,11 +207,23 @@ module.exports = function(app) {
 		// console.log(req.params.id);
 		// console.log(req.body._id);
 		const id = parseInt(req.params.id);
-		var record = usersdb.get('users').find({ id: id }).value();
+		var record = usersdb.get('users').find({ id: id })
+			.assign({
+				name: req.body.name,
+				secondname: req.body.secondname,
+				age: req.body.age,
+				gender: req.body.gender,
+				groupid: parseInt(req.body.groupid),
+				login: req.body.login,
+				pwd: req.body.pwd,
+				role: req.body.roles,
+				created: Date.now(),
+				active: true
+			}).write();
 		// console.log(record);
 		if (record == 'undefined') {
 			res.status(400).json({
-				err: {status: 400, data: err, message: "failed to update..."}
+				err: {status: 400, data: err, message: "failed to update"}
 			});
 		} else {
 			res.status(200).json(record);

@@ -1,10 +1,22 @@
 {
-  "groups": [ {
+  "groups": [
+    {
       "id": 1,
-      "name": "group 1"
-    }, {
+      "name": "group 1",
+      "created": 1497807271097,
+      "active": true
+    },
+    {
       "id": 2,
-      "name": "group 2"
+      "name": "group 2",
+      "created": 1497807271097,
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "group 3",
+      "created": 1498598641165,
+      "active": true
     }
   ]
 }
