@@ -97,41 +97,69 @@ h3.tabName Maintenance
     th age
     th gender
     th group
-    if userDetails.role== 'admin'
-      th login
-      th pwd
+    th login
+    th pwd
     th role
     th created
     th active
     th actions
     tbody
-      - var i=1
-      each user in users
-        tr(id= user.id)
-          td #{i++}
-          td= user.name
-          td= user.secondname
-          td= user.age
-          if user.gender== 'male'
-            td.customfont.male &#xf183;
-          else if user.gender=='female'
-            td.customfont.female &#xf182;
-          else
-            td(align="center") -
-          - var val= '-'
-          each group in groups
-            if user.groupid== group.id
-              - val= group.name
-          td= val
-          if userDetails.role== 'admin'
-            td= user.login
-            td= user.pwd
-          td= user.role
-          - var date = new Date(user.created)
-          td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
-          td= user.active
-          td
-            button.customfont(onclick="showUpdatePersonPop(this)" data-userid= user.id style="color: orange") &#xe804;
+      if userDetails.role!= 'user'
+        - var i=1
+        each user in users
+          tr(id= user.id)
+            td #{i++}
+            td= user.name
+            td= user.secondname
+            td= user.age
+            if user.gender== 'male'
+              td.customfont.male &#xf183;
+            else if user.gender=='female'
+              td.customfont.female &#xf182;
+            else
+              td(align="center") -
+            - var val= '-'
+            each group in groups
+              if user.groupid== group.id
+                - val= group.name
+            td= val
             if userDetails.role== 'admin'
-              button.customfont(onclick="deletePerson('#{user.id}')" style="color: #FE2E2E") &#xe802;
-              // a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+              td= user.login
+              td= user.pwd
+            td= user.role
+            - var date = new Date(user.created)
+            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
+            td= user.active
+            td
+              button.customfont(onclick="showUpdatePersonPop(this)" data-userid= user.id style="color: orange") &#xe804;
+              if userDetails.role== 'admin'
+                button.customfont(onclick="deletePerson('#{user.id}')" style="color: #FE2E2E") &#xe802;
+                // a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+      else
+        each user in users
+          if (user.id == userDetails.id)
+            tr(id= user.id)
+              td 1
+              td= user.name
+              td= user.secondname
+              td= user.age
+              if user.gender== 'male'
+                td.customfont.male &#xf183;
+              else if user.gender=='female'
+                td.customfont.female &#xf182;
+              else
+                td(align="center") -
+              - var val= '-'
+              each group in groups
+                if user.groupid== group.id
+                  - val= group.name
+              td= val
+              td= user.login
+              td= user.pwd
+              td= user.role
+              - var date = new Date(user.created)
+              td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
+              td= user.active
+              td
+                button.customfont(onclick="showUpdatePersonPop(this)" data-userid= user.id style="color: orange") &#xe804;
+

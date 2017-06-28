@@ -111,7 +111,8 @@ module.exports = function(app) {
 		res.header('Access-Control-Allow-Origin', '*');
 		// console.log (data.length);
 		data.forEach(function(obj){
-			delete obj.pwd; //remove pwd key
+			delete obj.login; //remove login key
+			delete obj.pwd;   //remove pwd key
 		});
 		res.send(JSON.stringify(data));
 	});
@@ -239,8 +240,36 @@ module.exports = function(app) {
 		}
 	}
 
-	 app.get('/marks/group/:id', checkAuth, function(req, res) {
+	app.get('/marks/user/:id', checkAuth, function(req, res) {
 	 	const id = parseInt(req.params.id);
+	 	var user = usersdb.get('users').find({ id: id }).value();
+		if (user == 'undefined') {
+			res.status(400).json({
+				err: {status: 400, data: err, message: "user not found"}
+			});
+		} else {
+			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
+	 		var marks = marksdb.get('marks').value();
+			marks.forEach(function(mark){
+				if (user.id == mark.userid) {
+					obj = {
+						id: mark.id,
+						name: user.name,
+						secondname: user.secondname,
+						group: group.name,
+						hw1: mark.hw1.mark,
+						hw2: mark.hw2.mark,
+						cw1: mark.cw1.mark,
+						cw2: mark.cw2.mark
+					};
+				}
+			});
+			res.status(200).json(obj);
+		}
+	});
+
+	app.get('/marks/group/:id', checkAuth, function(req, res) {
+		const id = parseInt(req.params.id);
 		var group = groupsdb.get('groups').find({ id: id }).value();
 		var users = usersdb.get('users').filter({groupid: id}).value();
 		var marks = marksdb.get('marks').value();
@@ -258,7 +287,8 @@ module.exports = function(app) {
 					group: group.name,
 					hw1: null,
 					hw2: null,
-					cw: null
+					cw1: null,
+					cw2: null
 				};
 				marks.forEach(function(mark){
 					if (user.id == mark.userid) {
@@ -269,7 +299,8 @@ module.exports = function(app) {
 							group: group.name,
 							hw1: mark.hw1.mark,
 							hw2: mark.hw2.mark,
-							cw: mark.cw.mark
+							cw1: mark.cw1.mark,
+							cw2: mark.cw2.mark
 						};
 					}
 				});

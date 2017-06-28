@@ -15,14 +15,18 @@ if (userDetails.role != 'user')
     - for (var i = 1; i < groups.length; i++)
       option(value="#{groups[i].id}") #{groups[i].name}
   button.btn.btn-primary.customfont(onclick="getGroupMarks()", type="button") &#xe813; Search
+else
+  button.btn.btn-primary.customfont(onclick="getPersonMarks('#{userDetails.id}')", type="button") &#xe813; Get marks
+
 .tableWrapper
   table#marksTable
     th #
     th mark id
     th name
     th s.name
-    th group id
-    th hw1
-    th hw2
-    th cw
+    th group
+    th home/w 1
+    th home/w 2
+    th control/w 1
+    th control/w 2
     tbody

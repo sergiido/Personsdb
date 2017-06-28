@@ -176,6 +176,29 @@ function deleteRow(rowid) {
     row.parentNode.removeChild(row);
 }
 
+function getPersonMarks(userId) {
+	var reqDataObj = {
+		method: "GET",
+		uri: "/marks/user/" + userId,
+		action: "Get"
+	};
+	sendAjax(reqDataObj, function(res) {
+		// add row
+		var userTable = document.getElementById("marksTable");
+		var row = userTable.insertRow(1);
+		row.insertCell(0).innerHTML = 1;
+		row.insertCell(1).innerHTML = res.id;
+		row.insertCell(2).innerHTML = res.name;
+		row.insertCell(3).innerHTML = res.secondname;
+		row.insertCell(4).innerHTML = res.group;
+		row.insertCell(5).innerHTML = res.hw1;
+		row.insertCell(6).innerHTML = res.hw2;
+		row.insertCell(7).innerHTML = res.cw1;
+		row.insertCell(8).innerHTML = res.cw2;
+		// console.log(res);
+	});
+}
+
 function getGroupMarks() {
 	var groupSelect = document.getElementsByName("group")[2];
 	var value = groupSelect.value;
@@ -200,7 +223,8 @@ function getGroupMarks() {
 			row.insertCell(4).innerHTML = res[i].group;
 			row.insertCell(5).innerHTML = res[i].hw1;
 			row.insertCell(6).innerHTML = res[i].hw2;
-			row.insertCell(7).innerHTML = res[i].cw;
+			row.insertCell(7).innerHTML = res[i].cw1;
+			row.insertCell(8).innerHTML = res[i].cw2;
 		}
 		// console.log(res);
 	});
