@@ -194,14 +194,14 @@ function getGroupMarks() {
 		}
 		for (var i = 0; i < res.length; i++) {
 			var row = userTable.insertRow(i + 1);
-			row.insertCell(i).innerHTML = res[i].id;
-			row.insertCell(i).innerHTML = res[i].name;
-			row.insertCell(i).innerHTML = res[i].secondname;
-			row.insertCell(i).innerHTML = res[i].group;
-			row.insertCell(i).innerHTML = res[i].hw1;
-			row.insertCell(i).innerHTML = res[i].hw2;
-			row.insertCell(i).innerHTML = res[i].cw;
-			row.insertCell(i).innerHTML = i + 1;
+			row.insertCell(0).innerHTML = res[i].id;
+			row.insertCell(1).innerHTML = res[i].name;
+			row.insertCell(2).innerHTML = res[i].secondname;
+			row.insertCell(3).innerHTML = res[i].group;
+			row.insertCell(4).innerHTML = res[i].hw1;
+			row.insertCell(5).innerHTML = res[i].hw2;
+			row.insertCell(6).innerHTML = res[i].cw;
+			row.insertCell(7).innerHTML = i + 1;
 		}
 		// console.log(res);
 	});
