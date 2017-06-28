@@ -177,9 +177,8 @@ function deleteRow(rowid) {
 }
 
 function getGroupMarks() {
-	var group = document.getElementsByName("group")[1];
-	var value = group.value;
-	// alert(value);
+	var groupSelect = document.getElementsByName("group")[2];
+	var value = groupSelect.value;
 	var reqDataObj = {
 		method: "GET",
 		uri: "/marks/group/" + value,
@@ -194,14 +193,14 @@ function getGroupMarks() {
 		}
 		for (var i = 0; i < res.length; i++) {
 			var row = userTable.insertRow(i + 1);
-			row.insertCell(0).innerHTML = res[i].id;
-			row.insertCell(1).innerHTML = res[i].name;
-			row.insertCell(2).innerHTML = res[i].secondname;
-			row.insertCell(3).innerHTML = res[i].group;
-			row.insertCell(4).innerHTML = res[i].hw1;
-			row.insertCell(5).innerHTML = res[i].hw2;
-			row.insertCell(6).innerHTML = res[i].cw;
-			row.insertCell(7).innerHTML = i + 1;
+			row.insertCell(0).innerHTML = i + 1;
+			row.insertCell(1).innerHTML = res[i].id;
+			row.insertCell(2).innerHTML = res[i].name;
+			row.insertCell(3).innerHTML = res[i].secondname;
+			row.insertCell(4).innerHTML = res[i].group;
+			row.insertCell(5).innerHTML = res[i].hw1;
+			row.insertCell(6).innerHTML = res[i].hw2;
+			row.insertCell(7).innerHTML = res[i].cw;
 		}
 		// console.log(res);
 	});
