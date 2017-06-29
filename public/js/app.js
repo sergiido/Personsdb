@@ -225,6 +225,8 @@ function getGroupMarks() {
 			row.insertCell(6).innerHTML = res[i].hw2;
 			row.insertCell(7).innerHTML = res[i].cw1;
 			row.insertCell(8).innerHTML = res[i].cw2;
+			var updateBtn = '<button class="customfont" onclick="showUpdateMarksModal(this)" data-userid=' +res.id+ ' style="color: orange"> &#xe804; </button>';
+			row.insertCell(9).innerHTML = updateBtn;
 		}
 		// console.log(res);
 	});

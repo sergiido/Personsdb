@@ -36,5 +36,5 @@ app.use(session({
 require('./router/router')(app);
 
 app.listen(port, ip, () => {
-	console.log("Server: running");
+	console.log("Server: " + ip + ", port " + port);
 });
