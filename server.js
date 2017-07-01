@@ -11,7 +11,7 @@ const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.use(cookieParser('cookiesecret'));
 app.use(bodyParser.urlencoded({extended: true}));
 

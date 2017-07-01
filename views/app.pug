@@ -1,0 +1,41 @@
+extends layout
+
+block head
+  link(rel="stylesheet", href="/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/css/styleApp.css")
+  link(rel="stylesheet", href="/css/fontlogin.css")
+
+  script(type="text/javascript", src="/js/jquery-3.1.1.js")
+  script(type="text/javascript", src="/js/bootstrap.min.js")
+  script(type="text/javascript", src="/js/notify.js")
+  script(type="text/javascript", src="/js/app.js")
+
+  script.
+    var groups = !{JSON.stringify(groups)};
+
+  meta(charset="UTF-8")
+  meta(name="viewport", content="width=device-width, initial-scale=1.0")
+
+block content
+  #appWrapper
+    #infoArea
+      h2.form-signin-heading.customfont
+        span(class="logo" style="color:#38610B") &#xf1c0;
+        span Persons db
+      p(style="color:white;") Logged user: #{userDetails.name} as #{userDetails.role}
+
+    ul.nav.nav-tabs
+      li.active
+        a(data-toggle="tab", href="#maintenance") Maintenance
+      li
+        a(data-toggle="tab", href="#marks") Marks
+      li
+        a(data-toggle="tab", href="#squeeze") Squeeze
+
+    div.tab-content
+      #maintenance.tab-pane.fade.in.active
+        include maint
+      #squeeze.tab-pane.fade
+        include squeeze
+      #marks.tab-pane.fade
+        include marks

@@ -282,6 +282,7 @@ module.exports = function(app) {
 			users.forEach(function(user){
 				var obj = {
 					id: null,
+					userid: user.id,
 					name: user.name,
 					secondname: user.secondname,
 					group: group.name,
@@ -294,6 +295,7 @@ module.exports = function(app) {
 					if (user.id == mark.userid) {
 						obj = {
 							id: mark.id,
+							userid: user.id,
 							name: user.name,
 							secondname: user.secondname,
 							group: group.name,
@@ -307,6 +309,36 @@ module.exports = function(app) {
 				output.push(obj);
 			});
 			res.status(200).json(output);
+		}
+	});
+
+
+	app.put('/update/mark/:id', checkAuth, function (req, res) {
+		// console.log(req.params.id);
+		const id = parseInt(req.params.id);
+		if (id != null) {
+			var record = marksdb.get('marks').find({ id: id })
+				.assign({
+					hw1: {
+						created: Date.now(),
+						mark: req.body.hw1},
+					hw2: {
+						created: Date.now(),
+						mark: req.body.hw2},
+					cw1: {
+						created: Date.now(),
+						mark: req.body.cw1},
+					cw2: {created: Date.now(),
+						mark: req.body.cw2}
+				}).write();
+			// console.log(record);
+		}
+		if (record == 'undefined') {
+			res.status(400).json({
+				err: {status: 400, data: err, message: "failed to update"}
+			});
+		} else {
+			res.status(200).json(record);
 		}
 	});
 

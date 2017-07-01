@@ -7,18 +7,19 @@ body {
 }
 
 p {
-	position: relative;
+	/*position: relative;*/
 }
 
 h2 {
 	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
 }
 
+
 th {
 	background-color: rgba(0, 0, 0, 0.2);
 	padding: 4px 10px;
 	text-align: center;
-	border: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
 	color: lightgrey;
 }
 
@@ -28,8 +29,8 @@ tbody tr:hover td{
 }
 
 table td{
-	border: 1px solid lightgrey;
-	padding: 1px 10px 2px 10px;
+	border-bottom: 1px solid rgba(211, 211, 211, 0.5);
+	padding: 2px !important;
 	color: white;
 }
 
@@ -66,7 +67,9 @@ table td{
 }
 
 .tableWrapper{
-
+	padding-right: 20px;
+	height: 400px;
+	overflow-y: auto;
 }
 
 .customfont{
@@ -242,5 +245,6 @@ div.button:hover .customfont{
 	margin-bottom: 20px;
 }
 .tab-content {
-	padding-left: 14%;
+	padding-left: 140px;
 }
+

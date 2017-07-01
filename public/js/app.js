@@ -64,10 +64,15 @@ function showUpdatePersonPop(updateBtn) {
 	personUpdatemodal.querySelector('input[name="name"]').value = personRow.childNodes[1].innerHTML;
 	personUpdatemodal.querySelector('input[name="secondname"]').value = personRow.childNodes[2].innerHTML;
 	personUpdatemodal.querySelector('input[name="age"]').value = personRow.childNodes[3].innerHTML;
-	personUpdatemodal.querySelector('select[name="group"]').value = "1";
-	personUpdatemodal.querySelector('input[name="login"]').value = personRow.childNodes[6].innerHTML;
-	personUpdatemodal.querySelector('input[name="pwd"]').value = personRow.childNodes[7].innerHTML;
-	personUpdatemodal.querySelector('select[name="roles"]').value = personRow.childNodes[8].innerHTML;
+	groups.forEach(function(group){
+		//- alert(personRow.childNodes[5].innerHTML);
+		if (group.name == personRow.childNodes[5].innerHTML) {
+			personUpdatemodal.querySelector('select[name="group"]').value =  group.id;
+		}
+	});
+	personUpdatemodal.querySelector('input[name="login"]').value = personRow.childNodes[7].innerHTML;
+	personUpdatemodal.querySelector('input[name="pwd"]').value = personRow.childNodes[8].innerHTML;
+	personUpdatemodal.querySelector('select[name="roles"]').value = personRow.childNodes[9].innerHTML;
 }
 
 function updatePerson(){
@@ -216,18 +221,51 @@ function getGroupMarks() {
 		}
 		for (var i = 0; i < res.length; i++) {
 			var row = userTable.insertRow(i + 1);
+			// console.log(res[i].userid);
+			// if (res[i].id != null) row.id = res[i].userid;
 			row.insertCell(0).innerHTML = i + 1;
 			row.insertCell(1).innerHTML = res[i].id;
 			row.insertCell(2).innerHTML = res[i].name;
 			row.insertCell(3).innerHTML = res[i].secondname;
 			row.insertCell(4).innerHTML = res[i].group;
-			row.insertCell(5).innerHTML = res[i].hw1;
-			row.insertCell(6).innerHTML = res[i].hw2;
-			row.insertCell(7).innerHTML = res[i].cw1;
-			row.insertCell(8).innerHTML = res[i].cw2;
-			var updateBtn = '<button class="customfont" onclick="showUpdateMarksModal(this)" data-userid=' +res.id+ ' style="color: orange"> &#xe804; </button>';
+			if (res[i].hw1 == null) res[i].hw1=0
+			row.insertCell(5).innerHTML = '<div contenteditable="true">'+ res[i].hw1 +'</div>';
+			if (res[i].hw2 == null) res[i].hw2=0
+			row.insertCell(6).innerHTML = '<div contenteditable="true">'+ res[i].hw2 +'</div>';
+			if (res[i].cw1 == null) res[i].cw1=0
+			row.insertCell(7).innerHTML = '<div contenteditable="true">'+ res[i].cw1 +'</div>';
+			if (res[i].cw2 == null) res[i].cw2=0
+			row.insertCell(8).innerHTML = '<div contenteditable="true">'+ res[i].cw2 +'</div>';
+			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: orange"> &#xe804; </button>';
 			row.insertCell(9).innerHTML = updateBtn;
 		}
-		// console.log(res);
+	});
+}
+
+function updateMarks(updBtn){
+	var row = updBtn.parentNode.parentNode;
+	var markId = updBtn.dataset.markid;
+	var userId = updBtn.dataset.userid;
+	var hw1 = row.childNodes[5].textContent;
+	var hw2 = row.childNodes[6].textContent;
+	var cw1 = row.childNodes[7].textContent;
+	var cw2 = row.childNodes[8].textContent;
+
+	var uri = "/update/mark/" + markId;
+
+	var reqDataObj = {
+		method: "PUT",
+		uri: uri,
+		objData: {
+			userid: userId,
+			hw1: hw1,
+			hw2: hw2,
+			cw1: cw1,
+			cw2: cw2
+		},
+		action: "Update"
+	};
+	sendAjax(reqDataObj, function(res) {
+		console.log(res);
 	});
 }
