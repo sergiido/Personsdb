@@ -16,7 +16,7 @@ if (userDetails.role != 'user')
       option(value=groups[i].id) #{groups[i].name}
   button.btn.btn-primary.customfont(onclick="getGroupMarks()", type="button") &#xe813; Search
 else
-  button.btn.btn-primary.customfont(onclick="getPersonMarks('#{userDetails.id}')", type="button") &#xe813; Get marks
+  button.btn.btn-primary.customfont(onclick="getPersonMarks('"+userDetails.id+"')", type="button") &#xe813; Get marks
 
 .tableWrapper
   table#marksTable.table.table-sm

@@ -20,7 +20,6 @@ function showAddGroupPop() {
 	groupPopCloseBtn.onclick = function() {
 		groupmodal.style.display = "none";
 	}
-
 }
 
 function addPerson(){
@@ -75,6 +74,7 @@ function showUpdatePersonPop(updateBtn) {
 	personUpdatemodal.querySelector('select[name="roles"]').value = personRow.childNodes[9].innerHTML;
 }
 
+
 function updatePerson(){
 	var formData = new FormData(document.forms.updateperson);
 	var userId = formData.get('userid');
@@ -99,6 +99,7 @@ function updatePerson(){
 	// href='/update/#{item._id}?_method=PUT'
 }
 
+
 function deletePerson(rowId){
 	var reqDataObj = {
 		method: "DELETE",
@@ -110,6 +111,7 @@ function deletePerson(rowId){
 		// console.log(res);
 	});
 }
+
 
 function addGroup(){
 	var formData = new FormData(document.forms.addgroup);
@@ -132,6 +134,7 @@ function addGroup(){
 		// console.log("res: " + res);
 	});
 }
+
 
 function sendAjax(reqDataObj, callback) {
 	$.ajax({
@@ -156,6 +159,7 @@ function sendAjax(reqDataObj, callback) {
 	});
 }
 
+
 function addRow(tableName, res) {
 	var userTable = document.getElementById(tableName);
 	var len = userTable.rows.length;
@@ -176,10 +180,12 @@ function addRow(tableName, res) {
 	row.insertCell(11).innerHTML = updateBtn;
 }
 
+
 function deleteRow(rowid) {
     var row = document.getElementById(rowid);
     row.parentNode.removeChild(row);
 }
+
 
 function getPersonMarks(userId) {
 	var reqDataObj = {
@@ -200,9 +206,11 @@ function getPersonMarks(userId) {
 		row.insertCell(6).innerHTML = res.hw2;
 		row.insertCell(7).innerHTML = res.cw1;
 		row.insertCell(8).innerHTML = res.cw2;
+		row.insertCell(9).innerHTML = "no access";
 		// console.log(res);
 	});
 }
+
 
 function getGroupMarks() {
 	var groupSelect = document.getElementsByName("group")[2];
@@ -242,6 +250,7 @@ function getGroupMarks() {
 	});
 }
 
+
 function updateMarks(updBtn){
 	var row = updBtn.parentNode.parentNode;
 	var markId = updBtn.dataset.markid;
@@ -250,11 +259,20 @@ function updateMarks(updBtn){
 	var hw2 = row.childNodes[6].textContent;
 	var cw1 = row.childNodes[7].textContent;
 	var cw2 = row.childNodes[8].textContent;
-
-	var uri = "/update/mark/" + markId;
-
+	var uri = null;
+	var method = null;
+	var action = null;
+	if (markId > 0) {
+		uri = "/mark/" + markId;
+		method = "PUT";
+		action = "Update";
+	} else {
+		uri = "/mark";
+		method = "POST";
+		action = "Add";
+	}
 	var reqDataObj = {
-		method: "PUT",
+		method: method,
 		uri: uri,
 		objData: {
 			userid: userId,
@@ -263,7 +281,7 @@ function updateMarks(updBtn){
 			cw1: cw1,
 			cw2: cw2
 		},
-		action: "Update"
+		action: action
 	};
 	sendAjax(reqDataObj, function(res) {
 		console.log(res);

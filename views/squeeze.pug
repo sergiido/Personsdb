@@ -5,4 +5,7 @@ h3.tabName Squeeze
       span.customfont.fontSize2 &#xe805;
       span Logout
 .tableWrapper
-  p Hi!
+  .btnContainer
+    button.btn.btn-large.btn-primary.btn-block(onclick="startSqueeze(this)" ) Start
+    button.btn.btn-large.btn-info.btn-block(style="display:none", onclick="nextSqueeze()" ) Next
+  .squeezeContainer

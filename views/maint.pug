@@ -98,8 +98,9 @@ h3.tabName Maintenance
     th gender
     th group
     th email
-    th login
-    th pwd
+    if userDetails.role!= 'user'
+      th login
+      th pwd
     th role
     th created
     th active
@@ -129,7 +130,7 @@ h3.tabName Maintenance
               - var etcNum= user.email.indexOf("@")
               - var email= user.email.substr(1, etcNum)
             td(title=user.email)= email
-            if userDetails.role== 'admin'
+            if userDetails.role!= 'user'
               td= user.login
               td= user.pwd
             td= user.role
@@ -160,6 +161,11 @@ h3.tabName Maintenance
                 if user.groupid== group.id
                   - val= group.name
               td= val
+              - var email= ""
+              - if (user.email)
+                - var etcNum= user.email.indexOf("@")
+                - var email= user.email.substr(1, etcNum)
+              td(title=user.email)= email
               td= user.login
               td= user.pwd
               td= user.role
