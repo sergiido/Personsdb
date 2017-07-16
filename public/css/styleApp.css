@@ -14,7 +14,6 @@ h2 {
 	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
 }
 
-
 th {
 	background-color: rgba(0, 0, 0, 0.2);
 	padding: 4px 10px;
@@ -22,7 +21,6 @@ th {
 	border-bottom: 1px solid lightgrey;
 	color: lightgrey;
 }
-
 
 tbody tr:hover td{
 	background-color: rgba(255, 255, 255, 0.1);
@@ -32,6 +30,15 @@ table td{
 	border-bottom: 1px solid rgba(211, 211, 211, 0.5);
 	padding: 2px !important;
 	color: white;
+}
+
+input[type="checkbox"] {
+	margin-top: 8px;
+	margin-right: 4px;
+}
+label {
+	color: grey;
+	font-weight: 100;
 }
 
 #appWrapper {
@@ -44,7 +51,7 @@ table td{
 	background-color: rgba(0, 0, 0, 0.1);
 }
 
-#addpersonpopup {
+#personpopup {
 	background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -185,10 +192,8 @@ div.button:hover .customfont{
     margin: 15% auto; /* 15% from the top and centered */
     padding: 4px;
     width: 300px; /* Could be more or less, depending on screen size */
-	background-color: grey;
-	border: 3px solid rgba(0,0,0,0.2);
-	border-top: 2px solid lightgrey;
-	border-left: 2px solid lightgrey;
+	background-color: #8ba6af;
+	border: 1px solid rgba(255,255,255,0.5);
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.5s;

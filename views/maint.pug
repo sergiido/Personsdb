@@ -44,6 +44,8 @@ h3.tabName Maintenance
             option(value="user") user
             option(value="editor") editor
             option(value="admin") admin
+          input(type="checkbox" id="status_chb" name="status" value="Status" checked)
+          label(for="status_chb") Active
         div(style="text-align: center;margin-right: 30px;")
           button.btn.btn-primary.customfont(type="submit") &#xf234; Add
 
@@ -75,6 +77,8 @@ h3.tabName Maintenance
             option(value="user") user
             option(value="editor") editor
             option(value="admin") admin
+          input(type="checkbox" id="status_chb" name="status" value="Status" checked)
+          label(for="status_chb") Active
         div(style="text-align: center;margin-right: 30px;")
           button.btn.btn-primary.customfont(type="submit") &#xe80d; Update
 
@@ -86,8 +90,11 @@ h3.tabName Maintenance
       form(name="addgroup" onsubmit="event.preventDefault(); addGroup();")
         div
           input(name="groupname", type="text", placeholder="group name", size="10", required="")
+          button.btn.btn-primary.customfont(type="submit") Add
         div
-          button.btn.btn-primary.customfont(type="submit") &#xf234; Add
+          ul
+          - for (var i = 0; i < groups.length; i++)
+            li #{groups[i].name}
 
 .tableWrapper
   table#userTable.table.table-sm.table-responsive
@@ -109,7 +116,7 @@ h3.tabName Maintenance
       if userDetails.role!= 'user'
         - var i=1
         each user in users
-          tr(id= user.id)
+          tr(id= user.id, data-userdata= user)
             td #{i++}
             td= user.name
             td= user.secondname
@@ -128,7 +135,7 @@ h3.tabName Maintenance
             - var email= ""
             - if (user.email)
               - var etcNum= user.email.indexOf("@")
-              - var email= user.email.substr(1, etcNum)
+              - var email= user.email.substr(0, etcNum+1)
             td(title=user.email)= email
             if userDetails.role!= 'user'
               td= user.login
@@ -164,7 +171,7 @@ h3.tabName Maintenance
               - var email= ""
               - if (user.email)
                 - var etcNum= user.email.indexOf("@")
-                - var email= user.email.substr(1, etcNum)
+                - var email= user.email.substr(0, etcNum+1)
               td(title=user.email)= email
               td= user.login
               td= user.pwd

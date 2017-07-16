@@ -117,50 +117,59 @@ module.exports = function(app) {
 		res.send(JSON.stringify(data));
 	});
 
-	app.post('/add', checkAuth, (req, res) => {
+	app.post('/user/add', checkAuth, (req, res) => {
 		// console.log("add: " + req.body.name);
-		const allowedUsers = ['admin', 'viewer'];
+		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-			const newUser = usersdb.get('users').push({
-				id: Date.now(),
-				name: req.body.name,
-				secondname: req.body.secondname,
-				age: req.body.age,
-				gender: req.body.gender,
-				groupid: parseInt(req.body.groupid),
-				login: req.body.login,
-				pwd: req.body.pwd,
-				role: req.body.roles,
-				created: Date.now(),
-				active: true
-			}).last()
-			//.assign({ id: Date.now() })
-			.write();
-			if (newUser == 'undefined') {
-				res.status(400).json({
-					err: {status: 400, data: err, message: "failed to add"}
-				});
+
+			var userExists = usersdb.get('users').find({ login: req.body.login }).value();
+			if (userExists == null) {
+				const newUser = usersdb.get('users').push({
+					id: Date.now(),
+					name: req.body.name,
+					secondname: req.body.secondname,
+					age: req.body.age,
+					gender: req.body.gender,
+					groupid: parseInt(req.body.groupid),
+					email: req.body.email,
+					login: req.body.login,
+					pwd: req.body.pwd,
+					role: req.body.roles,
+					created: Date.now(),
+					active: true
+				}).last()
+				//.assign({ id: Date.now() })
+				.write();
+
+				if (newUser == 'undefined') {
+					res.status(400).json({
+						err: {status: 400, data: err, message: "failed to add"}
+					});
+				} else {
+					var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
+					var output = {
+						name: newUser.name,
+						secondname: newUser.secondname,
+						age: newUser.age,
+						gender: newUser.gender,
+						groupid: group.name,
+						email: newUser.email,
+						login: newUser.login,
+						pwd: newUser.pwd,
+						role: newUser.role,
+						created: newUser.created,
+						active: newUser.active
+					};
+					res.status(200).json(output);
+				}
 			} else {
-				var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
-				var output = {
-					name: newUser.name,
-					secondname: newUser.secondname,
-					age: newUser.age,
-					gender: newUser.gender,
-					groupid: group.name,
-					login: newUser.login,
-					pwd: newUser.pwd,
-					role: newUser.role,
-					created: newUser.created,
-					active: newUser.active
-				};
-				res.status(200).json(output);
+				res.status(400).json({message: "user exists"});
 			}
 		}
 	});
 
 	app.post('/addgroup', checkAuth, (req, res) => {
-		const allowedUsers = ['admin', 'viewer'];
+		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
 			const record = groupsdb.get('groups').push({
 				id: Date.now(),
@@ -193,6 +202,7 @@ module.exports = function(app) {
 			// console.log ("delete is allowed");
 			const id = parseInt(req.params.id);
 			var result = usersdb.get('users').remove({ id }).write();
+// remove user's marks
 			if (result == 'undefined') {
 				res.status(400).json({
 					err: {status: 400, data: err, message: "failed to delete"}
@@ -215,10 +225,11 @@ module.exports = function(app) {
 				age: req.body.age,
 				gender: req.body.gender,
 				groupid: parseInt(req.body.groupid),
+				email: req.body.email,
 				login: req.body.login,
 				pwd: req.body.pwd,
-				role: req.body.roles,
-				created: Date.now(),
+				role: req.body.role,
+				//created: Date.now(),
 				active: true
 			}).write();
 		// console.log(record);
@@ -227,8 +238,22 @@ module.exports = function(app) {
 				err: {status: 400, data: err, message: "failed to update"}
 			});
 		} else {
-			res.status(200).json(record);
-			// res.send(obj);
+			var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
+			var output = {
+				id: record.id,
+				name: record.name,
+				secondname: record.secondname,
+				age: record.age,
+				gender: record.gender,
+				groupid: group.name,
+				email: record.email,
+				login: record.login,
+				pwd: record.pwd,
+				role: record.role,
+				created: record.created,
+				active: true
+			};
+			res.status(200).json(output);
 		}
 	});
 
@@ -243,6 +268,7 @@ module.exports = function(app) {
 	app.get('/marks/user/:id', checkAuth, function(req, res) {
 	 	const id = parseInt(req.params.id);
 	 	var user = usersdb.get('users').find({ id: id }).value();
+	 	// console.log(user);
 		if (user == 'undefined') {
 			res.status(400).json({
 				err: {status: 400, data: err, message: "user not found"}
@@ -313,32 +339,57 @@ module.exports = function(app) {
 	});
 
 
-	app.put('/update/mark/:id', checkAuth, function (req, res) {
-		// console.log(req.params.id);
+	app.put('/mark/:id', checkAuth, function (req, res) {
 		const id = parseInt(req.params.id);
-		if (id != null) {
-			var record = marksdb.get('marks').find({ id: id })
-				.assign({
-					hw1: {
-						created: Date.now(),
-						mark: req.body.hw1},
-					hw2: {
-						created: Date.now(),
-						mark: req.body.hw2},
-					cw1: {
-						created: Date.now(),
-						mark: req.body.cw1},
-					cw2: {created: Date.now(),
-						mark: req.body.cw2}
-				}).write();
-			// console.log(record);
-		}
+		const record = marksdb.get('marks').find({ id: id })
+			.assign({
+				hw1: {
+					created: Date.now(),
+					mark: req.body.hw1},
+				hw2: {
+					created: Date.now(),
+					mark: req.body.hw2},
+				cw1: {
+					created: Date.now(),
+					mark: req.body.cw1},
+				cw2: {created: Date.now(),
+					mark: req.body.cw2}
+			}).write();
 		if (record == 'undefined') {
 			res.status(400).json({
 				err: {status: 400, data: err, message: "failed to update"}
 			});
 		} else {
 			res.status(200).json(record);
+		}
+	});
+
+
+	app.post('/mark', checkAuth, (req, res) => {
+		const allowedUsers = ['admin', 'editor'];
+		if (allowedUsers.indexOf(req.session.user.role) != -1) {
+			const record = marksdb.get('marks').push({
+				id: Date.now(),
+				userid: req.body.userid,
+				hw1: {
+					created: Date.now(),
+					mark: req.body.hw1},
+				hw2: {
+					created: Date.now(),
+					mark: req.body.hw2},
+				cw1: {
+					created: Date.now(),
+					mark: req.body.cw1},
+				cw2: {created: Date.now(),
+					mark: req.body.cw2}
+			}).last().write();
+			if (record == 'undefined') {
+				res.status(400).json({
+					err: {status: 400, data: err, message: "failed to add"}
+				});
+			} else {
+				res.status(200).json(record);
+			}
 		}
 	});
 
