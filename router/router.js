@@ -1,11 +1,26 @@
 const low = require('lowdb');
 // https://github.com/typicode/lowdb
 // https://github.com/typicode/lowdb/tree/master/examples
-const usersdb = low('db/users.json', { storage: fileAsync});
-const marksdb = low('db/marks.json', { storage: fileAsync});
-const groupsdb = low('db/groups.json', { storage: fileAsync});
-
 const fileAsync = require('lowdb/lib/storages/file-async');
+
+const usersdb = low('db/users.json', {storage: fileAsync});
+const marksdb = low('db/marks.json', {storage: fileAsync});
+const groupsdb = low('db/groups.json', {storage: fileAsync});
+
+const bcrypt = require('bcrypt-nodejs');
+// const salt = 'personspwdhash';
+
+bcrypt.hash("testgroup", null, null, function(err, hash) {
+    // Store hash in your password DB
+	// $2a$10$38cofP8SNliuqwIXnZa9YelRfA23mGpnYwBCSWBJcjENIBmIHUaGW
+    console.log("hash: " + hash);
+});
+bcrypt.compare("testgroup", "$2a$10$38cofP8SNliuqwIXnZa9YelRfA23mGpnYwBCSWBJcjENIBmIHUaGW", function(err, res) {
+    // res == true
+    console.log(res);
+});
+
+
 
 module.exports = function(app) {
 
@@ -15,7 +30,7 @@ module.exports = function(app) {
 
 	app.get('/login', (req, res) => {
 		if (typeof req.session.user == 'undefined'){
-        	res.render('login', {title: 'myApp', 'message': 'Login', 'errMsg': ''});
+        	res.render('login', {title: 'Blotter', 'message': 'Blotter v.' + process.env.npm_package_version, 'errMsg': ''});
 		} else {
 			res.redirect('/app');
 		}
@@ -100,7 +115,10 @@ module.exports = function(app) {
 	app.get('/app', checkAuth, function(req, res) {
 	// Set some defaults if your JSON file is empty
 	// usersdb.defaults({ posts: [], user: {} }).write()
-		var users = usersdb.get('users').value();
+		var users = usersdb.get('users').cloneDeep().value();
+		users.forEach(function(user){
+			delete user.pwd;   //remove pwd key
+		});
 		var groups = groupsdb.get('groups').value();
 		res.render('app', {userDetails: req.session.user, users: users, groups: groups});
 	});
@@ -121,17 +139,16 @@ module.exports = function(app) {
 		// console.log("add: " + req.body.name);
 		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-
 			var userExists = usersdb.get('users').find({ login: req.body.login }).value();
 			if (userExists == null) {
-				const newUser = usersdb.get('users').push({
+				usersdb.get('users').push({
 					id: Date.now(),
 					name: req.body.name,
 					secondname: req.body.secondname,
 					age: req.body.age,
 					gender: req.body.gender,
 					groupid: parseInt(req.body.groupid),
-					email: req.body.email,
+					email: req.body.email || "",
 					login: req.body.login,
 					pwd: req.body.pwd,
 					role: req.body.roles,
@@ -139,13 +156,8 @@ module.exports = function(app) {
 					active: true
 				}).last()
 				//.assign({ id: Date.now() })
-				.write();
-
-				if (newUser == 'undefined') {
-					res.status(400).json({
-						err: {status: 400, data: err, message: "failed to add"}
-					});
-				} else {
+				.write()
+				.then(function(newUser){
 					var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
 					var output = {
 						name: newUser.name,
@@ -155,13 +167,15 @@ module.exports = function(app) {
 						groupid: group.name,
 						email: newUser.email,
 						login: newUser.login,
-						pwd: newUser.pwd,
+						// pwd: newUser.pwd,
 						role: newUser.role,
 						created: newUser.created,
 						active: newUser.active
 					};
 					res.status(200).json(output);
-				}
+				 })
+				.catch(err => res.status(400).json({message: "failed to add"}))
+
 			} else {
 				res.status(400).json({message: "user exists"});
 			}
@@ -171,19 +185,14 @@ module.exports = function(app) {
 	app.post('/addgroup', checkAuth, (req, res) => {
 		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-			const record = groupsdb.get('groups').push({
+			groupsdb.get('groups').push({
 				id: Date.now(),
 				name: req.body.name,
 				created: Date.now(),
 				active: true
-			}).last().write();
-			if (record == 'undefined') {
-				res.status(400).json({
-					err: {status: 400, data: err, message: "failed to add"}
-				});
-			} else {
-				res.status(200).json(record);
-			}
+			}).last().write()
+			.then((group) => res.status(200).json(group) )
+			.catch(err => res.status(400).json({message: "failed to add"}))
 		}
 	});
 
@@ -204,9 +213,7 @@ module.exports = function(app) {
 			var result = usersdb.get('users').remove({ id }).write();
 // remove user's marks
 			if (result == 'undefined') {
-				res.status(400).json({
-					err: {status: 400, data: err, message: "failed to delete"}
-				});
+				res.status(400).json({ message: "failed to delete"});
 			} else {
 				res.status(200).json(result);
 			}
@@ -234,9 +241,7 @@ module.exports = function(app) {
 			}).write();
 		// console.log(record);
 		if (record == 'undefined') {
-			res.status(400).json({
-				err: {status: 400, data: err, message: "failed to update"}
-			});
+			res.status(400).json({message: "failed to update"});
 		} else {
 			var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
 			var output = {
@@ -248,7 +253,7 @@ module.exports = function(app) {
 				groupid: group.name,
 				email: record.email,
 				login: record.login,
-				pwd: record.pwd,
+				// pwd: record.pwd,
 				role: record.role,
 				created: record.created,
 				active: true
@@ -270,9 +275,7 @@ module.exports = function(app) {
 	 	var user = usersdb.get('users').find({ id: id }).value();
 	 	// console.log(user);
 		if (user == 'undefined') {
-			res.status(400).json({
-				err: {status: 400, data: err, message: "user not found"}
-			});
+			res.status(400).json({message: "user not found"});
 		} else {
 			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
 	 		var marks = marksdb.get('marks').value();
@@ -300,9 +303,7 @@ module.exports = function(app) {
 		var users = usersdb.get('users').filter({groupid: id}).value();
 		var marks = marksdb.get('marks').value();
 		if (users == 'undefined') {
-			res.status(400).json({
-				err: {status: 400, data: err, message: "no users in group"}
-			});
+			res.status(400).json({message: "no users in group"});
 		} else {
 			var output = [];
 			users.forEach(function(user){
@@ -356,9 +357,7 @@ module.exports = function(app) {
 					mark: req.body.cw2}
 			}).write();
 		if (record == 'undefined') {
-			res.status(400).json({
-				err: {status: 400, data: err, message: "failed to update"}
-			});
+			res.status(400).json({message: "failed to update"});
 		} else {
 			res.status(200).json(record);
 		}
@@ -384,9 +383,7 @@ module.exports = function(app) {
 					mark: req.body.cw2}
 			}).last().write();
 			if (record == 'undefined') {
-				res.status(400).json({
-					err: {status: 400, data: err, message: "failed to add"}
-				});
+				res.status(400).json({message: "failed to add"});
 			} else {
 				res.status(200).json(record);
 			}

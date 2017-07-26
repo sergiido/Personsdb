@@ -19,13 +19,14 @@
       "name": "Tester",
       "secondname": "Testenko",
       "age": "34",
-      "gender": "male",
+      "gender": "female",
       "groupid": 1,
       "login": "test",
       "pwd": "test",
       "role": "user",
       "created": 1498846087527,
-      "active": true
+      "active": true,
+      "email": "tester@mail.ua"
     },
     {
       "id": 1498399271406,
@@ -38,7 +39,8 @@
       "pwd": "123",
       "role": "editor",
       "created": 1498399271406,
-      "active": true
+      "active": true,
+      "email": "editor@mail.ua"
     },
     {
       "id": 1498498445098,
@@ -64,45 +66,91 @@
       "pwd": "11",
       "role": "user",
       "created": 1498509654790,
-      "active": true
+      "active": true,
+      "email": "us2@mail.ua"
     },
     {
       "id": 1498509668612,
       "name": "Usern3",
       "secondname": "Usersn3",
       "age": "29",
-      "gender": "female",
+      "gender": "male",
       "groupid": 2,
       "login": "usern3",
       "pwd": "11",
       "role": "user",
       "created": 1498509668612,
-      "active": true
+      "active": true,
+      "email": ""
     },
     {
       "id": 1498638603592,
       "name": "Usern1",
       "secondname": "Usersn1",
-      "age": "2",
-      "gender": "male",
-      "groupid": 3,
+      "age": "26",
+      "gender": "female",
+      "groupid": 2,
+      "email": "",
       "login": "usern1",
       "pwd": "123",
-      "role": "editor",
-      "created": 1498638603592,
+      "role": "user",
+      "created": 1500191478185,
       "active": true
     },
     {
       "id": 1498639482084,
       "name": "Usern4",
       "secondname": "Usersn4",
-      "age": "4",
-      "gender": "female",
-      "groupid": 2,
+      "age": "24",
+      "gender": "male",
+      "groupid": 3,
+      "email": "us4@mail.ua",
       "login": "usern4",
       "pwd": "11",
       "role": "editor",
-      "created": 1498639482084,
+      "created": 1500196552563,
+      "active": true
+    },
+    {
+      "id": 1500671207224,
+      "name": "Usern5",
+      "secondname": "Usersn5",
+      "age": "33",
+      "gender": "male",
+      "groupid": 1499967725847,
+      "email": "usersn5@mail.ua",
+      "login": "usern5",
+      "pwd": "rger",
+      "role": "user",
+      "created": 1500671207224,
+      "active": true
+    },
+    {
+      "id": 1500707466297,
+      "name": "Usern6",
+      "secondname": "Usersn6",
+      "age": "53",
+      "gender": "male",
+      "groupid": 1499967725847,
+      "email": "usersn6@mail.ua",
+      "login": "usern6",
+      "pwd": "asdf1",
+      "role": "user",
+      "created": 1500707466297,
+      "active": true
+    },
+    {
+      "id": 1500712555842,
+      "name": "Usern7",
+      "secondname": "Usersn7",
+      "age": "33",
+      "gender": "female",
+      "groupid": 1499967725847,
+      "email": "usersn7@mail.ua",
+      "login": "usern7",
+      "pwd": "fghfh",
+      "role": "user",
+      "created": 1500712555842,
       "active": true
     }
   ]

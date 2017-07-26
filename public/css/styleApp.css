@@ -51,7 +51,7 @@ label {
 	background-color: rgba(0, 0, 0, 0.1);
 }
 
-#personpopup {
+.modal {
 	background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -213,7 +213,7 @@ div.button:hover .customfont{
 
 /* The Close Button */
 .close {
-    color: #aaa;
+    color: darkslategrey;
     margin-right: 4px;
 }
 .close:hover,

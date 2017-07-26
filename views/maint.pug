@@ -43,7 +43,8 @@ h3.tabName Maintenance
           select(name="roles")
             option(value="user") user
             option(value="editor") editor
-            option(value="admin") admin
+            if userDetails.role== 'admin'
+              option(value="admin") admin
           input(type="checkbox" id="status_chb" name="status" value="Status" checked)
           label(for="status_chb") Active
         div(style="text-align: center;margin-right: 30px;")
@@ -76,7 +77,8 @@ h3.tabName Maintenance
           select(name="roles")
             option(value="user") user
             option(value="editor") editor
-            option(value="admin") admin
+            if userDetails.role== 'admin'
+              option(value="admin") admin
           input(type="checkbox" id="status_chb" name="status" value="Status" checked)
           label(for="status_chb") Active
         div(style="text-align: center;margin-right: 30px;")
@@ -105,8 +107,8 @@ h3.tabName Maintenance
     th gender
     th group
     th email
-    if userDetails.role!= 'user'
-      th login
+    th login
+    //- if userDetails.role== 'admin'
       th pwd
     th role
     th created
@@ -137,22 +139,28 @@ h3.tabName Maintenance
               - var etcNum= user.email.indexOf("@")
               - var email= user.email.substr(0, etcNum+1)
             td(title=user.email)= email
-            if userDetails.role!= 'user'
-              td= user.login
+            td= user.login
+            //- if userDetails.role== 'admin'
               td= user.pwd
             td= user.role
             - var date = new Date(user.created)
             td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
             td= user.active
             td
-              button.customfont(onclick="showUpdatePersonPop(this)" data-userid= user.id style="color: orange") &#xe804;
               if userDetails.role== 'admin'
+                button.customfont(onclick="showUpdatePersonPop(this)" data-userid= user.id style="color: orange") &#xe804;
                 button.customfont(onclick="deletePerson('"+user.id+"')" style="color: #FE2E2E") &#xe802;
                 //- a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+              else
+                if user.role== 'admin'
+                  button.customfont(style="color: grey" disabled) &#xe804;
+                else
+                  button.customfont(onclick="showUpdatePersonPop(this)" data-userid= user.id style="color: orange") &#xe804;
+
       else
         each user in users
           if (user.id == userDetails.id)
-            tr(id= user.id)
+            tr(id= user.id, data-userdata= user)
               td 1
               td= user.name
               td= user.secondname
@@ -174,7 +182,7 @@ h3.tabName Maintenance
                 - var email= user.email.substr(0, etcNum+1)
               td(title=user.email)= email
               td= user.login
-              td= user.pwd
+              //- td= user.pwd
               td= user.role
               - var date = new Date(user.created)
               td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)

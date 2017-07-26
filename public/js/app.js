@@ -72,7 +72,7 @@ function showUpdatePersonPop(updateBtn) {
 	});
 	personUpdatemodal.querySelector('input[name="email"]').value = JSON.parse(personRow.dataset.userdata).email;
 	personUpdatemodal.querySelector('input[name="login"]').value = JSON.parse(personRow.dataset.userdata).login;
-	personUpdatemodal.querySelector('input[name="pwd"]').value = JSON.parse(personRow.dataset.userdata).pwd;
+	// personUpdatemodal.querySelector('input[name="pwd"]').value = JSON.parse(personRow.dataset.userdata).pwd;
 	personUpdatemodal.querySelector('select[name="roles"]').value = JSON.parse(personRow.dataset.userdata).role;
 }
 
@@ -119,10 +119,10 @@ function updatePerson(){
 		personRow.childNodes[6].innerHTML = res.email.substr(0, res.email.indexOf("@")+1);
 		personRow.childNodes[6].title = res.email;
 		personRow.childNodes[7].innerHTML = res.login;
-		personRow.childNodes[8].innerHTML = res.pwd;
-		personRow.childNodes[9].innerHTML = res.role;
-		personRow.childNodes[10].innerHTML = formatDate(res.created);
-		personRow.childNodes[11].innerHTML = res.active;
+		// personRow.childNodes[8].innerHTML = res.pwd;
+		personRow.childNodes[8].innerHTML = res.role;
+		personRow.childNodes[9].innerHTML = formatDate(res.created);
+		personRow.childNodes[10].innerHTML = res.active;
 	});
 	// href='/update/#{item._id}?_method=PUT'
 }
@@ -153,7 +153,7 @@ function addGroup(){
 	};
 	sendAjax(reqDataObj, function(res){
 	    document.getElementById('grouppopup').style.display = "none";
-	    // add created option to select group dropdown
+	    // add created option to select group dropdown on User pop up
 	    var select = document.getElementById("groupselect");
 	    var option = document.createElement('option');
 	    option.value = res.id;
@@ -179,8 +179,8 @@ function sendAjax(reqDataObj, callback) {
   				globalPosition: 'top center'});
 		},
 		error: function(res) {
-			console.log(JSON.parse(res.responseText));
-			$.notify(reqDataObj.action  + " error: " + JSON.parse(res.responseText).message, {
+			console.log(res);
+			$.notify(reqDataObj.action  + " error: " + JSON.parse(res).message, {
 				className: "warn",
   				globalPosition: 'top center'});
 		}
@@ -200,14 +200,13 @@ function addRow(tableName, res) {
 	row.insertCell(4).innerHTML = res.gender;
 	row.insertCell(5).innerHTML = res.groupid;
 	row.insertCell(6).innerHTML = res.email.substr(0, res.email.indexOf("@")+1);
-	row.insertCell(6).title = res.email;
+	// row.insertCell(6).title = res.email;
 	row.insertCell(7).innerHTML = res.login;
-	personRow.childNodes[8].innerHTML = res.pwd;
-	personRow.childNodes[9].innerHTML = res.role;
-	personRow.childNodes[10].innerHTML = res.created;
-	personRow.childNodes[11].innerHTML = res.active;
+	row.insertCell(8).innerHTML = res.role;
+	row.insertCell(9).innerHTML = res.created;
+	row.insertCell(10).innerHTML = res.active;
 	var updateBtn = '<button class="customfont" onclick="showUpdatePersonPop(this)" data-userid=' +res.id+ ' style="color: orange"> &#xe804; </button>';
-	row.insertCell(12).innerHTML = updateBtn;
+	row.insertCell(11).innerHTML = updateBtn;
 }
 
 

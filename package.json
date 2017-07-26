@@ -1,23 +1,24 @@
 {
   "name": "students",
-  "version": "1.0.0",
+  "version": "3.2.1",
   "description": "Students db",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engine": {
-    "node": "*",
+    "node": "~6.11.1",
     "npm": "*"
-},
+  },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.16.0",
     "cookie-parser": "*",
     "express": "~4.14.0",
     "express-session": "^1.15.0",
-    "pug": "^2.0.0-rc.2",
+    "lowdb": "^0.16.2",
     "method-override": "^2.3.7",
-    "serve-favicon": "^2.3.2",
-    "lowdb": "*"
+    "pug": "^2.0.0-rc.2",
+    "serve-favicon": "^2.3.2"
   }
 }
