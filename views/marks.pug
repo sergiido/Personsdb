@@ -10,7 +10,7 @@ h3.tabName Marks
       span.customfont.fontSize2 &#xe805;
       span Logout
 if (userDetails.role != 'user')
-  select(name="group")
+  select(name="groupid")
     option(value=groups[0].id selected) #{groups[0].name}
     - for (var i = 1; i < groups.length; i++)
       option(value=groups[i].id) #{groups[i].name}

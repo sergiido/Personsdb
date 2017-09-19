@@ -1,3 +1,5 @@
+const util = require('util');
+
 const low = require('lowdb');
 // https://github.com/typicode/lowdb
 // https://github.com/typicode/lowdb/tree/master/examples
@@ -6,6 +8,9 @@ const fileAsync = require('lowdb/lib/storages/file-async');
 const usersdb = low('db/users.json', {storage: fileAsync});
 const marksdb = low('db/marks.json', {storage: fileAsync});
 const groupsdb = low('db/groups.json', {storage: fileAsync});
+
+const formidable = require('formidable');
+const fs = require('fs');
 
 const bcrypt = require('bcrypt-nodejs');
 // const salt = 'personspwdhash';
@@ -17,9 +22,8 @@ bcrypt.hash("testgroup", null, null, function(err, hash) {
 });
 bcrypt.compare("testgroup", "$2a$10$38cofP8SNliuqwIXnZa9YelRfA23mGpnYwBCSWBJcjENIBmIHUaGW", function(err, res) {
     // res == true
-    console.log(res);
+    console.log("compare:" + res);
 });
-
 
 
 module.exports = function(app) {
@@ -43,13 +47,13 @@ module.exports = function(app) {
 	var authUserList = {
 		admin: {
 			name: 'Admincheg',
-			pwd: '12345',
+			pwd: '123',
 			role: 'admin',
 			id: 1
 		},
 		user:{
 			name: 'Usercheg',
-			pwd: '54321',
+			pwd: '321',
 			role: 'user',
 			id: 2
 		}
@@ -102,6 +106,7 @@ module.exports = function(app) {
 				age: null,
 				gender: null,
 				groupid: null,
+				email: req.body.email,
 				login: req.body.login,
 				pwd: req.body.pwd,
 				role: "user",
@@ -135,54 +140,117 @@ module.exports = function(app) {
 		res.send(JSON.stringify(data));
 	});
 
-	app.post('/user/add', checkAuth, (req, res) => {
-		// console.log("add: " + req.body.name);
-		const allowedUsers = ['admin', 'editor'];
-		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-			var userExists = usersdb.get('users').find({ login: req.body.login }).value();
-			if (userExists == null) {
-				usersdb.get('users').push({
-					id: Date.now(),
-					name: req.body.name,
-					secondname: req.body.secondname,
-					age: req.body.age,
-					gender: req.body.gender,
-					groupid: parseInt(req.body.groupid),
-					email: req.body.email || "",
-					login: req.body.login,
-					pwd: req.body.pwd,
-					role: req.body.roles,
-					created: Date.now(),
-					active: true
-				}).last()
-				//.assign({ id: Date.now() })
-				.write()
-				.then(function(newUser){
-					var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
-					var output = {
-						name: newUser.name,
-						secondname: newUser.secondname,
-						age: newUser.age,
-						gender: newUser.gender,
-						groupid: group.name,
-						email: newUser.email,
-						login: newUser.login,
-						// pwd: newUser.pwd,
-						role: newUser.role,
-						created: newUser.created,
-						active: newUser.active
-					};
-					res.status(200).json(output);
-				 })
-				.catch(err => res.status(400).json({message: "failed to add"}))
 
-			} else {
-				res.status(400).json({message: "user exists"});
+	function copyFile(src, dest) {
+		let readStream = fs.createReadStream(src);
+		readStream.once('error', (err) => {
+			console.log(err);
+		});
+		readStream.once('end', () => {
+			console.log('---done copying---');
+			// delete the file
+			fs.unlink(src, function(err){
+				if(err) return console.log(err);
+				console.log(src + ' deleted successfully');
+			});
+		});
+		readStream.pipe(fs.createWriteStream(dest));
+	}
+
+
+	app.post('/user/add', checkAuth, (req, res) => {
+		// console.log("add name: " + req.body.name);
+
+		// output the headers
+		// console.log(req.headers);
+
+		 /*// capture the encoded form data
+		req.on('data', (data) => {
+			console.log(data.toString());
+		});
+		// send a response when finished reading the encoded form data
+		req.on('end', () => {
+			console.log('ok');
+		}); */
+
+		var form = new formidable.IncomingForm();
+
+		form.uploadDir = __dirname+'/../tempuploads';
+		form.keepExtensions = true;
+
+		form.parse(req, function(err, fields, files) {
+			// console.log('Got files:', files);
+			// console.log('Got a field: groupid=', fields.groupid);
+
+			const allowedUsers = ['admin', 'editor'];
+			if (allowedUsers.indexOf(req.session.user.role) != -1) {
+				var userExists = usersdb.get('users').find({ login: fields.login }).value();
+				if (userExists == null) {
+					usersdb.get('users').push({
+						id: Date.now(),
+						name: fields.name,
+						secondname: fields.secondname,
+						age: fields.age,
+						gender: fields.gender,
+						groupid: parseInt(fields.groupid),
+						email: fields.email || "",
+						login: fields.login,
+						pwd: fields.pwd,
+						role: fields.roles,
+						created: Date.now(),
+						active: true
+					}).last()
+						//.assign({ id: Date.now() })
+						.write()
+						.then(function(newUser){
+							var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
+							var output = {
+								name: newUser.name,
+								secondname: newUser.secondname,
+								age: newUser.age,
+								gender: newUser.gender,
+								groupid: group.name,
+								email: newUser.email,
+								login: newUser.login,
+								// pwd: newUser.pwd,
+								role: newUser.role,
+								created: newUser.created,
+								active: newUser.active
+							};
+							res.status(200).json(output);
+						})
+						.catch(err => res.status(400).json({message: "failed to add"}))
+
+				} else {
+					res.status(400).json({message: "user exists"});
+				}
 			}
-		}
+		});
+
+		form.on('file', function(name, file) {
+			// console.log(name); // =ava
+			// console.log(file);
+			var temp_path = file.path;
+			var file_name = file.name;
+			var destDir = __dirname+'/../uploads';
+			fs.access(destDir, (err) => {
+				if(err) fs.mkdirSync(destDir);
+				copyFile(temp_path, (destDir+'/'+file_name));
+			});
+		});
+
+		// form.on('end', function() {
+		// 	/* Temporary location of our uploaded file */
+		// 	var temp_path = this.openedFiles[0].path;
+		// 	/* The file name of the uploaded file */
+		// 	var file_name = this.openedFiles[0].name;
+
+		// });
+
 	});
 
 	app.post('/addgroup', checkAuth, (req, res) => {
+		console.log(util.inspect(req.body, {showHidden: false, depth: 2}));
 		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
 			groupsdb.get('groups').push({
@@ -234,7 +302,7 @@ module.exports = function(app) {
 				groupid: parseInt(req.body.groupid),
 				email: req.body.email,
 				login: req.body.login,
-				pwd: req.body.pwd,
+				// pwd: req.body.pwd,
 				role: req.body.role,
 				//created: Date.now(),
 				active: true

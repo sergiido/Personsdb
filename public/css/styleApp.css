@@ -41,6 +41,7 @@ label {
 	font-weight: 100;
 }
 
+
 #appWrapper {
 
 }
@@ -69,6 +70,11 @@ label {
 #addPerson {
 	color: lightgrey;
 }
+#userava{
+	border: 1px dashed grey;
+	width: 100px;
+}
+
 #addGroup {
 	color: lightgrey;
 }
@@ -253,3 +259,24 @@ div.button:hover .customfont{
 	padding-left: 140px;
 }
 
+
+.file_upload {
+      overflow:hidden;
+      width: 100px;
+      height: 100px;
+      cursor:pointer;
+      /*border: 1px solid red;*/
+      /*background:url(../images/no_ava.png) no-repeat;*/
+      position: absolute;
+      top: 61px;
+    }
+.file_upload input[type=file] {
+      opacity:0;
+      filter:alpha(opacity:0);
+      font-size:199px;
+      cursor:pointer;
+      padding:0px;
+      margin:0px;
+      border:none;
+      /*margin-left:-450px;*/
+    }

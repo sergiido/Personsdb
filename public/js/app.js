@@ -2,9 +2,25 @@ window.onload = function(){
 
 }
 
+function readSingleFile() {
+	var image = document.querySelector('img');
+  	var file  = document.querySelector('input[type=file]').files[0];
+	// console.log(file.size);
+	var reader = new FileReader();
+	reader.onload = function() {
+		if (file.size < 100000) {
+			image.src = reader.result;
+		} else {
+			alert ("File size > 100Kb");
+		}
+	};
+	reader.readAsDataURL(file);
+}
+
 function showAddPersonPop() {
 	var personmodal = document.getElementById('personpopup');
 	document.forms.addperson.reset();
+	document.querySelector('img').src = "images/no_ava.png"
 	personmodal.style.display = "block";
 	var personPopCloseBtn = personmodal.getElementsByClassName("close")[0];
 	personPopCloseBtn.onclick = function() {
@@ -27,27 +43,30 @@ function addPerson(){
 	// for (var pair of formData.entries()){
 	// 	console.log(pair[0]+ ', '+ pair[1]);
 	// }
+	console.log('ava:' + formData.get('ava'));
 	var reqDataObj = {
 		method: "POST",
 		uri: "/user/add",
-		objData: {name: formData.get('name'),
+		/*objData: {name: formData.get('name'),
 			secondname: formData.get('secondname'),
-			age: formData.get('age'),
-			gender: formData.get('gender'),
-			groupid: formData.get('group'),
-			email: formData.get('email'),
-			login: formData.get('login'),
-			pwd: formData.get('pwd'),
-			roles: formData.get('roles')
-		},
+			age:        formData.get('age'),
+			gender:     formData.get('gender'),
+			groupid:    formData.get('groupid'),
+			email:      formData.get('email'),
+			login:      formData.get('login'),
+			pwd:        formData.get('pwd'),
+			roles:      formData.get('roles')
+		},*/
+		objData: formData,
 		action: "Add"
 	};
-	sendAjax(reqDataObj, function(res){
+	sendFormData(reqDataObj, function(res){
 	    document.getElementById('personpopup').style.display = "none";
 		// console.log("res: " + res);
 		addRow('userTable', res);
 	});
 }
+
 
 function showUpdatePersonPop(updateBtn) {
 	var personUpdatemodal = document.getElementById('personupdatepopup');
@@ -67,7 +86,7 @@ function showUpdatePersonPop(updateBtn) {
 	personUpdatemodal.querySelector('select[name="gender"]').value = JSON.parse(personRow.dataset.userdata).gender;
 	groups.forEach(function(group){
 		if (group.id == JSON.parse(personRow.dataset.userdata).groupid) {
-			personUpdatemodal.querySelector('select[name="group"]').value = group.id;
+			personUpdatemodal.querySelector('select[name="groupid"]').value = group.id;
 		}
 	});
 	personUpdatemodal.querySelector('input[name="email"]').value = JSON.parse(personRow.dataset.userdata).email;
@@ -87,10 +106,10 @@ function updatePerson(){
 			secondname: formData.get('secondname'),
 			age: formData.get('age'),
 			gender: formData.get('gender'),
-			groupid: formData.get('group'),
+			groupid: formData.get('groupid'),
 			email: formData.get('email'),
 			login: formData.get('login'),
-			pwd: formData.get('pwd'),
+			// pwd: formData.get('pwd'),
 			role: formData.get('roles')
 		},
 		action: "Update"
@@ -164,14 +183,34 @@ function addGroup(){
 }
 
 
+function sendFormData(reqDataObj, callback) {
+	$.ajax({
+		type: reqDataObj.method,
+		url: reqDataObj.uri,
+		data: (reqDataObj.objData) || null,
+		processData: false, //prevent jQuery from automatically transforming the data into a query
+		contentType: false,
+		success: function(res) {
+			callback (res);
+			$.notify(reqDataObj.action + " success", {
+				className: 'success',
+  				globalPosition: 'top center'});
+		},
+		error: function(res) {
+			console.log(res);
+			$.notify(reqDataObj.action  + " error: " + JSON.parse(res).message, {
+				className: "warn",
+  				globalPosition: 'top center'});
+		}
+	});
+}
+
+
 function sendAjax(reqDataObj, callback) {
 	$.ajax({
 		type: reqDataObj.method,
 		url: reqDataObj.uri,
-		data: reqDataObj.objData || null,
-		// processData: false,
-		// contentType: false,
-		// dataType: "json",
+		data: (reqDataObj.objData) || null,
 		success: function(res) {
 			callback (res);
 			$.notify(reqDataObj.action + " success", {
@@ -196,7 +235,8 @@ function addRow(tableName, res) {
 	row.insertCell(1).innerHTML = res.name;
 	row.insertCell(2).innerHTML = res.secondname;
 	row.insertCell(3).innerHTML = res.age;
-	if (res.gender == null) res.gender = "-";
+	// console.log(res.gender);
+	if (res.gender == 'empty') res.gender = "-";
 	row.insertCell(4).innerHTML = res.gender;
 	row.insertCell(5).innerHTML = res.groupid;
 	row.insertCell(6).innerHTML = res.email.substr(0, res.email.indexOf("@")+1);
@@ -242,7 +282,7 @@ function getPersonMarks(userId) {
 
 
 function getGroupMarks() {
-	var groupSelect = document.getElementsByName("group")[2];
+	var groupSelect = document.getElementsByName("groupid")[2];
 	var value = groupSelect.value;
 	var reqDataObj = {
 		method: "GET",
@@ -273,7 +313,7 @@ function getGroupMarks() {
 			row.insertCell(7).innerHTML = '<div>'+ res[i].cw1 +'</div>';
 			if (res[i].cw2 == null) res[i].cw2=0
 			row.insertCell(8).innerHTML = '<div>'+ res[i].cw2 +'</div>';
-			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: orange"> &#xe804; </button>';
+			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: green;"> &#xf14a;</button>';
 			row.insertCell(9).innerHTML = updateBtn;
 		}
 	});

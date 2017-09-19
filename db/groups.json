@@ -23,6 +23,12 @@
       "name": "group 4",
       "created": 1499967725847,
       "active": true
+    },
+    {
+      "id": 1505058341819,
+      "name": "test",
+      "created": 1505058341819,
+      "active": true
     }
   ]
 }

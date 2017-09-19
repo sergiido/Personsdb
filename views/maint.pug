@@ -24,6 +24,11 @@ h3.tabName Maintenance
       h3.form-signin-heading.customfont &#xf2bb; Add person
       form(name="addperson" onsubmit="event.preventDefault(); addPerson();")
         div
+          img#userava(src="images/no_ava.png" alt="avatar")
+          div.file_upload
+            //- button(type="button") Select ava
+            input(type="file" id="file-input" name="ava" onchange="readSingleFile()")
+        div
           input(name="name", type="text", placeholder="name", size="10", required="", autofocus="")
           input(name="secondname", type="text", placeholder="secondname", size="12", required="")
         div
@@ -32,7 +37,7 @@ h3.tabName Maintenance
             option(value="empty" selected)
             option.customfont.male(value="male") &#xf183;
             option.customfont.female(value="female") &#xf182;
-          select#groupselect(name="group", style="width: 7em")
+          select#groupselect(name="groupid", style="width: 7em")
             - for (var i = 0; i < groups.length; i++)
               option(value=groups[i].id) #{groups[i].name}
         div
@@ -66,7 +71,7 @@ h3.tabName Maintenance
             option(value="empty" selected)
             option.customfont.male(value="male") &#xf183;
             option.customfont.female(value="female") &#xf182;
-          select#groupselect(name="group", style="width:7em")
+          select#groupselect(name="groupid", style="width:7em")
             - for (var i = 0; i < groups.length; i++)
               option(value=groups[i].id) #{groups[i].name}
         div
