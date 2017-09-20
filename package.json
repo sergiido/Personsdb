@@ -2,6 +2,10 @@
   "name": "students",
   "version": "3.2.1",
   "description": "Students db",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiido/personsdb.git"
+  },
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

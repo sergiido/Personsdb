@@ -113,7 +113,8 @@ module.exports = function(app) {
 				created: Date.now(),
 				active: false
 			}).last().write();
-			res.redirect('/login');
+			// res.redirect('/login');
+			res.render('login', {title: 'Login', message: 'Login', errMsg: 'Wait for your account activation'});
 		}
 	});
 
@@ -142,7 +143,7 @@ module.exports = function(app) {
 
 
 	function copyFile(src, dest) {
-		let readStream = fs.createReadStream(src);
+		var readStream = fs.createReadStream(src);
 		readStream.once('error', (err) => {
 			console.log(err);
 		});
@@ -250,7 +251,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/addgroup', checkAuth, (req, res) => {
-		console.log(util.inspect(req.body, {showHidden: false, depth: 2}));
+		// console.log(util.inspect(req.body, {showHidden: false, depth: 2}));
 		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
 			groupsdb.get('groups').push({
@@ -291,9 +292,9 @@ module.exports = function(app) {
 
 	app.put('/update/:id', checkAuth, function (req, res) {
 		// console.log(req.params.id);
-		// console.log(req.body._id);
+		// console.log(req.body.name);
 		const id = parseInt(req.params.id);
-		var record = usersdb.get('users').find({ id: id })
+		usersdb.get('users').find({ id: id })
 			.assign({
 				name: req.body.name,
 				secondname: req.body.secondname,
@@ -306,28 +307,26 @@ module.exports = function(app) {
 				role: req.body.role,
 				//created: Date.now(),
 				active: true
-			}).write();
-		// console.log(record);
-		if (record == 'undefined') {
-			res.status(400).json({message: "failed to update"});
-		} else {
-			var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
-			var output = {
-				id: record.id,
-				name: record.name,
-				secondname: record.secondname,
-				age: record.age,
-				gender: record.gender,
-				groupid: group.name,
-				email: record.email,
-				login: record.login,
-				// pwd: record.pwd,
-				role: record.role,
-				created: record.created,
-				active: true
-			};
-			res.status(200).json(output);
-		}
+			}).write()
+			.then(function(user){
+				var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
+				var output = {
+					id: user.id,
+					name: user.name,
+					secondname: user.secondname,
+					age: user.age,
+					gender: user.gender,
+					groupid: group.name,
+					email: user.email,
+					login: user.login,
+					// pwd: user.pwd,
+					role: user.role,
+					created: user.created,
+					active: true
+				};
+				res.status(200).json(output);
+			})
+			.catch(err => res.status(400).json({message: "failed to add"}));
 	});
 
 	function checkAuth(req, res, next) {

@@ -77,7 +77,7 @@ function showUpdatePersonPop(updateBtn) {
 		personUpdatemodal.style.display = "none";
 	}
 	var userId = updateBtn.dataset.userid;
-	// console.log(updateBtn.dataset);
+	console.log(updateBtn.dataset);
 	var personRow = document.getElementById(userId);
 	personUpdatemodal.querySelector('input[name="userid"]').value = userId;
 	personUpdatemodal.querySelector('input[name="name"]').value = JSON.parse(personRow.dataset.userdata).name;
@@ -97,8 +97,12 @@ function showUpdatePersonPop(updateBtn) {
 
 
 function updatePerson(){
+	var personUpdatemodal = document.getElementById('personupdatepopup');
+	personUpdatemodal.querySelector('select[name="groupid"]').disabled = false;
+
 	var formData = new FormData(document.forms.updateperson);
 	var userId = formData.get('userid');
+	// console.log(userId);
 	var reqDataObj = {
 		method: "PUT",
 		uri: "/update/" + userId,
@@ -116,7 +120,7 @@ function updatePerson(){
 	};
 	sendAjax(reqDataObj, function(res){
 		document.getElementById('personupdatepopup').style.display = "none";
-		console.log(res);
+		// console.log(res);
 		var personRow = document.getElementById(res.id);
 		personRow.childNodes[1].innerHTML = res.name;
 		personRow.childNodes[2].innerHTML = res.secondname;
@@ -207,6 +211,7 @@ function sendFormData(reqDataObj, callback) {
 
 
 function sendAjax(reqDataObj, callback) {
+	console.log(reqDataObj.objData);
 	$.ajax({
 		type: reqDataObj.method,
 		url: reqDataObj.uri,

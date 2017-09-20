@@ -71,21 +71,30 @@ h3.tabName Maintenance
             option(value="empty" selected)
             option.customfont.male(value="male") &#xf183;
             option.customfont.female(value="female") &#xf182;
-          select#groupselect(name="groupid", style="width:7em")
-            - for (var i = 0; i < groups.length; i++)
-              option(value=groups[i].id) #{groups[i].name}
+          if userDetails.role== 'user'
+            select#groupselect(name="groupid", style="width:7em", hidden="true")
+              - for (var i = 0; i < groups.length; i++)
+                option(value=groups[i].id) #{groups[i].name}
+          else
+            select#groupselect(name="groupid", style="width:7em")
+              - for (var i = 0; i < groups.length; i++)
+                option(value=groups[i].id) #{groups[i].name}
         div
           input(name="email", type="text", placeholder="e-mail", size="29")
         div
           input(name="login", type="text", placeholder="login", size="10", required="")
           input(name="pwd", type="password", placeholder="pwd", size="10")
-          select(name="roles")
-            option(value="user") user
-            option(value="editor") editor
-            if userDetails.role== 'admin'
-              option(value="admin") admin
-          input(type="checkbox" id="status_chb" name="status" value="Status" checked)
-          label(for="status_chb") Active
+          if userDetails.role== 'user'
+            select(name="roles", readonly="readonly")
+              option(value="user") user
+          else
+            select(name="roles")
+              option(value="user") user
+              option(value="editor") editor
+              if userDetails.role== 'admin'
+                option(value="admin") admin
+        input(type="checkbox" id="status_chb" name="status" value="Status" checked)
+        label(for="status_chb") Active
         div(style="text-align: center;margin-right: 30px;")
           button.btn.btn-primary.customfont(type="submit") &#xe80d; Update
 
