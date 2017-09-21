@@ -40,9 +40,9 @@ function showAddGroupPop() {
 
 function addPerson(){
 	var formData = new FormData(document.forms.addperson);
-	// for (var pair of formData.entries()){
-	// 	console.log(pair[0]+ ', '+ pair[1]);
-	// }
+	for (var pair of formData.entries()){
+		console.log(pair[0]+ ', '+ pair[1]);
+	}
 	console.log('ava:' + formData.get('ava'));
 	var reqDataObj = {
 		method: "POST",

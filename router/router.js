@@ -148,7 +148,7 @@ module.exports = function(app) {
 			console.log(err);
 		});
 		readStream.once('end', () => {
-			console.log('---done copying---');
+			// console.log('---done copying---');
 			// delete the file
 			fs.unlink(src, function(err){
 				if(err) return console.log(err);
@@ -165,7 +165,7 @@ module.exports = function(app) {
 		// output the headers
 		// console.log(req.headers);
 
-		 /*// capture the encoded form data
+		/* // capture the encoded form data
 		req.on('data', (data) => {
 			console.log(data.toString());
 		});
@@ -221,23 +221,32 @@ module.exports = function(app) {
 							res.status(200).json(output);
 						})
 						.catch(err => res.status(400).json({message: "failed to add"}))
-
 				} else {
 					res.status(400).json({message: "user exists"});
 				}
 			}
+
 		});
 
 		form.on('file', function(name, file) {
 			// console.log(name); // =ava
 			// console.log(file);
 			var temp_path = file.path;
-			var file_name = file.name;
-			var destDir = __dirname+'/../uploads';
-			fs.access(destDir, (err) => {
-				if(err) fs.mkdirSync(destDir);
-				copyFile(temp_path, (destDir+'/'+file_name));
-			});
+			var file_name = file.name;			
+			if (file.size != 0) {
+				var destDir = __dirname+'/../uploads';
+				fs.access(destDir, (err) => {
+					if(err) fs.mkdirSync(destDir);
+					copyFile(temp_path, (destDir+'/'+file_name));
+				});
+			} else {
+				// delete the fsource ile
+				console.log(temp_path);
+				fs.unlink(temp_path, function(err){
+					if(err) return console.log(err);
+					console.log(temp_path + ' deleted successfully');
+				});				
+			}
 		});
 
 		// form.on('end', function() {
@@ -245,7 +254,6 @@ module.exports = function(app) {
 		// 	var temp_path = this.openedFiles[0].path;
 		// 	/* The file name of the uploaded file */
 		// 	var file_name = this.openedFiles[0].name;
-
 		// });
 
 	});
