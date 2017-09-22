@@ -70,9 +70,11 @@ label {
 #addPerson {
 	color: lightgrey;
 }
-#userava{
+
+#userava, #useravaupdate {
 	border: 1px dashed grey;
-	width: 100px;
+	width: 200px;
+	height: 200px;
 }
 
 #addGroup {
@@ -262,21 +264,23 @@ div.button:hover .customfont{
 
 .file_upload {
       overflow:hidden;
-      width: 100px;
-      height: 100px;
-      cursor:pointer;
+      width: 180px;
+      height: 180px;
+      cursor: pointer;
       /*border: 1px solid red;*/
       /*background:url(../images/no_ava.png) no-repeat;*/
       position: absolute;
       top: 61px;
     }
 .file_upload input[type=file] {
-      opacity:0;
-      filter:alpha(opacity:0);
+      opacity: 0;
+      width: 180px;
+      height: 180px;
+      filter: alpha(opacity:0);
       font-size:199px;
-      cursor:pointer;
-      padding:0px;
-      margin:0px;
-      border:none;
+      cursor: pointer;
+      padding: 0px;
+      margin: 0px;
+      border: none;
       /*margin-left:-450px;*/
     }

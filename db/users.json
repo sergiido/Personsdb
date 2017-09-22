@@ -11,6 +11,7 @@
       "login": "sergii",
       "pwd": "123",
       "role": "admin",
+      "ava": "ava9.gif",
       "created": 1497807271097,
       "active": true
     },
@@ -24,6 +25,7 @@
       "login": "test",
       "pwd": "test",
       "role": "user",
+      "ava": "ava3.jpeg",
       "created": 1498846087527,
       "active": true,
       "email": "tester@mail.ua"
@@ -38,6 +40,7 @@
       "login": "editor",
       "pwd": "123",
       "role": "editor",
+      "ava": "ava2.jpg",
       "created": 1498399271406,
       "active": true,
       "email": "editor@mail.ua"
@@ -52,6 +55,7 @@
       "login": "guest",
       "pwd": "guest",
       "role": "user",
+      "ava": "ava4.jpg",
       "created": 1498498445099,
       "active": false
     },
@@ -66,6 +70,7 @@
       "login": "usern1",
       "pwd": "123",
       "role": "user",
+      "ava": "ava5.jpg",
       "created": 1500191478185,
       "active": true
     },
@@ -80,6 +85,7 @@
       "login": "usern2",
       "pwd": "11",
       "role": "editor",
+      "ava": "ava6.jpg",
       "created": 1500196552563,
       "active": true
     },
@@ -94,6 +100,7 @@
       "login": "usern3",
       "pwd": "rger",
       "role": "user",
+      "ava": "ava7.jpeg",
       "created": 1500671207224,
       "active": true
     },
@@ -108,6 +115,7 @@
       "login": "usern4",
       "pwd": "asdf1",
       "role": "user",
+      "ava": "ava8.jpeg",
       "created": 1500707466297,
       "active": true
     },
@@ -117,26 +125,43 @@
       "secondname": "Usersn5",
       "age": "33",
       "gender": "male",
-      "groupid": 3,
+      "groupid": 1,
       "email": "usersn5@mail.ua",
       "login": "usern5",
       "pwd": "fghfh",
       "role": "user",
+      "ava": "ava1.gif",
       "created": 1500712555842,
       "active": true
     },
     {
-      "id": 1505987476788,
-      "name": "n1",
-      "secondname": "s1",
-      "age": "33",
+      "id": 1506073878384,
+      "name": "Usern6",
+      "secondname": "Usersn6",
+      "age": "23",
       "gender": "female",
-      "groupid": 1505058341819,
-      "email": "e1@mail.ua",
-      "login": "n1",
-      "pwd": "222",
+      "groupid": 1499967725847,
+      "email": "usersn6@mail.ua",
+      "login": "usern6",
+      "pwd": "123",
       "role": "user",
-      "created": 1505987476788,
+      "ava": "ava10.jpg",
+      "created": 1506073878384,
+      "active": true
+    },
+    {
+      "id": 1506074412406,
+      "name": "Usern7",
+      "secondname": "Usersn7",
+      "age": "24",
+      "gender": "female",
+      "groupid": 1499967725847,
+      "email": "usersn7@mail.ua",
+      "login": "usern7",
+      "pwd": "45",
+      "role": "user",
+      "ava": "ava11.gif",
+      "created": 1506074412406,
       "active": true
     }
   ]

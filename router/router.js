@@ -179,8 +179,8 @@ module.exports = function(app) {
 		form.uploadDir = __dirname+'/../tempuploads';
 		form.keepExtensions = true;
 
-		form.parse(req, function(err, fields, files) {
-			// console.log('Got files:', files);
+		form.parse(req, function(err, fields, file) {
+			// console.log('Got file:', file.ava.name);
 			// console.log('Got a field: groupid=', fields.groupid);
 
 			const allowedUsers = ['admin', 'editor'];
@@ -198,6 +198,7 @@ module.exports = function(app) {
 						login: fields.login,
 						pwd: fields.pwd,
 						role: fields.roles,
+						ava: file.ava.name,
 						created: Date.now(),
 						active: true
 					}).last()
@@ -234,7 +235,7 @@ module.exports = function(app) {
 			var temp_path = file.path;
 			var file_name = file.name;			
 			if (file.size != 0) {
-				var destDir = __dirname+'/../uploads';
+				var destDir = __dirname+'/../public/uploads';
 				fs.access(destDir, (err) => {
 					if(err) fs.mkdirSync(destDir);
 					copyFile(temp_path, (destDir+'/'+file_name));
@@ -257,6 +258,32 @@ module.exports = function(app) {
 		// });
 
 	});
+
+	app.get('/user/:id', checkAuth, function(req, res) {
+	 	const id = parseInt(req.params.id);
+	 	var user = usersdb.get('users').find({ id: id }).value();
+	 	// console.log(user);
+		if (user == 'undefined') {
+			res.status(400).json({message: "user is not found"});
+		} else {
+			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
+			obj = {
+				id: user.id,
+				name: user.name,
+				secondname: user.secondname,
+				age: user.age,
+				gender: user.gender,
+				groupid: group.name,
+				email: user.email,
+				login: user.login,
+				// pwd: user.pwd,
+				role: user.role,
+				ava: user.ava,
+				active: user.active
+			};
+			res.status(200).json(obj);
+		}
+	});	
 
 	app.post('/addgroup', checkAuth, (req, res) => {
 		// console.log(util.inspect(req.body, {showHidden: false, depth: 2}));

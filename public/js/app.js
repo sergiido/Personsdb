@@ -2,9 +2,9 @@ window.onload = function(){
 
 }
 
-function readSingleFile() {
-	var image = document.querySelector('img');
-  	var file  = document.querySelector('input[type=file]').files[0];
+function readSingleFile(imgId, fileInputId) {
+	var image = document.getElementById(imgId);
+  	var file  = document.getElementById(fileInputId).files[0];
 	// console.log(file.size);
 	var reader = new FileReader();
 	reader.onload = function() {
@@ -77,22 +77,35 @@ function showUpdatePersonPop(updateBtn) {
 		personUpdatemodal.style.display = "none";
 	}
 	var userId = updateBtn.dataset.userid;
-	console.log(updateBtn.dataset);
-	var personRow = document.getElementById(userId);
-	personUpdatemodal.querySelector('input[name="userid"]').value = userId;
-	personUpdatemodal.querySelector('input[name="name"]').value = JSON.parse(personRow.dataset.userdata).name;
-	personUpdatemodal.querySelector('input[name="secondname"]').value = JSON.parse(personRow.dataset.userdata).secondname;
-	personUpdatemodal.querySelector('input[name="age"]').value = JSON.parse(personRow.dataset.userdata).age;
-	personUpdatemodal.querySelector('select[name="gender"]').value = JSON.parse(personRow.dataset.userdata).gender;
-	groups.forEach(function(group){
-		if (group.id == JSON.parse(personRow.dataset.userdata).groupid) {
-			personUpdatemodal.querySelector('select[name="groupid"]').value = group.id;
+	// console.log(updateBtn.dataset);
+
+	var reqDataObj = {
+		method: "GET",
+		uri: "/user/" + userId,
+		action: "Get"
+	};
+	sendAjax(reqDataObj, function(res) {
+		personUpdatemodal.querySelector('input[name="userid"]').value = res.id;
+		personUpdatemodal.querySelector('input[name="name"]').value = res.name;
+		if (res.ava) {
+			document.getElementById('useravaupdate').src = 'uploads/'+ res.ava;
+		} else {
+			document.getElementById('useravaupdate').src = "images/no_ava.png";
 		}
+
+		personUpdatemodal.querySelector('input[name="secondname"]').value = res.secondname;
+		personUpdatemodal.querySelector('input[name="age"]').value = res.age;
+		personUpdatemodal.querySelector('select[name="gender"]').value = res.gender;
+		groups.forEach(function(group){
+			if (group.id == res.groupid) {
+				personUpdatemodal.querySelector('select[name="groupid"]').value = group.id;
+			}
+		});
+		personUpdatemodal.querySelector('input[name="email"]').value = res.email;
+		personUpdatemodal.querySelector('input[name="login"]').value = res.login;
+		personUpdatemodal.querySelector('input[name="pwd"]').value = res.pwd;
+		personUpdatemodal.querySelector('select[name="roles"]').value = res.role;		
 	});
-	personUpdatemodal.querySelector('input[name="email"]').value = JSON.parse(personRow.dataset.userdata).email;
-	personUpdatemodal.querySelector('input[name="login"]').value = JSON.parse(personRow.dataset.userdata).login;
-	// personUpdatemodal.querySelector('input[name="pwd"]').value = JSON.parse(personRow.dataset.userdata).pwd;
-	personUpdatemodal.querySelector('select[name="roles"]').value = JSON.parse(personRow.dataset.userdata).role;
 }
 
 
@@ -211,7 +224,7 @@ function sendFormData(reqDataObj, callback) {
 
 
 function sendAjax(reqDataObj, callback) {
-	console.log(reqDataObj.objData);
+	// console.log(reqDataObj.objData);
 	$.ajax({
 		type: reqDataObj.method,
 		url: reqDataObj.uri,
