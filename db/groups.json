@@ -35,6 +35,12 @@
       "name": "test1",
       "created": 1505902183405,
       "active": true
+    },
+    {
+      "id": 1505932869545,
+      "name": "test2",
+      "created": 1505932869545,
+      "active": true
     }
   ]
 }

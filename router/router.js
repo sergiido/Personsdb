@@ -233,7 +233,7 @@ module.exports = function(app) {
 			// console.log(name); // =ava
 			// console.log(file);
 			var temp_path = file.path;
-			var file_name = file.name;			
+			var file_name = file.name;
 			if (file.size != 0) {
 				var destDir = __dirname+'/../public/uploads';
 				fs.access(destDir, (err) => {
@@ -246,7 +246,7 @@ module.exports = function(app) {
 				fs.unlink(temp_path, function(err){
 					if(err) return console.log(err);
 					console.log(temp_path + ' deleted successfully');
-				});				
+				});
 			}
 		});
 
@@ -266,24 +266,37 @@ module.exports = function(app) {
 		if (user == 'undefined') {
 			res.status(400).json({message: "user is not found"});
 		} else {
+// перебрать пришедший объект и удалить из него ключи с null или undefined
 			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
-			obj = {
-				id: user.id,
-				name: user.name,
-				secondname: user.secondname,
-				age: user.age,
-				gender: user.gender,
-				groupid: group.name,
-				email: user.email,
-				login: user.login,
-				// pwd: user.pwd,
-				role: user.role,
-				ava: user.ava,
-				active: user.active
-			};
+			// console.log ("group: ") + group;
+			if (group != null) {
+				obj = {
+					id: user.id,
+					name: user.name,
+					secondname: user.secondname,
+					age: user.age,
+					gender: user.gender,
+					groupid: group.name,
+					email: user.email,
+					login: user.login,
+					// pwd: user.pwd,
+					role: user.role,
+					ava: user.ava,
+					active: user.active
+				};
+			} else {
+				obj = {
+					id: user.id,
+					name: user.name,
+					secondname: user.secondname,
+					email: user.email,
+					login: user.login,
+					role: user.role
+				};
+			}
 			res.status(200).json(obj);
 		}
-	});	
+	});
 
 	app.post('/addgroup', checkAuth, (req, res) => {
 		// console.log(util.inspect(req.body, {showHidden: false, depth: 2}));
@@ -380,7 +393,9 @@ module.exports = function(app) {
 			res.status(400).json({message: "user not found"});
 		} else {
 			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
+			console.log(group);
 	 		var marks = marksdb.get('marks').value();
+	 		console.log(marks);
 			marks.forEach(function(mark){
 				if (user.id == mark.userid) {
 					obj = {
@@ -393,6 +408,17 @@ module.exports = function(app) {
 						cw1: mark.cw1.mark,
 						cw2: mark.cw2.mark
 					};
+				} else {
+					obj = {
+						id: null,
+						name: user.name,
+						secondname: user.secondname,
+						group: group.name,
+						hw1: 0,
+						hw2: 0,
+						cw1: 0,
+						cw2: 0
+					}
 				}
 			});
 			res.status(200).json(obj);

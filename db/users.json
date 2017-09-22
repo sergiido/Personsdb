@@ -118,51 +118,6 @@
       "ava": "ava8.jpeg",
       "created": 1500707466297,
       "active": true
-    },
-    {
-      "id": 1500712555842,
-      "name": "Usern5",
-      "secondname": "Usersn5",
-      "age": "33",
-      "gender": "male",
-      "groupid": 1,
-      "email": "usersn5@mail.ua",
-      "login": "usern5",
-      "pwd": "fghfh",
-      "role": "user",
-      "ava": "ava1.gif",
-      "created": 1500712555842,
-      "active": true
-    },
-    {
-      "id": 1506073878384,
-      "name": "Usern6",
-      "secondname": "Usersn6",
-      "age": "23",
-      "gender": "female",
-      "groupid": 1499967725847,
-      "email": "usersn6@mail.ua",
-      "login": "usern6",
-      "pwd": "123",
-      "role": "user",
-      "ava": "ava10.jpg",
-      "created": 1506073878384,
-      "active": true
-    },
-    {
-      "id": 1506074412406,
-      "name": "Usern7",
-      "secondname": "Usersn7",
-      "age": "24",
-      "gender": "female",
-      "groupid": 1499967725847,
-      "email": "usersn7@mail.ua",
-      "login": "usern7",
-      "pwd": "45",
-      "role": "user",
-      "ava": "ava11.gif",
-      "created": 1506074412406,
-      "active": true
     }
   ]
 }

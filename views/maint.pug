@@ -65,7 +65,7 @@ h3.tabName Maintenance
           img#useravaupdate(src="images/no_ava.png", alt="avatar")
           div.file_upload
             //- button(type="button") Select ava
-            //input(type="file", id="file-input2", name="ava", onchange="readSingleFile('useravaupdate', 'file-input2')")        
+            //input(type="file", id="file-input2", name="ava", onchange="readSingleFile('useravaupdate', 'file-input2')")
         div
           input(name="name", type="text", placeholder="name", size="10", required="", autofocus="")
           input(name="secondname", type="text", placeholder="secondname", size="12", required="")
@@ -137,7 +137,7 @@ h3.tabName Maintenance
       if userDetails.role!= 'user'
         - var i=1
         each user in users
-          tr(id= user.id) //, data-userdata= user)
+          tr(id= user.id)
             td #{i++}
             td= user.name
             td= user.secondname
