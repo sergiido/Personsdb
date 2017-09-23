@@ -103,21 +103,6 @@
       "ava": "ava7.jpeg",
       "created": 1500671207224,
       "active": true
-    },
-    {
-      "id": 1500707466297,
-      "name": "Usern4",
-      "secondname": "Usersn4",
-      "age": "53",
-      "gender": "male",
-      "groupid": 1499967725847,
-      "email": "usersn4@mail.ua",
-      "login": "usern4",
-      "pwd": "asdf1",
-      "role": "user",
-      "ava": "ava8.jpeg",
-      "created": 1500707466297,
-      "active": true
     }
   ]
 }

@@ -71,6 +71,7 @@ function addPerson(){
 function showUpdatePersonPop(updateBtn) {
 	var personUpdatemodal = document.getElementById('personupdatepopup');
 	document.forms.addperson.reset();
+	document.getElementById('useravaupdate').src = "images/no_ava.png";
 	personUpdatemodal.style.display = "block";
 	var personPopCloseBtn = personUpdatemodal.getElementsByClassName("close")[0];
 	personPopCloseBtn.onclick = function() {
@@ -89,22 +90,19 @@ function showUpdatePersonPop(updateBtn) {
 		personUpdatemodal.querySelector('input[name="name"]').value = res.name;
 		if (res.ava) {
 			document.getElementById('useravaupdate').src = 'uploads/'+ res.ava;
-		} else {
-			document.getElementById('useravaupdate').src = "images/no_ava.png";
 		}
-
 		personUpdatemodal.querySelector('input[name="secondname"]').value = res.secondname;
 		personUpdatemodal.querySelector('input[name="age"]').value = res.age;
 		personUpdatemodal.querySelector('select[name="gender"]').value = res.gender;
 		groups.forEach(function(group){
-			if (group.id == res.groupid) {
+			if (group.name == res.groupid) {
 				personUpdatemodal.querySelector('select[name="groupid"]').value = group.id;
 			}
 		});
 		personUpdatemodal.querySelector('input[name="email"]').value = res.email;
 		personUpdatemodal.querySelector('input[name="login"]').value = res.login;
 		personUpdatemodal.querySelector('input[name="pwd"]').value = res.pwd;
-		personUpdatemodal.querySelector('select[name="roles"]').value = res.role;		
+		personUpdatemodal.querySelector('select[name="roles"]').value = res.role;
 	});
 }
 
@@ -189,13 +187,14 @@ function addGroup(){
 	};
 	sendAjax(reqDataObj, function(res){
 	    document.getElementById('grouppopup').style.display = "none";
-	    // add created option to select group dropdown on User pop up
+	    // add created option to select group dropdown on AddUser pop up
 	    var select = document.getElementById("groupselect");
 	    var option = document.createElement('option');
 	    option.value = res.id;
 	    option.innerHTML = res.name;
 	    select.appendChild(option);
 		// console.log("res: " + res);
+// !!! add ... to UpdateUser pop up
 	});
 }
 
