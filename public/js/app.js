@@ -71,6 +71,7 @@ function addPerson(){
 function showUpdatePersonPop(updateBtn) {
 	var personUpdatemodal = document.getElementById('personupdatepopup');
 	document.forms.addperson.reset();
+	document.getElementById('useravaupdate').src = "images/loading.gif";
 	personUpdatemodal.style.display = "block";
 	var personPopCloseBtn = personUpdatemodal.getElementsByClassName("close")[0];
 	personPopCloseBtn.onclick = function() {
@@ -89,15 +90,13 @@ function showUpdatePersonPop(updateBtn) {
 		personUpdatemodal.querySelector('input[name="name"]').value = res.name;
 		if (res.ava) {
 			document.getElementById('useravaupdate').src = 'uploads/'+ res.ava;
-		} else {
-			document.getElementById('useravaupdate').src = "images/no_ava.png";
 		}
 
 		personUpdatemodal.querySelector('input[name="secondname"]').value = res.secondname;
 		personUpdatemodal.querySelector('input[name="age"]').value = res.age;
 		personUpdatemodal.querySelector('select[name="gender"]').value = res.gender;
 		groups.forEach(function(group){
-			if (group.id == res.groupid) {
+			if (group.name == res.groupid) {
 				personUpdatemodal.querySelector('select[name="groupid"]').value = group.id;
 			}
 		});

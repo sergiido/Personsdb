@@ -137,7 +137,7 @@ h3.tabName Maintenance
       if userDetails.role!= 'user'
         - var i=1
         each user in users
-          tr(id= user.id) //, data-userdata= user)
+          tr(id= user.id)
             td #{i++}
             td= user.name
             td= user.secondname
