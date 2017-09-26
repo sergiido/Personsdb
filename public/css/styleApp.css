@@ -197,7 +197,7 @@ div.button:hover .customfont{
 /* Modal Content/Box */
 .modalContent {
 	position: relative;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 10% auto; /* 15% from the top and centered */
     padding: 4px;
     width: 300px; /* Could be more or less, depending on screen size */
 	background-color: #8ba6af;
