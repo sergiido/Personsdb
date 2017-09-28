@@ -207,6 +207,7 @@ module.exports = function(app) {
 						.then(function(newUser){
 							var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
 							var output = {
+								id: newUser.id,
 								name: newUser.name,
 								secondname: newUser.secondname,
 								age: newUser.age,

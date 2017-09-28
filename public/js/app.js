@@ -17,16 +17,56 @@ function readSingleFile(imgId, fileInputId) {
 	reader.readAsDataURL(file);
 }
 
-function showAddPersonPop() {
+function showPersonPop(action) {
 	var personmodal = document.getElementById('personpopup');
-	document.forms.addperson.reset();
-	document.querySelector('img').src = "images/no_ava.png"
+	document.forms[0].reset();
+	// document.forms.addperson.reset();
+	document.querySelector('img').src = "images/no_ava.png";
+	if (action == 'add') {
+		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Add person";
+		document.querySelector('.form-app>form').setAttribute("name", "addperson");
+		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); addPerson();");		
+		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xf234; Add";		
+	} else {
+		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Update person";
+		document.querySelector('.form-app>form').setAttribute("name", "updateperson");
+		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); updatePerson();");		
+		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xe80d; Update";	
+		var userId = action; //updateBtn.dataset.userid;
+		var reqDataObj = {
+			method: "GET",
+			uri: "/user/" + userId,
+			action: "Get"
+		};
+		sendAjax(reqDataObj, function(res) {
+			personmodal.querySelector('input[name="userid"]').value = res.id;
+			personmodal.querySelector('input[name="name"]').value = res.name;
+			if (res.ava) {
+				document.getElementById('userava').src = 'uploads/'+ res.ava;
+			}
+
+			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
+			personmodal.querySelector('input[name="age"]').value = res.age;
+			personmodal.querySelector('select[name="gender"]').value = res.gender;
+			groups.forEach(function(group){
+				if (group.name == res.groupid) {
+					personmodal.querySelector('select[name="groupid"]').value = group.id;
+				}
+			});
+			personmodal.querySelector('input[name="email"]').value = res.email;
+			personmodal.querySelector('input[name="login"]').value = res.login;
+			personmodal.querySelector('input[name="pwd"]').value = res.pwd;
+			personmodal.querySelector('select[name="roles"]').value = res.role;		
+		});
+	}
+
 	personmodal.style.display = "block";
 	var personPopCloseBtn = personmodal.getElementsByClassName("close")[0];
 	personPopCloseBtn.onclick = function() {
 		personmodal.style.display = "none";
 	}
 }
+
 
 function showAddGroupPop() {
 	var groupmodal = document.getElementById('grouppopup');
@@ -40,10 +80,10 @@ function showAddGroupPop() {
 
 function addPerson(){
 	var formData = new FormData(document.forms.addperson);
-	for (var pair of formData.entries()){
-		console.log(pair[0]+ ', '+ pair[1]);
-	}
-	console.log('ava:' + formData.get('ava'));
+	// for (var pair of formData.entries()){
+	// 	console.log(pair[0]+ ', '+ pair[1]);
+	// }
+	// console.log('ava:' + formData.get('ava'));
 	var reqDataObj = {
 		method: "POST",
 		uri: "/user/add",
@@ -68,49 +108,9 @@ function addPerson(){
 }
 
 
-function showUpdatePersonPop(updateBtn) {
-	var personUpdatemodal = document.getElementById('personupdatepopup');
-	document.forms.addperson.reset();
-	document.getElementById('useravaupdate').src = "images/loading.gif";
-	personUpdatemodal.style.display = "block";
-	var personPopCloseBtn = personUpdatemodal.getElementsByClassName("close")[0];
-	personPopCloseBtn.onclick = function() {
-		personUpdatemodal.style.display = "none";
-	}
-	var userId = updateBtn.dataset.userid;
-	// console.log(updateBtn.dataset);
-
-	var reqDataObj = {
-		method: "GET",
-		uri: "/user/" + userId,
-		action: "Get"
-	};
-	sendAjax(reqDataObj, function(res) {
-		personUpdatemodal.querySelector('input[name="userid"]').value = res.id;
-		personUpdatemodal.querySelector('input[name="name"]').value = res.name;
-		if (res.ava) {
-			document.getElementById('useravaupdate').src = 'uploads/'+ res.ava;
-		}
-
-		personUpdatemodal.querySelector('input[name="secondname"]').value = res.secondname;
-		personUpdatemodal.querySelector('input[name="age"]').value = res.age;
-		personUpdatemodal.querySelector('select[name="gender"]').value = res.gender;
-		groups.forEach(function(group){
-			if (group.name == res.groupid) {
-				personUpdatemodal.querySelector('select[name="groupid"]').value = group.id;
-			}
-		});
-		personUpdatemodal.querySelector('input[name="email"]').value = res.email;
-		personUpdatemodal.querySelector('input[name="login"]').value = res.login;
-		personUpdatemodal.querySelector('input[name="pwd"]').value = res.pwd;
-		personUpdatemodal.querySelector('select[name="roles"]').value = res.role;		
-	});
-}
-
-
 function updatePerson(){
-	var personUpdatemodal = document.getElementById('personupdatepopup');
-	personUpdatemodal.querySelector('select[name="groupid"]').disabled = false;
+	var personmodal = document.getElementById('personpopup');
+	// personmodal.querySelector('select[name="groupid"]').disabled = false;
 
 	var formData = new FormData(document.forms.updateperson);
 	var userId = formData.get('userid');
@@ -131,7 +131,7 @@ function updatePerson(){
 		action: "Update"
 	};
 	sendAjax(reqDataObj, function(res){
-		document.getElementById('personupdatepopup').style.display = "none";
+		document.getElementById('personpopup').style.display = "none";
 		// console.log(res);
 		var personRow = document.getElementById(res.id);
 		personRow.childNodes[1].innerHTML = res.name;
@@ -245,16 +245,26 @@ function sendAjax(reqDataObj, callback) {
 
 
 function addRow(tableName, res) {
+	console.log("add row: " + res);
 	var userTable = document.getElementById(tableName);
 	var len = userTable.rows.length;
 	var row = userTable.insertRow(len);
+	row.id =res.id;
 	row.insertCell(0).innerHTML = len;
 	row.insertCell(1).innerHTML = res.name;
 	row.insertCell(2).innerHTML = res.secondname;
 	row.insertCell(3).innerHTML = res.age;
 	// console.log(res.gender);
-	if (res.gender == 'empty') res.gender = "-";
-	row.insertCell(4).innerHTML = res.gender;
+	if (res.gender == 'male') {
+		var gender = '&#xf183;';
+		var genderClass = 'customfont male';
+	} else if (res.gender == 'female') {
+		var gender = '&#xf182;';
+		var genderClass = 'customfont female';
+	} else {
+		gender = "-";
+	}
+	row.insertCell(4).innerHTML = '<span class="'+genderClass+'">'+gender+'</span>';
 	row.insertCell(5).innerHTML = res.groupid;
 	row.insertCell(6).innerHTML = res.email.substr(0, res.email.indexOf("@")+1);
 	// row.insertCell(6).title = res.email;
@@ -262,7 +272,7 @@ function addRow(tableName, res) {
 	row.insertCell(8).innerHTML = res.role;
 	row.insertCell(9).innerHTML = res.created;
 	row.insertCell(10).innerHTML = res.active;
-	var updateBtn = '<button class="customfont" onclick="showUpdatePersonPop(this)" data-userid=' +res.id+ ' style="color: orange"> &#xe804; </button>';
+	var updateBtn = '<button class="customfont" onclick="showPersonPop(' +res.id+ ')" data-userid=' +res.id+ ' style="color: orange"> &#xe804; </button>';
 	row.insertCell(11).innerHTML = updateBtn;
 }
 
