@@ -394,9 +394,9 @@ module.exports = function(app) {
 			res.status(400).json({message: "user not found"});
 		} else {
 			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
-			console.log(group);
+			// console.log(group);
 	 		var marks = marksdb.get('marks').value();
-	 		console.log(marks);
+	 		// console.log(marks);
 			marks.forEach(function(mark){
 				if (user.id == mark.userid) {
 					obj = {
