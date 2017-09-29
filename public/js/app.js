@@ -2,9 +2,9 @@ window.onload = function(){
 
 }
 
-function readSingleFile(imgId, fileInputId) {
-	var image = document.getElementById(imgId);
-  	var file  = document.getElementById(fileInputId).files[0];
+function readSingleFile(fileInput) {
+	var image = document.getElementById('userava');
+  	var file  = fileInput.files[0];
 	// console.log(file.size);
 	var reader = new FileReader();
 	reader.onload = function() {
@@ -245,7 +245,6 @@ function sendAjax(reqDataObj, callback) {
 
 
 function addRow(tableName, res) {
-	console.log("add row: " + res);
 	var userTable = document.getElementById(tableName);
 	var len = userTable.rows.length;
 	var row = userTable.insertRow(len);
@@ -255,16 +254,21 @@ function addRow(tableName, res) {
 	row.insertCell(2).innerHTML = res.secondname;
 	row.insertCell(3).innerHTML = res.age;
 	// console.log(res.gender);
+	var gender, genderClass;
 	if (res.gender == 'male') {
-		var gender = '&#xf183;';
-		var genderClass = 'customfont male';
+		gender = '&#xf183;';
+		genderClass = 'customfont male';
 	} else if (res.gender == 'female') {
-		var gender = '&#xf182;';
-		var genderClass = 'customfont female';
+		gender = '&#xf182;';
+		genderClass = 'customfont female';
 	} else {
 		gender = "-";
+		genderClass = 'center';
 	}
-	row.insertCell(4).innerHTML = '<span class="'+genderClass+'">'+gender+'</span>';
+	var cell4 = row.insertCell(4);
+	cell4.innerHTML = gender;
+	cell4.className = genderClass;
+
 	row.insertCell(5).innerHTML = res.groupid;
 	row.insertCell(6).innerHTML = res.email.substr(0, res.email.indexOf("@")+1);
 	// row.insertCell(6).title = res.email;
@@ -309,7 +313,7 @@ function getPersonMarks(userId) {
 
 
 function getGroupMarks() {
-	var groupSelect = document.getElementsByName("groupid")[2];
+	var groupSelect = document.querySelector("div#marks select");
 	var value = groupSelect.value;
 	var reqDataObj = {
 		method: "GET",
@@ -333,13 +337,13 @@ function getGroupMarks() {
 			row.insertCell(3).innerHTML = res[i].secondname;
 			row.insertCell(4).innerHTML = res[i].group;
 			if (res[i].hw1 == null) res[i].hw1=0
-			row.insertCell(5).innerHTML = '<div style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
+			row.insertCell(5).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
 			if (res[i].hw2 == null) res[i].hw2=0
-			row.insertCell(6).innerHTML = '<div style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
+			row.insertCell(6).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
 			if (res[i].cw1 == null) res[i].cw1=0
-			row.insertCell(7).innerHTML = '<div>'+ res[i].cw1 +'</div>';
+			row.insertCell(7).innerHTML = '<div class="center">'+ res[i].cw1 +'</div>';
 			if (res[i].cw2 == null) res[i].cw2=0
-			row.insertCell(8).innerHTML = '<div>'+ res[i].cw2 +'</div>';
+			row.insertCell(8).innerHTML = '<div class="center">'+ res[i].cw2 +'</div>';
 			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: green;"> &#xf14a;</button>';
 			row.insertCell(9).innerHTML = updateBtn;
 		}

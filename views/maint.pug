@@ -27,7 +27,7 @@ h3.tabName Maintenance
           img#userava(src="images/no_ava.png" alt="avatar")
           div.file_upload
             //- button(type="button") Select ava
-            input(type="file", id="file-input", name="ava", accept=".png, .jpg, .jpeg, .gif", onchange="readSingleFile('userava', 'file-input')")
+            input(type="file", id="file-input", name="ava", accept=".png, .jpg, .jpeg, .gif", onchange="readSingleFile(this)")
         div
           input(name="name", type="text", placeholder="name", size="10", required="", autofocus="")
           input(name="secondname", type="text", placeholder="secondname", size="12", required="")
@@ -99,13 +99,13 @@ h3.tabName Maintenance
             td #{i++}
             td= user.name
             td= user.secondname
-            td= user.age
+            td(class="center")= user.age
             if user.gender== 'male'
               td.customfont.male &#xf183;
             else if user.gender== 'female'
               td.customfont.female &#xf182;
             else
-              td(align="center") -
+              td(class="center") -
             - var val= '-'
             each group in groups
               if user.groupid== group.id

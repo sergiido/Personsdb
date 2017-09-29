@@ -101,7 +101,7 @@ label {
 }
 
 .form-app {
-  margin: 20px 0 10px 40px;
+	margin: 20px 0 10px 40px;
 }
 
 input, select{
@@ -110,47 +110,47 @@ input, select{
 	background-color: lightgrey;
 	margin-top: 5px;
 	margin-right: 4px;
-    border: none;
+	border: none;
 }
 
 select {
 	height: 22px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-    padding: 2px 16px 2px 2px;
-    vertical-align: top;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-indent: 1px;
+	text-overflow: '';
+	padding: 2px 16px 2px 2px;
+	vertical-align: top;
 	background-image:
-	    linear-gradient(45deg, transparent 50%, gray 50%),
-	    linear-gradient(135deg, gray 50%, transparent 50%),
-	    linear-gradient(to right, #ccc, #ccc);
-	  background-position:
-	    calc(100% - 5px) calc(1em - 14px),
-	    calc(100%) calc(1em - 14px),
-	    calc(100% - 2.5em) 1em;
-	  background-size:
-	    5px 5px,
-	    5px 5px,
-	    1px 1.5em;
-	  background-repeat: no-repeat;
+		linear-gradient(45deg, transparent 50%, gray 50%),
+		linear-gradient(135deg, gray 50%, transparent 50%),
+		linear-gradient(to right, #ccc, #ccc);
+	background-position:
+		calc(100% - 5px) calc(1em - 14px),
+		calc(100%) calc(1em - 14px),
+		calc(100% - 2.5em) 1em;
+	background-size:
+		5px 5px,
+		5px 5px,
+		1px 1.5em;
+	background-repeat: no-repeat;
 }
 select:focus {
-  background-image:
-    linear-gradient(45deg, royalblue 50%, transparent 50%),
-    linear-gradient(135deg, transparent 50%, royalblue 50%),
-    linear-gradient(to right, #ccc, #ccc);
-  background-position:
-	    calc(100%) calc(1em + 1px),
-	    calc(100% - 5px) calc(1em + 1px),
-	    calc(100% - 2.5em) 1em;
-  background-size:
-    5px 5px,
-    5px 5px,
-    1px 1.5em;
-  background-repeat: no-repeat;
-  border-color: royalblue;
-  outline: 0;
+	background-image:
+		linear-gradient(45deg, royalblue 50%, transparent 50%),
+		linear-gradient(135deg, transparent 50%, royalblue 50%),
+		linear-gradient(to right, #ccc, #ccc);
+	background-position:
+		calc(100%) calc(1em + 1px),
+		calc(100% - 5px) calc(1em + 1px),
+		calc(100% - 2.5em) 1em;
+	background-size:
+		5px 5px,
+		5px 5px,
+		1px 1.5em;
+	background-repeat: no-repeat;
+	border-color: royalblue;
+	outline: 0;
 }
 
 
@@ -189,10 +189,15 @@ div.button:hover .customfont{
 	font-size: 20px;
 }
 
-.logo{
+.logo {
 	margin-right: 10px;
 }
 
+.markincell {
+	width: 40px;
+	margin: 0 auto;
+	text-align: center;
+}
 
 /* Modal Content/Box */
 .modalContent {
@@ -245,6 +250,10 @@ div.button:hover .customfont{
 }
 .male {
 	color: #58ACFA;
+	text-align: center;
+}
+
+.center {
 	text-align: center;
 }
 

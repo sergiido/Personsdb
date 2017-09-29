@@ -105,18 +105,18 @@
       "active": true
     },
     {
-      "id": 1506599285616,
+      "id": 1506674574831,
       "name": "s",
       "secondname": "d",
-      "age": "",
-      "gender": "empty",
+      "age": "5",
+      "gender": "female",
       "groupid": 1506173887534,
       "email": "",
       "login": "sd",
-      "pwd": "",
-      "role": "user",
+      "pwd": "123",
+      "role": "admin",
       "ava": "ava.png",
-      "created": 1506599285616,
+      "created": 1506674574831,
       "active": true
     }
   ]
