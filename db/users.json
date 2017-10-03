@@ -103,21 +103,6 @@
       "ava": "ava7.jpeg",
       "created": 1500671207224,
       "active": true
-    },
-    {
-      "id": 1506935343529,
-      "name": "s",
-      "secondname": "d",
-      "age": "33",
-      "gender": "male",
-      "groupid": 1506173887534,
-      "email": "sergiido@example.com",
-      "login": "sd",
-      "pwd": "123",
-      "role": "user",
-      "ava": "",
-      "created": 1506935343529,
-      "active": true
-    }
+    }  
   ]
 }
