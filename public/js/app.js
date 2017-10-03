@@ -28,6 +28,7 @@ function showPersonPop(action) {
 		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); addPerson();");		
 		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xf234; Add";		
 	} else {
+		document.getElementById('spinner').classList.add("loading");
 		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Update person";
 		document.querySelector('.form-app>form').setAttribute("name", "updateperson");
 		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); updatePerson();");		
@@ -44,7 +45,7 @@ function showPersonPop(action) {
 			if (res.ava) {
 				document.getElementById('userava').src = 'uploads/'+ res.ava;
 			}
-
+			document.getElementById('spinner').classList.remove("loading");
 			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
 			personmodal.querySelector('input[name="age"]').value = res.age;
 			personmodal.querySelector('select[name="gender"]').value = res.gender;
@@ -213,7 +214,7 @@ function sendFormData(reqDataObj, callback) {
   				globalPosition: 'top center'});
 		},
 		error: function(res) {
-			console.log(res);
+			// console.log(res);
 			$.notify(reqDataObj.action  + " error: " + JSON.parse(res).message, {
 				className: "warn",
   				globalPosition: 'top center'});

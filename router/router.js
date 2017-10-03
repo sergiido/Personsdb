@@ -222,9 +222,9 @@ module.exports = function(app) {
 							};
 							res.status(200).json(output);
 						})
-						.catch(err => res.status(400).json({message: "failed to add"}))
+						.catch(err => res.status(200).json({message: "failed to add"}))
 				} else {
-					res.status(400).json({message: "user exists"});
+					res.status(200).json({message: "user exists"});
 				}
 			}
 

@@ -105,18 +105,18 @@
       "active": true
     },
     {
-      "id": 1506674574831,
+      "id": 1506935343529,
       "name": "s",
       "secondname": "d",
-      "age": "5",
-      "gender": "female",
+      "age": "33",
+      "gender": "male",
       "groupid": 1506173887534,
-      "email": "",
+      "email": "sergiido@example.com",
       "login": "sd",
       "pwd": "123",
-      "role": "admin",
-      "ava": "ava.png",
-      "created": 1506674574831,
+      "role": "user",
+      "ava": "",
+      "created": 1506935343529,
       "active": true
     }
   ]
