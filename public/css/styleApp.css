@@ -273,8 +273,8 @@ div.button:hover .customfont{
 
 .file_upload {
       overflow: hidden;
-      width: 180px;
-      height: 180px;
+      width: 200px;
+      height: 200px;
       cursor: pointer;
       /*border: 1px solid red;*/
       /*background:url(../images/no_ava.png) no-repeat;*/
@@ -286,7 +286,7 @@ div.button:hover .customfont{
       width: 200px;
       height: 200px;
       filter: alpha(opacity:0);
-      font-size:199px;
+      font-size: 199px;
       cursor: pointer;
       padding: 0px;
       margin: 0px;
@@ -295,72 +295,56 @@ div.button:hover .customfont{
   }
 
 
-.wrapper {
-		padding-left: 0em;
-		padding-right: 0em;
-	margin: auto;
-	display: block;
-	width: 100px;
-}
 
-.cssload-loader {
-		width: 90px;
-		height: 90px;
-		border-radius: 50%;
-		margin: 1em;
-		display: inline-block;
-		position: absolute;
-		top: 110px;
-		left: 90px;
-	background:rgb(71,127,196);
+.cssload-loader{
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	top: 155px;
+	left: calc(50% - 6px);
+		left: -webkit-calc(47% - 1px);
+		left: -moz-calc(47% - 1px);
+	border-radius: 12px;
+	background-color: rgb(230,237,38);
+	transform-origin:	50% 50%;
+		-webkit-transform-origin:	50% 50%;
+		-moz-transform-origin:	50% 50%;
+	animation: cssload-loader 1.15s ease-in-out infinite;
+		-webkit-animation: cssload-loader 1.15s ease-in-out infinite;
+		-moz-animation: cssload-loader 1.15s ease-in-out infinite;
 }
-.cssload-loader,
-.cssload-loader:before,
-.cssload-loader:after {
-		animation: 1.15s infinite ease-in-out;
-		-o-animation: 1.15s infinite ease-in-out;
-		-ms-animation: 1.15s infinite ease-in-out;
-		-webkit-animation: 1.15s infinite ease-in-out;
-		-moz-animation: 1.15s infinite ease-in-out;
+.cssload-loader:before{
+	content: "";
+	position: absolute;
+	background-color: rgb(53,209,30);
+	top: 0px;
+	left: -24px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
 }
-.cssload-loader:before,
-.cssload-loader:after {
-		width: 100%; 
-		height: 100%;
-		border-radius: 50%;
-		position: absolute;
-		top: 0;
-		left: 0;
+.cssload-loader:after{
+	content: "";
+	position: absolute;
+	background-color: rgb(32,153,245);
+	top: 0px;
+	left: 24px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
 }
-
-.cssload-loader { animation-name: cssload-loader;
-		-o-animation-name: cssload-loader;
-		-ms-animation-name: cssload-loader;
-		-webkit-animation-name: cssload-loader;
-		-moz-animation-name: cssload-loader; }
-
-
-@keyframes cssload-loader {
-		from { transform: scale(0); opacity: 1; }
-		to	 { transform: scale(1); opacity: 0; }
+@keyframes cssload-loader{
+		0%{transform:rotate(0deg);}
+		50%{transform:rotate(180deg);}
+		100%{transform:rotate(180deg);}
 }
-
-@-o-keyframes cssload-loader {
-		from { -o-transform: scale(0); opacity: 1; }
-		to	 { -o-transform: scale(1); opacity: 0; }
+@-webkit-keyframes cssload-loader{
+		0%{-webkit-transform:rotate(0deg);}
+		50%{-webkit-transform:rotate(180deg);}
+		100%{-webkit-transform:rotate(180deg);}
 }
-
-@-ms-keyframes cssload-loader {
-		from { -ms-transform: scale(0); opacity: 1; }
-		to	 { -ms-transform: scale(1); opacity: 0; }
-}
-
-@-webkit-keyframes cssload-loader {
-		from { -webkit-transform: scale(0); opacity: 1; }
-		to	 { -webkit-transform: scale(1); opacity: 0; }
-}
-
-@-moz-keyframes cssload-loader {
-		from { -moz-transform: scale(0); opacity: 1; }
-		to	 { -moz-transform: scale(1); opacity: 0; }
+@-moz-keyframes cssload-loader{
+		0%{-moz-transform:rotate(0deg);}
+		50%{-moz-transform:rotate(180deg);}
+		100%{-moz-transform:rotate(180deg);}
 }
