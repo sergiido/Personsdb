@@ -90,19 +90,19 @@
       "active": true
     },
     {
-      "id": 1500671207224,
-      "name": "Usern3",
-      "secondname": "Usersn3",
-      "age": "33",
-      "gender": "male",
-      "groupid": 1499967725847,
-      "email": "usersn3@mail.ua",
-      "login": "usern3",
-      "pwd": "rger",
+      "id": 1507205412768,
+      "name": "s",
+      "secondname": "d",
+      "age": "",
+      "gender": "empty",
+      "groupid": 1,
+      "email": "",
+      "login": "sd",
+      "pwd": "",
       "role": "user",
-      "ava": "ava7.jpeg",
-      "created": 1500671207224,
+      "ava": "",
+      "created": 1507205412769,
       "active": true
-    }  
+    }
   ]
 }

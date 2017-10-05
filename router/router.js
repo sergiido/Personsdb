@@ -110,6 +110,7 @@ module.exports = function(app) {
 				login: req.body.login,
 				pwd: req.body.pwd,
 				role: "user",
+				ava: null,
 				created: Date.now(),
 				active: false
 			}).last().write();
@@ -129,7 +130,6 @@ module.exports = function(app) {
 		res.render('app', {userDetails: req.session.user, users: users, groups: groups});
 	});
 
-
 	app.get('/json/maint', function(req, res) {
 		var data = usersdb.get('users').cloneDeep().value();
 		res.header('Access-Control-Allow-Origin', '*');
@@ -140,24 +140,6 @@ module.exports = function(app) {
 		});
 		res.send(JSON.stringify(data));
 	});
-
-
-	function copyFile(src, dest) {
-		var readStream = fs.createReadStream(src);
-		readStream.once('error', (err) => {
-			console.log(err);
-		});
-		readStream.once('end', () => {
-			// console.log('---done copying---');
-			// delete the file
-			fs.unlink(src, function(err){
-				if(err) return console.log(err);
-				console.log(src + ' deleted successfully');
-			});
-		});
-		readStream.pipe(fs.createWriteStream(dest));
-	}
-
 
 	app.post('/user/add', checkAuth, (req, res) => {
 		// console.log("add name: " + req.body.name);
@@ -175,14 +157,11 @@ module.exports = function(app) {
 		}); */
 
 		var form = new formidable.IncomingForm();
-
 		form.uploadDir = __dirname+'/../tempuploads';
 		form.keepExtensions = true;
-
 		form.parse(req, function(err, fields, file) {
 			// console.log('Got file:', file.ava.name);
 			// console.log('Got a field: groupid=', fields.groupid);
-
 			const allowedUsers = ['admin', 'editor'];
 			if (allowedUsers.indexOf(req.session.user.role) != -1) {
 				var userExists = usersdb.get('users').find({ login: fields.login }).value();
@@ -201,28 +180,27 @@ module.exports = function(app) {
 						ava: file.ava.name,
 						created: Date.now(),
 						active: true
-					}).last()
-						//.assign({ id: Date.now() })
-						.write()
-						.then(function(newUser){
-							var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
-							var output = {
-								id: newUser.id,
-								name: newUser.name,
-								secondname: newUser.secondname,
-								age: newUser.age,
-								gender: newUser.gender,
-								groupid: group.name,
-								email: newUser.email,
-								login: newUser.login,
-								// pwd: newUser.pwd,
-								role: newUser.role,
-								created: newUser.created,
-								active: newUser.active
-							};
-							res.status(200).json(output);
-						})
-						.catch(err => res.status(200).json({message: "failed to add"}))
+					}).last()//.assign({ id: Date.now() })
+					.write()
+					.then(function(newUser){
+						var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
+						var output = {
+							id: newUser.id,
+							name: newUser.name,
+							secondname: newUser.secondname,
+							age: newUser.age,
+							gender: newUser.gender,
+							groupid: group.name,
+							email: newUser.email,
+							login: newUser.login,
+							// pwd: newUser.pwd,
+							role: newUser.role,
+							created: newUser.created,
+							active: newUser.active
+						};
+						res.status(200).json(output);
+					})
+					.catch(err => res.status(200).json({message: "failed to add"}))
 				} else {
 					res.status(200).json({message: "user exists"});
 				}
@@ -265,7 +243,7 @@ module.exports = function(app) {
 	 	var user = usersdb.get('users').find({ id: id }).value();
 	 	// console.log(user);
 		if (user == 'undefined') {
-			res.status(400).json({message: "user is not found"});
+			res.status(200).json({message: "user is not found"});
 		} else {
 // перебрать пришедший объект и удалить из него ключи с null или undefined
 			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
@@ -280,7 +258,7 @@ module.exports = function(app) {
 					groupid: group.name,
 					email: user.email,
 					login: user.login,
-					// pwd: user.pwd,
+					pwd: user.pwd,
 					role: user.role,
 					ava: user.ava,
 					active: user.active
@@ -352,7 +330,7 @@ module.exports = function(app) {
 				groupid: parseInt(req.body.groupid),
 				email: req.body.email,
 				login: req.body.login,
-				// pwd: req.body.pwd,
+				pwd: req.body.pwd,
 				role: req.body.role,
 				//created: Date.now(),
 				active: true
@@ -375,7 +353,7 @@ module.exports = function(app) {
 				};
 				res.status(200).json(output);
 			})
-			.catch(err => res.status(400).json({message: "failed to add"}));
+			.catch(err => res.status(200).json({message: "failed to add"}));
 	});
 
 	function checkAuth(req, res, next) {
@@ -432,7 +410,7 @@ module.exports = function(app) {
 		var users = usersdb.get('users').filter({groupid: id}).value();
 		var marks = marksdb.get('marks').value();
 		if (users == 'undefined') {
-			res.status(400).json({message: "no users in group"});
+			res.status(200).json({message: "no users in group"});
 		} else {
 			var output = [];
 			users.forEach(function(user){
@@ -486,7 +464,7 @@ module.exports = function(app) {
 					mark: req.body.cw2}
 			}).write();
 		if (record == 'undefined') {
-			res.status(400).json({message: "failed to update"});
+			res.status(200).json({message: "failed to update"});
 		} else {
 			res.status(200).json(record);
 		}
@@ -512,11 +490,28 @@ module.exports = function(app) {
 					mark: req.body.cw2}
 			}).last().write();
 			if (record == 'undefined') {
-				res.status(400).json({message: "failed to add"});
+				res.status(200).json({message: "failed to add"});
 			} else {
 				res.status(200).json(record);
 			}
 		}
 	});
+
+
+	function copyFile(src, dest) {
+		var readStream = fs.createReadStream(src);
+		readStream.once('error', (err) => {
+			console.log(err);
+		});
+		readStream.once('end', () => {
+			// console.log('---done copying---');
+			// delete the file
+			fs.unlink(src, function(err){
+				if(err) return console.log(err);
+				console.log(src + ' deleted successfully');
+			});
+		});
+		readStream.pipe(fs.createWriteStream(dest));
+	}
 
 }

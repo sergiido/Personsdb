@@ -71,10 +71,15 @@ label {
 	color: lightgrey;
 }
 
-#userava, #useravaupdate {
-	border: 1px dashed grey;
+.form-app>form>div:nth-child(1) {
 	width: 200px;
 	height: 200px;
+	border: 1px solid white;
+}
+
+#userava {
+	width: 198px;
+	height: 198px;	
 }
 
 #addGroup {

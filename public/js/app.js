@@ -21,8 +21,9 @@ function showPersonPop(action) {
 	var personmodal = document.getElementById('personpopup');
 	document.forms[0].reset();
 	// document.forms.addperson.reset();
-	document.querySelector('img').src = "images/no_ava.png";
 	if (action == 'add') {
+		document.querySelector('img').src = "images/no_ava.png";
+		document.querySelector('.form-app fieldset').disabled = false;
 		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Add person";
 		document.querySelector('.form-app>form').setAttribute("name", "addperson");
 		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); addPerson();");		
@@ -42,10 +43,17 @@ function showPersonPop(action) {
 		sendAjax(reqDataObj, function(res) {
 			personmodal.querySelector('input[name="userid"]').value = res.id;
 			personmodal.querySelector('input[name="name"]').value = res.name;
-			if (res.ava) {
-				document.getElementById('userava').src = 'uploads/'+ res.ava;
+			var img = new Image();
+			img.onload = function () {
+				document.getElementById('userava').src = img.src;
+				document.getElementById('spinner').classList.remove("cssload-loader");
 			}
-			document.getElementById('spinner').classList.remove("cssload-loader");
+			if (res.ava) {
+				img.src = 'uploads/'+ res.ava;
+			} else {
+				img.src = "images/no_ava.png";
+			}
+			document.querySelector('.form-app fieldset').disabled = false;
 			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
 			personmodal.querySelector('input[name="age"]').value = res.age;
 			personmodal.querySelector('select[name="gender"]').value = res.gender;
@@ -336,17 +344,17 @@ function getGroupMarks() {
 			row.insertCell(1).innerHTML = res[i].id;
 			row.insertCell(2).innerHTML = res[i].name;
 			row.insertCell(3).innerHTML = res[i].secondname;
-			row.insertCell(4).innerHTML = res[i].group;
+			// row.insertCell(4).innerHTML = res[i].group;
 			if (res[i].hw1 == null) res[i].hw1=0
-			row.insertCell(5).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
+			row.insertCell(4).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
 			if (res[i].hw2 == null) res[i].hw2=0
-			row.insertCell(6).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
+			row.insertCell(5).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
 			if (res[i].cw1 == null) res[i].cw1=0
-			row.insertCell(7).innerHTML = '<div class="center">'+ res[i].cw1 +'</div>';
+			row.insertCell(6).innerHTML = '<div class="center">'+ res[i].cw1 +'</div>';
 			if (res[i].cw2 == null) res[i].cw2=0
-			row.insertCell(8).innerHTML = '<div class="center">'+ res[i].cw2 +'</div>';
+			row.insertCell(7).innerHTML = '<div class="center">'+ res[i].cw2 +'</div>';
 			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: green;"> &#xf14a;</button>';
-			row.insertCell(9).innerHTML = updateBtn;
+			row.insertCell(8).innerHTML = updateBtn;
 		}
 	});
 }

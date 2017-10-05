@@ -24,41 +24,42 @@ h3.tabName Maintenance
       h3.form-signin-heading.customfont
       form
         div
-          img#userava(src="images/no_ava.png" alt="avatar")
+          img#userava(src="images/no_ava.png" alt="User avatar")
           div.file_upload
             //- button(type="button") Select ava
             input(type="file", id="file-input", name="ava", accept=".png, .jpg, .jpeg, .gif", onchange="readSingleFile(this)")
           div#spinner
-        div
-          input(name="name", type="text", placeholder="name", size="10", required="", autofocus="")
-          input(name="secondname", type="text", placeholder="secondname", size="12", required="")
-          input(name="userid", type="text" hidden)
-        div
-          input(name="age", type="number", min="0" max="100", placeholder="age", style="width: 4em")
-          select.customfont(name="gender")
-            option(value="empty" selected)
-            option.customfont.male(value="male") &#xf183;
-            option.customfont.female(value="female") &#xf182;
-          if userDetails.role== 'user'
-            select#groupselect(name="groupid", style="width:7em", hidden="true")
-              - for (var i = 0; i < groups.length; i++)
-                option(value=groups[i].id) #{groups[i].name}
-          else
-            select#groupselect(name="groupid", style="width:7em")
-              - for (var i = 0; i < groups.length; i++)
-                option(value=groups[i].id) #{groups[i].name}
-        div
-          input(name="email", type="text", placeholder="e-mail")
-        div
-          input(name="login", type="text", placeholder="login", size="10", required="")
-          input(name="pwd", type="password", placeholder="pwd", size="10")
-          select(name="roles")
-            option(value="user") user
-            option(value="editor") editor
-            if userDetails.role== 'admin'
-              option(value="admin") admin
-          input(type="checkbox" id="status_chb" name="status" value="Status" checked)
-          label(for="status_chb") Active
+        fieldset(disabled="disabled")
+          div
+            input(name="name", type="text", placeholder="name", size="10", required="", autofocus="")
+            input(name="secondname", type="text", placeholder="secondname", size="12", required="")
+            input(name="userid", type="text" hidden)
+          div
+            input(name="age", type="number", min="0" max="100", placeholder="age", style="width: 4em")
+            select.customfont(name="gender")
+              option(value="empty" selected)
+              option.customfont.male(value="male") &#xf183;
+              option.customfont.female(value="female") &#xf182;
+            if userDetails.role== 'user'
+              select#groupselect(name="groupid", style="width:7em", hidden="true")
+                - for (var i = 0; i < groups.length; i++)
+                  option(value=groups[i].id) #{groups[i].name}
+            else
+              select#groupselect(name="groupid", style="width:7em")
+                - for (var i = 0; i < groups.length; i++)
+                  option(value=groups[i].id) #{groups[i].name}
+          div
+            input(name="email", type="text", placeholder="e-mail")
+          div
+            input(name="login", type="text", placeholder="login", size="10", required="")
+            input(name="pwd", type="password", placeholder="pwd", size="10")
+            select(name="roles")
+              option(value="user") user
+              option(value="editor") editor
+              if userDetails.role== 'admin'
+                option(value="admin") admin
+            input(type="checkbox" id="status_chb" name="status" value="Status" checked)
+            label(for="status_chb") Active
         div(style="text-align: center;margin-right: 30px;")
           button.btn.btn-primary.customfont(type="submit")
 
