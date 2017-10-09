@@ -1,4 +1,4 @@
-const util = require('util');
+// const util = require('util');
 
 const low = require('lowdb');
 // https://github.com/typicode/lowdb
@@ -15,16 +15,18 @@ const fs = require('fs');
 const bcrypt = require('bcrypt-nodejs');
 // const salt = 'personspwdhash';
 
-bcrypt.hash("testgroup", null, null, function(err, hash) {
+bcrypt.hash("123", null, null, function(err, hash) {
     // Store hash in your password DB
 	// $2a$10$38cofP8SNliuqwIXnZa9YelRfA23mGpnYwBCSWBJcjENIBmIHUaGW
     console.log("hash: " + hash);
 });
-bcrypt.compare("testgroup", "$2a$10$38cofP8SNliuqwIXnZa9YelRfA23mGpnYwBCSWBJcjENIBmIHUaGW", function(err, res) {
+bcrypt.compare("123", "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm", function(err, res) {
     // res == true
-    console.log("compare:" + res);
+    console.log("compare: 123 " + res);
 });
 
+
+console.log('router.js - started..........');
 
 module.exports = function(app) {
 
@@ -51,10 +53,10 @@ module.exports = function(app) {
 			role: 'admin',
 			id: 1
 		},
-		user:{
-			name: 'Usercheg',
+		editor:{
+			name: 'Editorcheg',
 			pwd: '321',
-			role: 'user',
+			role: 'editor',
 			id: 2
 		}
 	};
@@ -80,17 +82,19 @@ module.exports = function(app) {
 			res.redirect('/app');
 		} else {
 			var userLoginDb = usersdb.get('users').find({ login: req.body.login, active: true }).value();
-			if ((userLoginDb != null)&&(userLoginDb.pwd == req.body.pwd)) {
-				req.session.cookie.expires = false;
-				req.session.user = {
-					id:   userLoginDb.id,
-					name: userLoginDb.name +" "+ userLoginDb.secondname,
-					role: userLoginDb.role
-				};
-				res.redirect('/app');
-			} else {
-				res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
-			}
+			bcrypt.compare(req.body.pwd, userLoginDb.pwd, function(err, pwdComp) {
+				if ((userLoginDb != null)&&(pwdComp)) { //userLoginDb.pwd == req.body.pwd
+					req.session.cookie.expires = false;
+					req.session.user = {
+						id:   userLoginDb.id,
+						name: userLoginDb.name +" "+ userLoginDb.secondname,
+						role: userLoginDb.role
+					};
+					res.redirect('/app');
+				} else {
+					res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
+				}
+			});
 		}
 	});
 
@@ -99,21 +103,23 @@ module.exports = function(app) {
 		if (regLogin != null) {
 			res.render('register', {title: 'Register', message: 'Register', errMsg: 'login exists'});
 		} else {
-			usersdb.get('users').push({
-				id: Date.now(),
-				name: req.body.name,
-				secondname: req.body.secondname,
-				age: null,
-				gender: null,
-				groupid: null,
-				email: req.body.email,
-				login: req.body.login,
-				pwd: req.body.pwd,
-				role: "user",
-				ava: null,
-				created: Date.now(),
-				active: false
-			}).last().write();
+			bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
+				usersdb.get('users').push({
+					id: Date.now(),
+					name: req.body.name,
+					secondname: req.body.secondname,
+					age: null,
+					gender: null,
+					groupid: null,
+					email: req.body.email,
+					login: req.body.login,
+					pwd: hash,
+					role: "user",
+					ava: null,
+					created: Date.now(),
+					active: false
+				}).last().write();
+			});
 			// res.redirect('/login');
 			res.render('login', {title: 'Login', message: 'Login', errMsg: 'Wait for your account activation'});
 		}
@@ -166,46 +172,47 @@ module.exports = function(app) {
 			if (allowedUsers.indexOf(req.session.user.role) != -1) {
 				var userExists = usersdb.get('users').find({ login: fields.login }).value();
 				if (userExists == null) {
-					usersdb.get('users').push({
-						id: Date.now(),
-						name: fields.name,
-						secondname: fields.secondname,
-						age: fields.age,
-						gender: fields.gender,
-						groupid: parseInt(fields.groupid),
-						email: fields.email || "",
-						login: fields.login,
-						pwd: fields.pwd,
-						role: fields.roles,
-						ava: file.ava.name,
-						created: Date.now(),
-						active: true
-					}).last()//.assign({ id: Date.now() })
-					.write()
-					.then(function(newUser){
-						var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
-						var output = {
-							id: newUser.id,
-							name: newUser.name,
-							secondname: newUser.secondname,
-							age: newUser.age,
-							gender: newUser.gender,
-							groupid: group.name,
-							email: newUser.email,
-							login: newUser.login,
-							// pwd: newUser.pwd,
-							role: newUser.role,
-							created: newUser.created,
-							active: newUser.active
-						};
-						res.status(200).json(output);
-					})
-					.catch(err => res.status(200).json({message: "failed to add"}))
+					bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
+						usersdb.get('users').push({
+							id: Date.now(),
+							name: fields.name,
+							secondname: fields.secondname,
+							age: fields.age,
+							gender: fields.gender,
+							groupid: parseInt(fields.groupid),
+							email: fields.email || "",
+							login: fields.login,
+							pwd: hash, //fields.pwd,
+							role: fields.roles,
+							ava: file.ava.name,
+							created: Date.now(),
+							active: true
+						}).last()//.assign({ id: Date.now() })
+						.write()
+						.then(function(newUser){
+							var group = groupsdb.get('groups').find({ id: newUser.groupid }).value();
+							var output = {
+								id: newUser.id,
+								name: newUser.name,
+								secondname: newUser.secondname,
+								age: newUser.age,
+								gender: newUser.gender,
+								groupid: group.name,
+								email: newUser.email,
+								login: newUser.login,
+								// pwd: newUser.pwd,
+								role: newUser.role,
+								created: newUser.created,
+								active: newUser.active
+							};
+							res.status(200).json(output);
+						})
+						.catch(err => res.status(200).json({message: "failed to add"}));
+					});
 				} else {
 					res.status(200).json({message: "user exists"});
 				}
 			}
-
 		});
 
 		form.on('file', function(name, file) {
@@ -288,7 +295,7 @@ module.exports = function(app) {
 				active: true
 			}).last().write()
 			.then((group) => res.status(200).json(group) )
-			.catch(err => res.status(400).json({message: "failed to add"}))
+			.catch(err => res.status(200).json({message: "failed to add"}))
 		}
 	});
 

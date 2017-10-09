@@ -1,5 +1,6 @@
 window.onload = function(){
 
+
 }
 
 function readSingleFile(fileInput) {
@@ -310,18 +311,19 @@ function getPersonMarks(userId) {
 		row.insertCell(1).innerHTML = res.id;
 		row.insertCell(2).innerHTML = res.name;
 		row.insertCell(3).innerHTML = res.secondname;
-		row.insertCell(4).innerHTML = res.group;
-		row.insertCell(5).innerHTML = res.hw1;
-		row.insertCell(6).innerHTML = res.hw2;
-		row.insertCell(7).innerHTML = res.cw1;
-		row.insertCell(8).innerHTML = res.cw2;
-		row.insertCell(9).innerHTML = "no access";
+		// row.insertCell(4).innerHTML = res.group;
+		row.insertCell(4).innerHTML = res.hw1;
+		row.insertCell(5).innerHTML = res.hw2;
+		row.insertCell(6).innerHTML = res.cw1;
+		row.insertCell(7).innerHTML = res.cw2;
+		row.insertCell(8).innerHTML = "no access";
 		// console.log(res);
 	});
 }
 
 
 function getGroupMarks() {
+
 	var groupSelect = document.querySelector("div#marks select");
 	var value = groupSelect.value;
 	var reqDataObj = {
@@ -346,28 +348,35 @@ function getGroupMarks() {
 			row.insertCell(3).innerHTML = res[i].secondname;
 			// row.insertCell(4).innerHTML = res[i].group;
 			if (res[i].hw1 == null) res[i].hw1=0
-			row.insertCell(4).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
+			row.insertCell(4).innerHTML = '<div class="markincell" oninput="paintBtn(this)" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
 			if (res[i].hw2 == null) res[i].hw2=0
 			row.insertCell(5).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
 			if (res[i].cw1 == null) res[i].cw1=0
 			row.insertCell(6).innerHTML = '<div class="center">'+ res[i].cw1 +'</div>';
 			if (res[i].cw2 == null) res[i].cw2=0
 			row.insertCell(7).innerHTML = '<div class="center">'+ res[i].cw2 +'</div>';
-			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: green;"> &#xf14a;</button>';
+			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: #7FB3D5;"> &#xf14a;</button>';
 			row.insertCell(8).innerHTML = updateBtn;
 		}
 	});
 }
 
+function paintBtn(elem) {
+	elem.parentNode.parentNode.childNodes[8].childNodes[0].style.color= "#DC7633";
+}
+
 
 function updateMarks(updBtn){
+	updBtn.style.color= "#229954";
 	var row = updBtn.parentNode.parentNode;
 	var markId = updBtn.dataset.markid;
 	var userId = updBtn.dataset.userid;
-	var hw1 = row.childNodes[5].textContent;
-	var hw2 = row.childNodes[6].textContent;
-	var cw1 = row.childNodes[7].textContent;
-	var cw2 = row.childNodes[8].textContent;
+// numbers are related to columns
+	var hw1 = row.childNodes[4].textContent;
+	var hw2 = row.childNodes[5].textContent;
+	var cw1 = row.childNodes[6].textContent;
+	var cw2 = row.childNodes[7].textContent;
+	alert(hw1 + hw2 + cw1 + cw2);
 	var uri = null;
 	var method = null;
 	var action = null;

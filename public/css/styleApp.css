@@ -1,3 +1,4 @@
+
 html {
     min-height: 100%;
 }
@@ -22,6 +23,13 @@ th {
 	color: lightgrey;
 }
 
+th.narrow {
+	width: 90px;
+}
+th.normal {
+	width: 100px;
+}
+
 tbody tr:hover td{
 	background-color: rgba(255, 255, 255, 0.1);
 }
@@ -37,7 +45,7 @@ input[type="checkbox"] {
 	margin-right: 4px;
 }
 label {
-	color: grey;
+	/*color: grey; */
 	font-weight: 100;
 }
 
@@ -71,7 +79,7 @@ label {
 	color: lightgrey;
 }
 
-.form-app>form>div:nth-child(1) {
+#personpopup .form-app>form>div:nth-child(1) {
 	width: 200px;
 	height: 200px;
 	border: 1px solid white;
@@ -209,7 +217,7 @@ div.button:hover .customfont{
 	position: relative;
     margin: 10% auto; /* 15% from the top and centered */
     padding: 4px;
-    width: 300px; /* Could be more or less, depending on screen size */
+    width: 480px; /* Could be more or less, depending on screen size */
 	background-color: #8ba6af;
 	border: 1px solid rgba(255,255,255,0.5);
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
