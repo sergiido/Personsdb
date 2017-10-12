@@ -9,7 +9,7 @@ block head
   script(type="text/javascript", src="/js/bootstrap.min.js")
   script(type="text/javascript", src="/js/notify.js")
   script(type="text/javascript", src="/js/app.js")
-  script(type="text/javascript", src="/js/squeeze.js")
+  script(type="text/javascript", src="/js/quiz.js")
 
   script.
     var groups = !{JSON.stringify(groups)};
@@ -31,12 +31,12 @@ block content
       li
         a(data-toggle="tab", href="#marks") Marks
       li
-        a(data-toggle="tab", href="#squeeze") Squeeze
+        a(data-toggle="tab", href="#quiz") Quiz
 
     div.tab-content
       #maintenance.tab-pane.fade.in.active
         include maint
-      #squeeze.tab-pane.fade
-        include squeeze
+      #quiz.tab-pane.fade
+        include quiz
       #marks.tab-pane.fade
         include marks

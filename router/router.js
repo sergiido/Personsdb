@@ -1,5 +1,8 @@
 // const util = require('util');
 
+
+const quiz = require('./quests');
+
 const low = require('lowdb');
 // https://github.com/typicode/lowdb
 // https://github.com/typicode/lowdb/tree/master/examples
@@ -82,19 +85,24 @@ module.exports = function(app) {
 			res.redirect('/app');
 		} else {
 			var userLoginDb = usersdb.get('users').find({ login: req.body.login, active: true }).value();
-			bcrypt.compare(req.body.pwd, userLoginDb.pwd, function(err, pwdComp) {
-				if ((userLoginDb != null)&&(pwdComp)) { //userLoginDb.pwd == req.body.pwd
-					req.session.cookie.expires = false;
-					req.session.user = {
-						id:   userLoginDb.id,
-						name: userLoginDb.name +" "+ userLoginDb.secondname,
-						role: userLoginDb.role
-					};
-					res.redirect('/app');
+				if (userLoginDb != null) { //userLoginDb.pwd == req.body.pwd
+					bcrypt.compare(req.body.pwd, userLoginDb.pwd, function(err, pwdComp) {
+						if (pwdComp) {
+							req.session.cookie.expires = false;
+							req.session.user = {
+								id:   userLoginDb.id,
+								name: userLoginDb.name +" "+ userLoginDb.secondname,
+								role: userLoginDb.role
+							};
+							res.redirect('/app');
+						} else {
+							res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
+						}
+					});
 				} else {
 					res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
 				}
-			});
+			
 		}
 	});
 
@@ -378,7 +386,7 @@ module.exports = function(app) {
 		if (user == 'undefined') {
 			res.status(400).json({message: "user not found"});
 		} else {
-			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
+			//var group = groupsdb.get('groups').find({ id: user.groupid }).value();
 			// console.log(group);
 	 		var marks = marksdb.get('marks').value();
 	 		// console.log(marks);
@@ -388,7 +396,7 @@ module.exports = function(app) {
 						id: mark.id,
 						name: user.name,
 						secondname: user.secondname,
-						group: group.name,
+						//group: group.name,
 						hw1: mark.hw1.mark,
 						hw2: mark.hw2.mark,
 						cw1: mark.cw1.mark,
@@ -399,7 +407,7 @@ module.exports = function(app) {
 						id: null,
 						name: user.name,
 						secondname: user.secondname,
-						group: group.name,
+						//group: group.name,
 						hw1: 0,
 						hw2: 0,
 						cw1: 0,
@@ -420,26 +428,26 @@ module.exports = function(app) {
 			res.status(200).json({message: "no users in group"});
 		} else {
 			var output = [];
-			users.forEach(function(user){
+			users.forEach(function(user) {
 				var obj = {
 					id: null,
 					userid: user.id,
 					name: user.name,
 					secondname: user.secondname,
-					group: group.name,
+					//group: group.name,
 					hw1: null,
 					hw2: null,
 					cw1: null,
 					cw2: null
 				};
-				marks.forEach(function(mark){
+				marks.forEach(function(mark) {
 					if (user.id == mark.userid) {
 						obj = {
 							id: mark.id,
 							userid: user.id,
 							name: user.name,
 							secondname: user.secondname,
-							group: group.name,
+							//group: group.name,
 							hw1: mark.hw1.mark,
 							hw2: mark.hw2.mark,
 							cw1: mark.cw1.mark,
@@ -502,6 +510,15 @@ module.exports = function(app) {
 				res.status(200).json(record);
 			}
 		}
+	});
+
+
+	app.get('/quizstart', (req, res) => {
+		// console.log (req.session.user.id);
+		quiz.getQuestions(function(resp) {
+			console.log (resp);
+			res.status(200).json(resp);
+		});		
 	});
 
 

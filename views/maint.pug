@@ -32,7 +32,7 @@ h3.tabName Maintenance
                   //- button(type="button") Select ava
                   input(type="file", id="file-input", name="ava", accept=".png, .jpg, .jpeg, .gif", onchange="readSingleFile(this)")
                 div#spinner
-            td
+            td(style='padding-right:16px')
             td
               fieldset(disabled="disabled")
                 div
@@ -65,7 +65,7 @@ h3.tabName Maintenance
                       option(value="admin") admin
                 input(type="checkbox" id="status_chb" name="status" value="Status" checked)
                 label(for="status_chb") Active
-        div(style="text-align: center;margin-right: 30px;")
+        div(style="text-align: center;")
           button.btn.btn-primary.customfont(type="submit")
 
 #grouppopup.modal
