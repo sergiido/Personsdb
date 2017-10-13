@@ -524,6 +524,12 @@ module.exports = function(app) {
 	app.post('/getAnswers', (req, res) => {
 		// capture the encoded form data
 		console.log(req.body);
+		// console.log((req.body).a1);
+		quiz.checkAnswers(req.body, function(resp){
+			console.log(resp);
+			res.status(200).json({score: resp});
+		});
+
 	})
 
 
