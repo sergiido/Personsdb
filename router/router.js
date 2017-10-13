@@ -516,10 +516,15 @@ module.exports = function(app) {
 	app.get('/quizstart', (req, res) => {
 		// console.log (req.session.user.id);
 		quiz.getQuestions(function(resp) {
-			console.log (resp);
+			//console.log (resp);
 			res.status(200).json(resp);
 		});		
 	});
+
+	app.post('/getAnswers', (req, res) => {
+		// capture the encoded form data
+		console.log(req.body);
+	})
 
 
 	function copyFile(src, dest) {
