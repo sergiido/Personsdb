@@ -1,0 +1,15 @@
+h3.tabName Quiz
+.actionBand
+	div.button
+		a(href= '/logout' style="color: #FE2E2E")
+			span.customfont.fontSize2 &#xe805;
+			span Logout
+.tableWrapper
+	.btnContainer
+		button.btn.btn-large.btn-primary.btn-block(onclick="quizModule.startQuiz(this)" ) Start
+	#quizArea
+		#squeezeContainer(style="display:none")
+			button.btn.btn-large.btn-info.btn-block(onclick="quizModule.nextQuestion()" ) Next
+			div#qContainer
+
+			
