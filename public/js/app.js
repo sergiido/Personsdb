@@ -27,14 +27,14 @@ function showPersonPop(action) {
 		document.querySelector('.form-app fieldset').disabled = false;
 		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Add person";
 		document.querySelector('.form-app>form').setAttribute("name", "addperson");
-		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); addPerson();");		
-		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xf234; Add";		
+		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); addPerson();");
+		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xf234; Add";
 	} else {
 		document.getElementById('spinner').classList.add("cssload-loader");
 		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Update person";
 		document.querySelector('.form-app>form').setAttribute("name", "updateperson");
-		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); updatePerson();");		
-		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xe80d; Update";	
+		document.querySelector('.form-app>form').setAttribute("onsubmit", "event.preventDefault(); updatePerson();");
+		document.querySelector('.form-app>form>div>button[type="submit"]').innerHTML = "&#xe80d; Update";
 		var userId = action; //updateBtn.dataset.userid;
 		var reqDataObj = {
 			method: "GET",
@@ -66,7 +66,8 @@ function showPersonPop(action) {
 			personmodal.querySelector('input[name="email"]').value = res.email;
 			personmodal.querySelector('input[name="login"]').value = res.login;
 			personmodal.querySelector('input[name="pwd"]').value = res.pwd;
-			personmodal.querySelector('select[name="roles"]').value = res.role;		
+			personmodal.querySelector('select[name="roles"]').value = res.role;
+			personmodal.querySelector('label#quizLabel').innerHTML = res.quiz;
 		});
 	}
 
@@ -369,26 +370,25 @@ function paintBtn(elem) {
 function updateMarks(updBtn){
 	updBtn.style.color= "#229954";
 	var row = updBtn.parentNode.parentNode;
-	var markId = updBtn.dataset.markid;
+	// var markId = updBtn.dataset.markid;
 	var userId = updBtn.dataset.userid;
 // numbers are related to columns
 	var hw1 = row.childNodes[4].textContent;
 	var hw2 = row.childNodes[5].textContent;
-	var cw1 = row.childNodes[6].textContent;
+	// var cw1 = row.childNodes[6].textContent;
 	var cw2 = row.childNodes[7].textContent;
-	alert(hw1 + hw2 + cw1 + cw2);
 	var uri = null;
 	var method = null;
 	var action = null;
-	if (markId > 0) {
-		uri = "/mark/" + markId;
+	// if (markId > 0) {
+		uri = "/mark/" + userId;
 		method = "PUT";
 		action = "Update";
-	} else {
+	/*} else {
 		uri = "/mark";
 		method = "POST";
 		action = "Add";
-	}
+	}*/
 	var reqDataObj = {
 		method: method,
 		uri: uri,
@@ -396,7 +396,7 @@ function updateMarks(updBtn){
 			userid: userId,
 			hw1: hw1,
 			hw2: hw2,
-			cw1: cw1,
+			// cw1: cw1,
 			cw2: cw2
 		},
 		action: action

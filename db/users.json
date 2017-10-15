@@ -27,6 +27,7 @@
       "pwd": "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm",
       "role": "user",
       "ava": "ava3.jpeg",
+      "quiz": null,
       "created": 1498846087527,
       "active": true,
       "email": "tester@mail.ua"

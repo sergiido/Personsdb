@@ -79,7 +79,8 @@ module.exports = function(app) {
 			req.session.user = {
 				id:   authUserList[req.body.login].id,
 				name: authUserList[req.body.login].name,
-				role: authUserList[req.body.login].role
+				role: authUserList[req.body.login].role,
+				quiz: authUserList[req.body.login].quiz
 			};
 			res.redirect('/app');
 		} else {
@@ -278,7 +279,7 @@ module.exports = function(app) {
 					pwd: user.pwd,
 					role: user.role,
 					ava: user.ava,
-					quiz: null,
+					quiz: user.quiz,
 					active: user.active
 				};
 			} else {
@@ -466,60 +467,54 @@ module.exports = function(app) {
 		}
 	});
 
-
 	app.put('/mark/:id', checkAuth, function (req, res) {
 		const id = parseInt(req.params.id);
-		const record = marksdb.get('marks').find({ id: id })
-			.assign({
-				hw1: {
-					created: Date.now(),
-					mark: req.body.hw1},
-				hw2: {
-					created: Date.now(),
-					mark: req.body.hw2},
-				cw1: {
-					created: Date.now(),
-					mark: req.body.cw1},
-				cw2: {created: Date.now(),
-					mark: req.body.cw2}
-			}).write();
-		if (record == 'undefined') {
-			res.status(200).json({message: "failed to update"});
-		} else {
-			res.status(200).json(record);
-		}
-	});
-
-
-	app.post('/mark', checkAuth, (req, res) => {
 		const allowedUsers = ['admin', 'editor'];
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
-			const record = marksdb.get('marks').push({
-				id: Date.now(),
-				userid: req.body.userid,
-				hw1: {
-					created: Date.now(),
-					mark: req.body.hw1},
-				hw2: {
-					created: Date.now(),
-					mark: req.body.hw2},
-				cw1: {
-					created: Date.now(),
-					mark: req.body.cw1},
-				cw2: {created: Date.now(),
-					mark: req.body.cw2}
-			}).last().write();
-			if (record == 'undefined') {
-				res.status(200).json({message: "failed to add"});
+
+			var userMarks = marksdb.get('marks').find({ userid: id }).value();
+			console.log(userMarks);
+			if (!userMarks) {
+				marksdb.get('marks').push({
+					id: Date.now(),
+					userid: id,
+					hw1: {
+						created: Date.now(),
+						mark: req.body.hw1},
+					hw2: {
+						created: Date.now(),
+						mark: req.body.hw2},
+					cw1: {
+						created: Date.now(),
+						mark: "0"},
+					cw2: {
+						created: Date.now(),
+						mark: "0"}
+				}).last().write()
+				.then((record) => res.status(200).json(record) )
+				.catch(err => res.status(200).json({message: "failed to update"}));
 			} else {
-				res.status(200).json(record);
+				marksdb.get('marks').find({ userid: id }).assign({
+					hw1: {
+						created: Date.now(),
+						mark: req.body.hw1},
+					hw2: {
+						created: Date.now(),
+						mark: req.body.hw2}//,
+					// cw1: {
+					// 	created: Date.now(),
+					// 	mark: req.body.cw1},
+					// cw2: {
+					// 	created: Date.now(),
+					// 	mark: req.body.cw2}
+				}).write()
+				.then((record) => res.status(200).json(record) );
 			}
 		}
 	});
 
 
 	app.get('/quizstart', (req, res) => {
-		// console.log (req.session.user.id);
 		quiz.getQuestions(function(resp) {
 			//console.log (resp);
 			res.status(200).json(resp);
@@ -527,14 +522,18 @@ module.exports = function(app) {
 	});
 
 	app.post('/getAnswers', (req, res) => {
-		// capture the encoded form data
-		console.log(req.body);
+		// console.log(req.body);
 		// console.log((req.body).a1);
 		quiz.checkAnswers(req.body, function(resp){
-			console.log(resp);
-			res.status(200).json({score: resp});
+			// console.log(resp);
+			// console.log (req.session.user.id);
+			marksdb.get('marks').find({ userid: req.session.user.id }).assign({
+					cw1: {
+						created: Date.now(),
+						mark: Math.round(resp/10)}
+			}).write()
+			.then((record) => res.status(200).json({score: resp}) );
 		});
-
 	})
 
 

@@ -17,6 +17,12 @@
       "name": "group 3",
       "created": 1498598641165,
       "active": true
+    },
+    {
+      "id": 1508078870728,
+      "name": "group 4",
+      "created": 1508078870728,
+      "active": true
     }
   ]
 }

@@ -84,9 +84,17 @@ label {
 	border: 1px solid white;
 }
 
+#quizLabel{
+	margin-top: 8px;
+	background-color: goldenrod;
+	border-radius: 6px;
+	width: 22px;
+	font-size: 0.8em;
+}
+
 #userava {
 	width: 198px;
-	height: 198px;	
+	height: 198px;
 }
 
 #addGroup {
