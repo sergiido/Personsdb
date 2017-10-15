@@ -1,6 +1,5 @@
 // const util = require('util');
 
-
 const quiz = require('./quests');
 
 const low = require('lowdb');
@@ -20,7 +19,6 @@ const bcrypt = require('bcrypt-nodejs');
 
 bcrypt.hash("123", null, null, function(err, hash) {
     // Store hash in your password DB
-	// $2a$10$38cofP8SNliuqwIXnZa9YelRfA23mGpnYwBCSWBJcjENIBmIHUaGW
     console.log("hash: " + hash);
 });
 bcrypt.compare("123", "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm", function(err, res) {
@@ -29,7 +27,7 @@ bcrypt.compare("123", "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y
 });
 
 
-console.log('router.js - started..........');
+console.log('router.js - started ...');
 
 module.exports = function(app) {
 
@@ -54,6 +52,7 @@ module.exports = function(app) {
 			name: 'Admincheg',
 			pwd: '123',
 			role: 'admin',
+			quiz: 'html',
 			id: 1
 		},
 		editor:{
@@ -85,24 +84,24 @@ module.exports = function(app) {
 			res.redirect('/app');
 		} else {
 			var userLoginDb = usersdb.get('users').find({ login: req.body.login, active: true }).value();
-				if (userLoginDb != null) { //userLoginDb.pwd == req.body.pwd
-					bcrypt.compare(req.body.pwd, userLoginDb.pwd, function(err, pwdComp) {
-						if (pwdComp) {
-							req.session.cookie.expires = false;
-							req.session.user = {
-								id:   userLoginDb.id,
-								name: userLoginDb.name +" "+ userLoginDb.secondname,
-								role: userLoginDb.role
-							};
-							res.redirect('/app');
-						} else {
-							res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
-						}
-					});
-				} else {
-					res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
-				}
-			
+			if (userLoginDb != null) { //userLoginDb.pwd == req.body.pwd
+				bcrypt.compare(req.body.pwd, userLoginDb.pwd, function(err, pwdComp) {
+					if (pwdComp) {
+						req.session.cookie.expires = false;
+						req.session.user = {
+							id:   userLoginDb.id,
+							name: userLoginDb.name +" "+ userLoginDb.secondname,
+							role: userLoginDb.role,
+							quiz: userLoginDb.quiz
+						};
+						res.redirect('/app');
+					} else {
+						res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
+					}
+				});
+			} else {
+				res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
+			}
 		}
 	});
 
@@ -124,6 +123,7 @@ module.exports = function(app) {
 					pwd: hash,
 					role: "user",
 					ava: null,
+					quiz: null,
 					created: Date.now(),
 					active: false
 				}).last().write();
@@ -148,10 +148,10 @@ module.exports = function(app) {
 		var data = usersdb.get('users').cloneDeep().value();
 		res.header('Access-Control-Allow-Origin', '*');
 		// console.log (data.length);
-		data.forEach(function(obj){
-			delete obj.login; //remove login key
-			delete obj.pwd;   //remove pwd key
-		});
+		// data.forEach(function(obj){
+		// 	delete obj.login; //remove login key
+		// 	delete obj.pwd;   //remove pwd key
+		// });
 		res.send(JSON.stringify(data));
 	});
 
@@ -171,7 +171,7 @@ module.exports = function(app) {
 		}); */
 
 		var form = new formidable.IncomingForm();
-		form.uploadDir = __dirname+'/../tempuploads';
+		form.uploadDir = __dirname + '/../tempuploads';
 		form.keepExtensions = true;
 		form.parse(req, function(err, fields, file) {
 			// console.log('Got file:', file.ava.name);
@@ -180,7 +180,8 @@ module.exports = function(app) {
 			if (allowedUsers.indexOf(req.session.user.role) != -1) {
 				var userExists = usersdb.get('users').find({ login: fields.login }).value();
 				if (userExists == null) {
-					bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
+					bcrypt.hash(fields.pwd, null, null, function(err, hash) {
+						// console.log(fields.pwd + ": " + hash);
 						usersdb.get('users').push({
 							id: Date.now(),
 							name: fields.name,
@@ -193,6 +194,7 @@ module.exports = function(app) {
 							pwd: hash, //fields.pwd,
 							role: fields.roles,
 							ava: file.ava.name,
+							quiz: null,
 							created: Date.now(),
 							active: true
 						}).last()//.assign({ id: Date.now() })
@@ -276,6 +278,7 @@ module.exports = function(app) {
 					pwd: user.pwd,
 					role: user.role,
 					ava: user.ava,
+					quiz: null,
 					active: user.active
 				};
 			} else {
@@ -322,10 +325,11 @@ module.exports = function(app) {
 			// console.log ("delete is allowed");
 			const id = parseInt(req.params.id);
 			var result = usersdb.get('users').remove({ id }).write();
-// remove user's marks
 			if (result == 'undefined') {
-				res.status(400).json({ message: "failed to delete"});
+				res.status(200).json({ message: "failed to delete"});
 			} else {
+// remove user's marks if exist
+// marksdb.get('marks').remove({ userid: result }).write();
 				res.status(200).json(result);
 			}
 		}
@@ -345,9 +349,9 @@ module.exports = function(app) {
 				groupid: parseInt(req.body.groupid),
 				email: req.body.email,
 				login: req.body.login,
-				pwd: req.body.pwd,
+				// pwd: req.body.pwd,
 				role: req.body.role,
-				//created: Date.now(),
+				quiz: 'html',
 				active: true
 			}).write()
 			.then(function(user){
@@ -363,6 +367,7 @@ module.exports = function(app) {
 					login: user.login,
 					// pwd: user.pwd,
 					role: user.role,
+					quiz: 'html',
 					created: user.created,
 					active: true
 				};
@@ -518,7 +523,7 @@ module.exports = function(app) {
 		quiz.getQuestions(function(resp) {
 			//console.log (resp);
 			res.status(200).json(resp);
-		});		
+		});
 	});
 
 	app.post('/getAnswers', (req, res) => {

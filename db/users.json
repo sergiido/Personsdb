@@ -4,7 +4,7 @@
       "id": 1498307837744,
       "name": "Sergii",
       "secondname": "Johnson",
-      "age": 30,
+      "age": "30",
       "gender": "male",
       "groupid": 1,
       "email": "sergiij@mail.ua",
@@ -12,6 +12,7 @@
       "pwd": "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm",
       "role": "admin",
       "ava": "ava9.gif",
+      "quiz": "html",
       "created": 1497807271097,
       "active": true
     },
@@ -71,6 +72,7 @@
       "pwd": "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm",
       "role": "user",
       "ava": "ava5.jpg",
+      "quiz": null,
       "created": 1500191478185,
       "active": true
     },
@@ -87,6 +89,22 @@
       "role": "editor",
       "ava": "ava6.jpg",
       "created": 1500196552563,
+      "active": true
+    },
+    {
+      "id": 1508075139457,
+      "name": "Usern3",
+      "secondname": "Usersn3",
+      "age": "34",
+      "gender": "male",
+      "groupid": 3,
+      "email": "usern3@mail.ua",
+      "login": "usern3",
+      "pwd": "$2a$10$vXSLywWnZL7LPhwMI3AqduwqvFyTaWxZ0u4H.Mu9tIZfCprv5tzJC",
+      "role": "user",
+      "ava": "",
+      "quiz": "html",
+      "created": 1508075139457,
       "active": true
     }
   ]

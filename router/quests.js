@@ -53,9 +53,9 @@
 		checkAnswers: function(quizResults, cb) {
 			var rightCounter = 0;
  			for (key in quizResults) {
- 				if (( quizResults[key] == correctAnswers.get(key)) && (quizResults[key] != 'object')) {
+ 				if ( (quizResults[key] == correctAnswers.get(key))&&(quizResults[key] != 'object') ) {
  					rightCounter++;
- 				} else if ( quizResults[key].join('') == correctAnswers.get(key).join('') ) {
+ 				} else if ( (quizResults[key] == 'object')&&( quizResults[key].join('') == correctAnswers.get(key).join('')) ) {
 					rightCounter++;
  				} else {
  					console.log (quizResults[key] + " : " + correctAnswers.get(key));

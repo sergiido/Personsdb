@@ -30,8 +30,9 @@ block content
         a(data-toggle="tab", href="#maintenance") Maintenance
       li
         a(data-toggle="tab", href="#marks") Marks
-      li
-        a(data-toggle="tab", href="#quiz") Quiz
+      if userDetails.quiz!= null
+        li
+          a(data-toggle="tab", href="#quiz") Quiz
 
     div.tab-content
       #maintenance.tab-pane.fade.in.active

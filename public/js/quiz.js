@@ -1,11 +1,12 @@
 var quizModule = (function () {
 	var currQuestion;
 	var display = "block";
+	var maxMark = 10;
 
 	function urlencodeFormData(fd){
 	    var s = '';
-	    function encode(s){ 
-	    	return encodeURIComponent(s).replace(/%20/g,'+'); 
+	    function encode(s){
+	    	return encodeURIComponent(s).replace(/%20/g,'+');
 	    }
 	    for(var pair of fd.entries()){
 	        if(typeof pair[1]=='string'){
@@ -63,7 +64,7 @@ var quizModule = (function () {
 				// output results
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState != 4) return;
-					document.getElementById("quizArea").innerHTML = '<div class="male fontSize2"> Your result is: ' + JSON.parse(xhr.responseText).score + ' % </div>';
+					document.getElementById("quizArea").innerHTML = '<div class="male fontSize2"> Your result is: ' + Math.round(JSON.parse(xhr.responseText).score*maxMark/100) + '  </div>';
 				}
 			}
 		}
