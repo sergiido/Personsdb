@@ -21,7 +21,7 @@ h3.tabName Maintenance
   .modalContent
     span.close &times;
     .form-app
-      h3.form-signin-heading.customfont
+      h3.form-signin-heading.customfont ---
       form
         table
           tr
@@ -64,7 +64,7 @@ h3.tabName Maintenance
                     if userDetails.role== 'admin'
                       option(value="admin") admin
                   label#quizLabel -quiz-
-                input(type="checkbox" id="status_chb" name="status" value="Status" checked)
+                input(type="checkbox" id="status_chb" name="status" checked)
                 label(for="status_chb") Active
         div(style="text-align: center;")
           button.btn.btn-primary.customfont(type="submit")

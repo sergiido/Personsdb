@@ -45,7 +45,8 @@
       "ava": "ava2.jpg",
       "created": 1498399271406,
       "active": true,
-      "email": "editor@mail.ua"
+      "email": "editor@mail.ua",
+      "quiz": "html"
     },
     {
       "id": 1498498445098,
@@ -68,14 +69,14 @@
       "age": "26",
       "gender": "female",
       "groupid": 2,
-      "email": "",
+      "email": "usersn1@mail.ua",
       "login": "usern1",
       "pwd": "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm",
       "role": "user",
       "ava": "ava5.jpg",
-      "quiz": null,
+      "quiz": "html",
       "created": 1500191478185,
-      "active": true
+      "active": false
     },
     {
       "id": 1498639482084,

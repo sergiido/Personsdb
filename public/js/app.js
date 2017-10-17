@@ -67,7 +67,8 @@ function showPersonPop(action) {
 			personmodal.querySelector('input[name="login"]').value = res.login;
 			personmodal.querySelector('input[name="pwd"]').value = res.pwd;
 			personmodal.querySelector('select[name="roles"]').value = res.role;
-			personmodal.querySelector('label#quizLabel').innerHTML = res.quiz;
+			personmodal.querySelector('label#quizLabel').innerHTML = res.quiz || " - ";
+			personmodal.querySelector('input[type="checkbox"]').checked = res.active;
 		});
 	}
 
@@ -137,7 +138,9 @@ function updatePerson(){
 			email: formData.get('email'),
 			login: formData.get('login'),
 			// pwd: formData.get('pwd'),
-			role: formData.get('roles')
+			role: formData.get('roles'),
+			// quiz: formData. ...
+			active: formData.get('status')
 		},
 		action: "Update"
 	};

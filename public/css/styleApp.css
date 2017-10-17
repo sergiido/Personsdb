@@ -87,8 +87,8 @@ label {
 #quizLabel{
 	margin-top: 8px;
 	background-color: goldenrod;
-	border-radius: 6px;
-	width: 22px;
+	border-radius: 2px;
+	/*width: 22px;*/
 	font-size: 0.8em;
 }
 

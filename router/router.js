@@ -289,7 +289,8 @@ module.exports = function(app) {
 					secondname: user.secondname,
 					email: user.email,
 					login: user.login,
-					role: user.role
+					role: user.role,
+					active: user.active
 				};
 			}
 			res.status(200).json(obj);
@@ -341,6 +342,7 @@ module.exports = function(app) {
 		// console.log(req.params.id);
 		// console.log(req.body.name);
 		const id = parseInt(req.params.id);
+		req.body.active = (req.body.active === 'on') ? true : false;
 		usersdb.get('users').find({ id: id })
 			.assign({
 				name: req.body.name,
@@ -353,7 +355,7 @@ module.exports = function(app) {
 				// pwd: req.body.pwd,
 				role: req.body.role,
 				quiz: 'html',
-				active: true
+				active: req.body.active
 			}).write()
 			.then(function(user){
 				var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
@@ -370,7 +372,7 @@ module.exports = function(app) {
 					role: user.role,
 					quiz: 'html',
 					created: user.created,
-					active: true
+					active: user.active
 				};
 				res.status(200).json(output);
 			})
