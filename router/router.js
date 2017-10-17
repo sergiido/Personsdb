@@ -326,14 +326,17 @@ module.exports = function(app) {
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
 			// console.log ("delete is allowed");
 			const id = parseInt(req.params.id);
-			var result = usersdb.get('users').remove({ id }).write();
-			if (result == 'undefined') {
-				res.status(200).json({ message: "failed to delete"});
-			} else {
-// remove user's marks if exist
-// marksdb.get('marks').remove({ userid: result }).write();
-				res.status(200).json(result);
-			}
+			usersdb.get('users').remove({ id }).write()
+			.then(function(user){
+				var marks = marksdb.get('marks').find({ userid: user.id }).value();
+				console.log(result + ': ' + marks);
+				if (marks != 'undefined') {
+					// remove user's marks if exist
+					marksdb.get('marks').remove({ userid: result }).write();
+					res.status(200).json(result);
+				}
+			})
+			.catch(err => res.status(200).json({message: "failed to delete"}));
 		}
 		// res.redirect('/app');
 	});

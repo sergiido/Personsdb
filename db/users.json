@@ -77,37 +77,6 @@
       "quiz": "html",
       "created": 1500191478185,
       "active": false
-    },
-    {
-      "id": 1498639482084,
-      "name": "Usern2",
-      "secondname": "Usersn2",
-      "age": "24",
-      "gender": "male",
-      "groupid": 3,
-      "email": "us2@mail.ua",
-      "login": "usern2",
-      "pwd": "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm",
-      "role": "editor",
-      "ava": "ava6.jpg",
-      "created": 1500196552563,
-      "active": true
-    },
-    {
-      "id": 1508075139457,
-      "name": "Usern3",
-      "secondname": "Usersn3",
-      "age": "34",
-      "gender": "male",
-      "groupid": 3,
-      "email": "usern3@mail.ua",
-      "login": "usern3",
-      "pwd": "$2a$10$vXSLywWnZL7LPhwMI3AqduwqvFyTaWxZ0u4H.Mu9tIZfCprv5tzJC",
-      "role": "user",
-      "ava": "",
-      "quiz": "html",
-      "created": 1508075139457,
-      "active": true
     }
   ]
 }

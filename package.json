@@ -2,6 +2,7 @@
   "name": "students",
   "version": "3.4.3",
   "description": "Students db",
+  "author": "sergiido",
   "repository": {
     "type": "git",
     "url": "https://github.com/sergiido/personsdb.git"
@@ -11,7 +12,7 @@
     "start": "node server.js"
   },
   "engine": {
-    "node": "~6.11.1",
+    "node": "*",
     "npm": "*"
   },
   "dependencies": {
@@ -25,5 +26,6 @@
     "method-override": "^2.3.7",
     "pug": "^2.0.0-rc.2",
     "serve-favicon": "^2.3.2"
-  }
+  },
+  "license": "MIT"
 }
