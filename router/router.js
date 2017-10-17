@@ -327,18 +327,18 @@ module.exports = function(app) {
 			// console.log ("delete is allowed");
 			const id = parseInt(req.params.id);
 			usersdb.get('users').remove({ id }).write()
-			.then(function(user){
-				var marks = marksdb.get('marks').find({ userid: user.id }).value();
-				console.log(result + ': ' + marks);
-				if (marks != 'undefined') {
-					// remove user's marks if exist
-					marksdb.get('marks').remove({ userid: result }).write();
-					res.status(200).json(result);
+			.then(function(user) {
+				// console.log(user[0].id);
+				// remove user's marks if exist
+				var mark = marksdb.get('marks').find({ userid: user[0].id }).value();
+				// console.log(mark);
+				if (mark != 'undefined') {
+					marksdb.get('marks').remove({ userid: user[0].id }).write();				
 				}
-			})
+				res.status(200).json(user[0].id);
+			} )
 			.catch(err => res.status(200).json({message: "failed to delete"}));
 		}
-		// res.redirect('/app');
 	});
 
 	app.put('/update/:id', checkAuth, function (req, res) {
