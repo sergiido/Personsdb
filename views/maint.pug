@@ -60,9 +60,10 @@ h3.tabName Maintenance
                   input(name="pwd", type="password", placeholder="pwd", size="10")
                   select(name="roles")
                     option(value="user") user
-                    option(value="editor") editor
-                    if userDetails.role== 'admin'
-                      option(value="admin") admin
+                    if userDetails.role!= 'user'
+                      option(value="editor") editor
+                      if userDetails.role== 'admin'
+                        option(value="admin") admin
                   label#quizLabel -quiz-
                 input(type="checkbox" id="status_chb" name="status" checked)
                 label(for="status_chb") Active
