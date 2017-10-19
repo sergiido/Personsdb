@@ -29,8 +29,9 @@ app.use(session({
   resave: true, // false=don't save session if unmodified
   //path: '/',
   saveUninitialized: true, // false=don't create session until something stored
-  secret: 'sessionsecret'
+  secret: 'sessionsecret',
   // cookie: { maxAge: 60000 }
+  // ephemeral: true
 }));
 
 require('./router/router')(app);

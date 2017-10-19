@@ -58,12 +58,12 @@
  				} else if ( (quizResults[key] == 'object')&&( quizResults[key].join('') == correctAnswers.get(key).join('')) ) {
 					rightCounter++;
  				} else {
- 					console.log (quizResults[key] + " : " + correctAnswers.get(key));
- 					console.log (typeof quizResults[key] );
+ 					// console.log (quizResults[key] + " : " + correctAnswers.get(key));
+ 					// console.log (typeof quizResults[key] );
  				}
  			}
- 			console.log (rightCounter);
- 			console.log (Object.keys(quizResults).length);
+ 			// console.log (rightCounter);
+ 			// console.log (Object.keys(quizResults).length);
  			cb(Math.round(rightCounter * 100 / Object.keys(quizResults).length));
 		}
 	};

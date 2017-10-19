@@ -17,6 +17,7 @@ const fs = require('fs');
 const bcrypt = require('bcrypt-nodejs');
 // const salt = 'personspwdhash';
 
+/*
 bcrypt.hash("123", null, null, function(err, hash) {
     // Store hash in your password DB
     console.log("hash: " + hash);
@@ -25,9 +26,9 @@ bcrypt.compare("123", "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y
     // res == true
     console.log("compare: 123 " + res);
 });
+*/
 
-
-console.log('router.js - started ...');
+console.log('router - started ...');
 
 module.exports = function(app) {
 
@@ -55,7 +56,7 @@ module.exports = function(app) {
 			quiz: 'html',
 			id: 1
 		},
-		editor:{
+		editor: {
 			name: 'Editorcheg',
 			pwd: '321',
 			role: 'editor',
@@ -276,7 +277,7 @@ module.exports = function(app) {
 					groupid: group.name,
 					email: user.email,
 					login: user.login,
-					pwd: user.pwd,
+					// pwd: user.pwd,
 					role: user.role,
 					ava: user.ava,
 					quiz: user.quiz,
@@ -343,44 +344,52 @@ module.exports = function(app) {
 
 	app.put('/update/:id', checkAuth, function (req, res) {
 		// console.log(req.params.id);
-		// console.log(req.body.name);
+		console.log(req.body.pwd);
 		const id = parseInt(req.params.id);
-		req.body.active = (req.body.active === 'on') ? true : false;
-		usersdb.get('users').find({ id: id })
-			.assign({
-				name: req.body.name,
-				secondname: req.body.secondname,
-				age: req.body.age,
-				gender: req.body.gender,
-				groupid: parseInt(req.body.groupid),
-				email: req.body.email,
-				login: req.body.login,
-				// pwd: req.body.pwd,
-				role: req.body.role,
-				quiz: 'html',
-				active: req.body.active
-			}).write()
-			.then(function(user){
-				var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
-				var output = {
-					id: user.id,
-					name: user.name,
-					secondname: user.secondname,
-					age: user.age,
-					gender: user.gender,
-					groupid: group.name,
-					email: user.email,
-					login: user.login,
-					// pwd: user.pwd,
-					role: user.role,
+		var user = usersdb.get('users').find({ id: id }).value();
+		if (req.body.pwd == "") {
+			req.body.pwd = user.pwd;
+		}
+		console.log(req.body.pwd);
+		
+		bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
+			usersdb.get('users').find({ id: id })
+				.assign({
+					name: req.body.name,
+					secondname: req.body.secondname,
+					age: req.body.age,
+					gender: req.body.gender,
+					groupid: parseInt(req.body.groupid),
+					email: req.body.email,
+					login: req.body.login,
+					pwd: hash,
+					role: req.body.role,
 					quiz: 'html',
-					created: user.created,
-					active: user.active
-				};
-				res.status(200).json(output);
-			})
-			.catch(err => res.status(200).json({message: "failed to add"}));
+					active: (req.body.active === 'on') ? true : false,
+				}).write()
+				.then(function(user){
+					var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
+					var output = {
+						id: user.id,
+						name: user.name,
+						secondname: user.secondname,
+						age: user.age,
+						gender: user.gender,
+						groupid: group.name,
+						email: user.email,
+						login: user.login,
+						// pwd: user.pwd,
+						role: user.role,
+						quiz: 'html',
+						created: user.created,
+						active: user.active
+					};
+					res.status(200).json(output);
+				})
+				.catch(err => res.status(200).json({message: "failed to add"}));
+		});
 	});
+
 
 	function checkAuth(req, res, next) {
 		if (typeof req.session.user == 'undefined') {

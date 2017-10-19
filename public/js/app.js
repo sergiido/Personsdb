@@ -48,13 +48,13 @@ function showPersonPop(action) {
 			img.onload = function () {
 				document.getElementById('userava').src = img.src;
 				document.getElementById('spinner').classList.remove("cssload-loader");
+				document.querySelector('.form-app fieldset').disabled = false;
 			}
 			if (res.ava) {
 				img.src = 'uploads/'+ res.ava;
 			} else {
 				img.src = "images/no_ava.png";
 			}
-			document.querySelector('.form-app fieldset').disabled = false;
 			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
 			personmodal.querySelector('input[name="age"]').value = res.age;
 			personmodal.querySelector('select[name="gender"]').value = res.gender;
@@ -65,7 +65,7 @@ function showPersonPop(action) {
 			});
 			personmodal.querySelector('input[name="email"]').value = res.email;
 			personmodal.querySelector('input[name="login"]').value = res.login;
-			personmodal.querySelector('input[name="pwd"]').value = res.pwd;
+			// personmodal.querySelector('input[name="pwd"]').value = res.pwd;
 			personmodal.querySelector('select[name="roles"]').value = res.role;
 			personmodal.querySelector('label#quizLabel').innerHTML = res.quiz || " - ";
 			personmodal.querySelector('input[type="checkbox"]').checked = res.active;
@@ -137,7 +137,7 @@ function updatePerson(){
 			groupid: formData.get('groupid'),
 			email: formData.get('email'),
 			login: formData.get('login'),
-			// pwd: formData.get('pwd'),
+			pwd: formData.get('pwd'),
 			role: formData.get('roles'),
 			// quiz: formData. ...
 			active: formData.get('status')
