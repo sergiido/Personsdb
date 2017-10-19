@@ -160,17 +160,41 @@ module.exports = function(app) {
 
 	app.post('/json/upload', function(req, res) {
 		req.setEncoding('utf8');
-  		req.rawBody = '{"users":';
+  		req.rawBody = '';
   		req.on('data', function(chunk) {
 			req.rawBody += chunk;
 		});
 		req.on('end', function(){
-			req.rawBody += '}';
-			// console.log(req.rawBody);
+			var usersArr = JSON.parse(req.rawBody);
+			// console.log(JSON.parse(req.rawBody));
+			// console.log(usersArr[0].name);
+			for (var i = 0; i < usersArr.length; i++) {
+				usersdb.get('users').push({
+					id: usersArr[i].id,
+					name: usersArr[i].name,
+					secondname: usersArr[i].secondname,
+					age: usersArr[i].age,
+					gender: usersArr[i].gender,
+					groupid: null, //usersArr[i].groupid,
+					email: usersArr[i].email,
+					login: usersArr[i].login,
+					pwd: usersArr[i].pwd,
+					role: usersArr[i].roles,
+					ava: usersArr[i].ava,
+					quiz: usersArr[i].quiz,
+					created: usersArr[i].created,
+					active: usersArr[i].active
+				}).last()
+				.write();
+			}
+
+			/*
 			fs.writeFile('db/users.json', req.rawBody, function (err) {
 				if (err) throw err;
 				// console.log('Saved!');
 			});
+			*/
+
 		});		
 	});
 	
