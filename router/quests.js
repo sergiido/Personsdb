@@ -58,9 +58,7 @@
  				} else if ( (typeof quizResults[key] == 'object')&&( quizResults[key].join('') == correctAnswers.get(key).join('')) ) {
 					rightCounter++;
  				} else {
- 					console.log (quizResults[key].join('') + " : " + correctAnswers.get(key).join(''));
- 					// console.log (typeof quizResults[key] == 'object' );
- 					// console.log (quizResults[key].join('') == correctAnswers.get(key).join(''));
+ 					console.log (quizResults[key] + " : " + typeof quizResults[key] == 'object' );
  				}
  			}
  			// console.log (rightCounter);

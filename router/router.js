@@ -568,7 +568,7 @@ module.exports = function(app) {
 	app.post('/getAnswers', (req, res) => {
 		// console.log(req.body);
 		// console.log((req.body).a1);
-		quiz.checkAnswers(req.body, function(resp){
+		quiz.checkAnswers(req.body, function(resp) {
 			// console.log (req.session.user.id);
 			var userMarks = marksdb.get('marks').find({ userid: req.session.user.id }).value();
 			if (!userMarks) {
@@ -589,7 +589,10 @@ module.exports = function(app) {
 						mark: "0"}
 				}).last().write()
 				.then((record) => {
-					console.log(resp);
+					usersdb.get('users').find({ id: req.session.user.id })
+						.assign({
+							quiz: null
+						}).write();
 					res.status(200).json({score: resp})
 			}) } else {
 				marksdb.get('marks').find({ userid: req.session.user.id }).assign({
@@ -599,6 +602,10 @@ module.exports = function(app) {
 				}).write()
 				.then((record) => {
 					// console.log(resp);
+					usersdb.get('users').find({ id: req.session.user.id })
+						.assign({
+							quiz: null
+						}).write();
 					res.status(200).json({score: resp})})
 				.catch(err => console.log("failed to find the user in marks table"))
 			}
