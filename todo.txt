@@ -1,0 +1,32 @@
+
+To-Do:
+==============
+- ava update on update
+- group name editing
+- group deletion on Group adding pop-up ?
+-! unit tests
+
+Defects:
+==============
+- can be added equal groups
+
+Done:
+==============
+- existing groups list on 'add group' modal
+- update of edited person info row on the fly
+- can be added a user with the same login
+- editor can see login&pwd
+- editor can add an admin user
+- user cannot be added after node6 update
+- save avatars on server
+- link a user with the ava on server
+- update doesn't save info in db
+- fix the app functions after file uploading changes (processData in app.js)
+- make add and update pop up as a single pop up
+- 'Active' ch-box is not linked to a real state on edit user, (now = Status)
+- pwd is not saved on Update (commented in code)
+- password store as a hash
+
+Test:
+==============
+- do not send pwd on UI (as object too in data attr)

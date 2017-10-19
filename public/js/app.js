@@ -1,22 +1,30 @@
 window.onload = function(){
 
-
 }
 
 function showLoadPop() {
 	var inputUploadJson = document.querySelector('#loadPersons>input');
 	inputUploadJson.click();
-	inputUploadJson.addEventListener("change", function() {
-		console.log (this.files[0]);
+	inputUploadJson.addEventListener("change", function(e) {
+		// console.log(e.target.nodeName);
+		// console.log (this.files[0]);
 		var reader = new FileReader();
 		reader.onload = function() {
-			// console.log('{"users":' + reader.result + '}');
+			// console.log(reader.result);
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "/json/upload", true);
+			xhr.onreadystatechange = function () {
+				if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+					// console.log(xhr.responseText);
+					$.notify(JSON.parse(xhr.responseText).res, {
+						className: 'success',
+  						globalPosition: 'top center'});
+				};
+			};
 			xhr.send(reader.result);
 		};
-		reader.readAsText(this.files[0]);		
-	}, false);
+		reader.readAsText(this.files[0]);
+	});
 }
 
 
@@ -331,7 +339,7 @@ function getPersonMarks(userId) {
 		var rowCount = userTable.rows.length;
 		for (var i = rowCount; i > 1; i--) {
 			userTable.deleteRow(i - 1);
-		}		
+		}
 		var row = userTable.insertRow(1);
 		row.insertCell(0).innerHTML = 1;
 		row.insertCell(1).innerHTML = res.id;

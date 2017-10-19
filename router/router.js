@@ -187,7 +187,7 @@ module.exports = function(app) {
 				}).last()
 				.write();
 			}
-
+			res.status(200).json({res:usersArr.length + " users loaded"});
 			/*
 			fs.writeFile('db/users.json', req.rawBody, function (err) {
 				if (err) throw err;
@@ -195,9 +195,9 @@ module.exports = function(app) {
 			});
 			*/
 
-		});		
+		});
 	});
-	
+
 
 	app.post('/user/add', checkAuth, (req, res) => {
 		// console.log("add name: " + req.body.name);
@@ -376,7 +376,7 @@ module.exports = function(app) {
 				var mark = marksdb.get('marks').find({ userid: user[0].id }).value();
 				// console.log(mark);
 				if (mark != 'undefined') {
-					marksdb.get('marks').remove({ userid: user[0].id }).write();				
+					marksdb.get('marks').remove({ userid: user[0].id }).write();
 				}
 				res.status(200).json(user[0].id);
 			} )
@@ -421,7 +421,7 @@ module.exports = function(app) {
 					};
 					res.status(200).json(output);
 				})
-				.catch(err => res.status(200).json({message: "failed to add"}));			
+				.catch(err => res.status(200).json({message: "failed to add"}));
 		} else {
 			bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
 				usersdb.get('users').find({ id: id })
@@ -651,7 +651,7 @@ module.exports = function(app) {
 					res.status(200).json({score: resp})})
 				.catch(err => console.log("failed to find the user in marks table"))
 			}
-		});	
+		});
 	});
 
 
