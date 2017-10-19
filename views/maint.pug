@@ -11,7 +11,12 @@ h3.tabName Maintenance
     div.button
       a(href= '/json/maint' target='_blank' style="color: lightgrey")
         span.customfont.fontSize2 &#xe800;
-        span JSON
+        span to JSON
+    if userDetails.role== 'admin'
+      div#loadPersons.button(onclick="showLoadPop()")
+        span.customfont.fontSize2 💊
+        span load JSON
+        input(type="file" name="uploadJson" style="display: none" accept=".json")
   div.button
     a(href= '/logout' style="color: #FE2E2E")
       span.customfont.fontSize2 &#xe805;

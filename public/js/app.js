@@ -3,6 +3,23 @@ window.onload = function(){
 
 }
 
+function showLoadPop() {
+	var inputUploadJson = document.querySelector('#loadPersons>input');
+	inputUploadJson.click();
+	inputUploadJson.addEventListener("change", function() {
+		console.log (this.files[0]);
+		var reader = new FileReader();
+		reader.onload = function() {
+			// console.log('{"users":' + reader.result + '}');
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "/json/upload", true);
+			xhr.send(reader.result);
+		};
+		reader.readAsText(this.files[0]);		
+	}, false);
+}
+
+
 function readSingleFile(fileInput) {
 	var image = document.getElementById('userava');
   	var file  = fileInput.files[0];

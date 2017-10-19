@@ -157,6 +157,24 @@ module.exports = function(app) {
 		res.send(JSON.stringify(data));
 	});
 
+
+	app.post('/json/upload', function(req, res) {
+		req.setEncoding('utf8');
+  		req.rawBody = '{"users":';
+  		req.on('data', function(chunk) {
+			req.rawBody += chunk;
+		});
+		req.on('end', function(){
+			req.rawBody += '}';
+			// console.log(req.rawBody);
+			fs.writeFile('db/users.json', req.rawBody, function (err) {
+				if (err) throw err;
+				// console.log('Saved!');
+			});
+		});		
+	});
+	
+
 	app.post('/user/add', checkAuth, (req, res) => {
 		// console.log("add name: " + req.body.name);
 
