@@ -569,16 +569,41 @@ module.exports = function(app) {
 		// console.log(req.body);
 		// console.log((req.body).a1);
 		quiz.checkAnswers(req.body, function(resp){
-			// console.log(resp);
 			// console.log (req.session.user.id);
-			marksdb.get('marks').find({ userid: req.session.user.id }).assign({
+			var userMarks = marksdb.get('marks').find({ userid: req.session.user.id }).value();
+			if (!userMarks) {
+				marksdb.get('marks').push({
+					id: Date.now(),
+					userid: req.session.user.id,
+					hw1: {
+						created: Date.now(),
+						mark: "0"},
+					hw2: {
+						created: Date.now(),
+						mark: "0"},
+					cw1: {
+						created: Date.now(),
+						mark: Math.round(resp/10).toString()},
+					cw2: {
+						created: Date.now(),
+						mark: "0"}
+				}).last().write()
+				.then((record) => {
+					console.log(resp);
+					res.status(200).json({score: resp})
+			}) } else {
+				marksdb.get('marks').find({ userid: req.session.user.id }).assign({
 					cw1: {
 						created: Date.now(),
 						mark: Math.round(resp/10)}
-			}).write()
-			.then((record) => res.status(200).json({score: resp}) );
-		});
-	})
+				}).write()
+				.then((record) => {
+					// console.log(resp);
+					res.status(200).json({score: resp})})
+				.catch(err => console.log("failed to find the user in marks table"))
+			}
+		});	
+	});
 
 
 	function copyFile(src, dest) {

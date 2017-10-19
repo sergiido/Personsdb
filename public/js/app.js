@@ -311,6 +311,10 @@ function getPersonMarks(userId) {
 	sendAjax(reqDataObj, function(res) {
 		// add row
 		var userTable = document.getElementById("marksTable");
+		var rowCount = userTable.rows.length;
+		for (var i = rowCount; i > 1; i--) {
+			userTable.deleteRow(i - 1);
+		}		
 		var row = userTable.insertRow(1);
 		row.insertCell(0).innerHTML = 1;
 		row.insertCell(1).innerHTML = res.id;
