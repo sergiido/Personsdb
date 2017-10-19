@@ -123,6 +123,7 @@ function addPerson(){
 function updatePerson(){
 	var personmodal = document.getElementById('personpopup');
 	// personmodal.querySelector('select[name="groupid"]').disabled = false;
+	personmodal.querySelector('input[name="status"]').disabled = false;
 
 	var formData = new FormData(document.forms.updateperson);
 	var userId = formData.get('userid');

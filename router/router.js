@@ -344,15 +344,10 @@ module.exports = function(app) {
 
 	app.put('/update/:id', checkAuth, function (req, res) {
 		// console.log(req.params.id);
-		console.log(req.body.pwd);
+		// console.log(req.body.pwd);
 		const id = parseInt(req.params.id);
 		var user = usersdb.get('users').find({ id: id }).value();
 		if (req.body.pwd == "") {
-			req.body.pwd = user.pwd;
-		}
-		console.log(req.body.pwd);
-		
-		bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
 			usersdb.get('users').find({ id: id })
 				.assign({
 					name: req.body.name,
@@ -362,7 +357,6 @@ module.exports = function(app) {
 					groupid: parseInt(req.body.groupid),
 					email: req.body.email,
 					login: req.body.login,
-					pwd: hash,
 					role: req.body.role,
 					quiz: 'html',
 					active: (req.body.active === 'on') ? true : false,
@@ -378,7 +372,6 @@ module.exports = function(app) {
 						groupid: group.name,
 						email: user.email,
 						login: user.login,
-						// pwd: user.pwd,
 						role: user.role,
 						quiz: 'html',
 						created: user.created,
@@ -386,8 +379,45 @@ module.exports = function(app) {
 					};
 					res.status(200).json(output);
 				})
-				.catch(err => res.status(200).json({message: "failed to add"}));
-		});
+				.catch(err => res.status(200).json({message: "failed to add"}));			
+		} else {
+			bcrypt.hash(req.body.pwd, null, null, function(err, hash) {
+				usersdb.get('users').find({ id: id })
+					.assign({
+						name: req.body.name,
+						secondname: req.body.secondname,
+						age: req.body.age,
+						gender: req.body.gender,
+						groupid: parseInt(req.body.groupid),
+						email: req.body.email,
+						login: req.body.login,
+						pwd: hash,
+						role: req.body.role,
+						quiz: 'html',
+						active: (req.body.active === 'on') ? true : false,
+					}).write()
+					.then(function(user){
+						var group = groupsdb.get('groups').find({ id: parseInt(req.body.groupid)}).value();
+						var output = {
+							id: user.id,
+							name: user.name,
+							secondname: user.secondname,
+							age: user.age,
+							gender: user.gender,
+							groupid: group.name,
+							email: user.email,
+							login: user.login,
+							// pwd: user.pwd,
+							role: user.role,
+							quiz: 'html',
+							created: user.created,
+							active: user.active
+						};
+						res.status(200).json(output);
+					})
+					.catch(err => res.status(200).json({message: "failed to add"}));
+			});
+		}
 	});
 
 
