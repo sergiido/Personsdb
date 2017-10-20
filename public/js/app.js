@@ -70,15 +70,15 @@ function showPersonPop(action) {
 			personmodal.querySelector('input[name="userid"]').value = res.id;
 			personmodal.querySelector('input[name="name"]').value = res.name;
 			var img = new Image();
-			img.onload = function () {
-				document.getElementById('userava').src = img.src;
-				document.getElementById('spinner').classList.remove("cssload-loader");
-				document.querySelector('.form-app fieldset').disabled = false;
-			}
 			if (res.ava) {
 				img.src = 'uploads/'+ res.ava;
 			} else {
 				img.src = "images/no_ava.png";
+			}
+			img.onload = function () {
+				document.getElementById('userava').src = img.src;
+				document.getElementById('spinner').classList.remove("cssload-loader");
+				document.querySelector('.form-app fieldset').disabled = false;
 			}
 			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
 			personmodal.querySelector('input[name="age"]').value = res.age;

@@ -184,7 +184,7 @@ module.exports = function(app) {
 					email: usersArr[i].email,
 					login: usersArr[i].login,
 					pwd: usersArr[i].pwd,
-					role: usersArr[i].roles,
+					role: usersArr[i].role,
 					ava: usersArr[i].ava,
 					quiz: usersArr[i].quiz,
 					created: usersArr[i].created,
