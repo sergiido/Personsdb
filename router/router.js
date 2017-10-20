@@ -168,14 +168,19 @@ module.exports = function(app) {
 			var usersArr = JSON.parse(req.rawBody);
 			// console.log(JSON.parse(req.rawBody));
 			// console.log(usersArr[0].name);
+			var absentGroups = [];
 			for (var i = 0; i < usersArr.length; i++) {
+				var group = groupsdb.get('groups').find({ id: usersArr[i].id }).value();
+				if (!group && absentGroups.indexOf(usersArr[i].groupid) === -1) {
+					absentGroups.push(usersArr[i].groupid);
+				}
 				usersdb.get('users').push({
 					id: usersArr[i].id,
 					name: usersArr[i].name,
 					secondname: usersArr[i].secondname,
 					age: usersArr[i].age,
 					gender: usersArr[i].gender,
-					groupid: null, //usersArr[i].groupid,
+					groupid: usersArr[i].groupid,
 					email: usersArr[i].email,
 					login: usersArr[i].login,
 					pwd: usersArr[i].pwd,
@@ -187,14 +192,20 @@ module.exports = function(app) {
 				}).last()
 				.write();
 			}
-			res.status(200).json({res:usersArr.length + " users loaded"});
+			// console.log(absentGroups);
+			groupsdb.get('groups').push({
+				id: absentGroups[0], // defect: create ALL groups
+				name: absentGroups[0].toString(),
+				created: Date.now(),
+				active: true
+			}).last().write()
+			.then((group) => res.status(200).json({res:usersArr.length + " users loaded"}) );		
 			/*
 			fs.writeFile('db/users.json', req.rawBody, function (err) {
 				if (err) throw err;
 				// console.log('Saved!');
 			});
 			*/
-
 		});
 	});
 
