@@ -403,6 +403,7 @@ module.exports = function(app) {
 		const id = parseInt(req.params.id);
 		var user = usersdb.get('users').find({ id: id }).value();
 		if (req.body.pwd == "") {
+// DEFECT: заменяет null на пустую строку в базе			
 			usersdb.get('users').find({ id: id })
 				.assign({
 					name: req.body.name,
@@ -488,40 +489,33 @@ module.exports = function(app) {
 	 	const id = parseInt(req.params.id);
 	 	var user = usersdb.get('users').find({ id: id }).value();
 	 	// console.log(user);
-		if (user == 'undefined') {
-			res.status(400).json({message: "user not found"});
-		} else {
-			//var group = groupsdb.get('groups').find({ id: user.groupid }).value();
-			// console.log(group);
-	 		var marks = marksdb.get('marks').value();
-	 		// console.log(marks);
-			marks.forEach(function(mark){
-				if (user.id == mark.userid) {
-					obj = {
-						id: mark.id,
-						name: user.name,
-						secondname: user.secondname,
-						//group: group.name,
-						hw1: mark.hw1.mark,
-						hw2: mark.hw2.mark,
-						cw1: mark.cw1.mark,
-						cw2: mark.cw2.mark
-					};
-				} else {
-					obj = {
-						id: null,
-						name: user.name,
-						secondname: user.secondname,
-						//group: group.name,
-						hw1: 0,
-						hw2: 0,
-						cw1: 0,
-						cw2: 0
-					}
-				}
-			});
-			res.status(200).json(obj);
-		}
+ 		var marks = marksdb.get('marks').value();
+ 		// console.log(marks);
+		obj = {
+			id: null,
+			name: user.name,
+			secondname: user.secondname,
+			//group: group.name,
+			hw1: 0,
+			hw2: 0,
+			cw1: 0,
+			cw2: 0
+		};
+		marks.forEach(function(mark){
+			if (user.id == mark.userid) {
+				obj = {
+					id: mark.id,
+					name: user.name,
+					secondname: user.secondname,
+					//group: group.name,
+					hw1: mark.hw1.mark,
+					hw2: mark.hw2.mark,
+					cw1: mark.cw1.mark,
+					cw2: mark.cw2.mark
+				};
+			} 
+		});
+		res.status(200).json(obj);
 	});
 
 	app.get('/marks/group/:id', checkAuth, function(req, res) {

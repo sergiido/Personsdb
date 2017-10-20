@@ -1,3 +1,36 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": 1508510494486,
+      "name": "tester",
+      "secondname": "tester",
+      "age": "",
+      "gender": "empty",
+      "groupid": 1,
+      "email": "",
+      "login": "tester",
+      "pwd": "$2a$10$PXdlS0L1EEtThtP5KDZmzOjhfEWMqRgMfmWdIO03ygvdKUisFxGna",
+      "role": "user",
+      "ava": "",
+      "quiz": "html",
+      "created": 1508510494486,
+      "active": true
+    },
+    {
+      "id": 1508512012456,
+      "name": "test",
+      "secondname": "test",
+      "age": "",
+      "gender": "",
+      "groupid": 1,
+      "email": "test",
+      "login": "test",
+      "pwd": "$2a$10$nA58q5t0N4JYeg0sK6ANbukI0AqpTyIRWniQOXd8hcpe8fb/JZjmW",
+      "role": "user",
+      "ava": null,
+      "quiz": "html",
+      "created": 1508512012456,
+      "active": true
+    }
+  ]
 }
