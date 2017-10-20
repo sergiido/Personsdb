@@ -170,8 +170,8 @@ module.exports = function(app) {
 			// console.log(usersArr[0].name);
 			var absentGroups = [];
 			for (var i = 0; i < usersArr.length; i++) {
-				var group = groupsdb.get('groups').find({ id: usersArr[i].id }).value();
-				if (!group && absentGroups.indexOf(usersArr[i].groupid) === -1) {
+				var group = groupsdb.get('groups').find({ id: usersArr[i].groupid }).value();
+				if (group == null && absentGroups.indexOf(usersArr[i].groupid) === -1) {
 					absentGroups.push(usersArr[i].groupid);
 				}
 				usersdb.get('users').push({
@@ -193,13 +193,15 @@ module.exports = function(app) {
 				.write();
 			}
 			// console.log(absentGroups);
-			groupsdb.get('groups').push({
-				id: absentGroups[0], // defect: create ALL groups
-				name: absentGroups[0].toString(),
-				created: Date.now(),
-				active: true
-			}).last().write()
-			.then((group) => res.status(200).json({res:usersArr.length + " users loaded"}) );		
+			if (absentGroups.length > 0){
+				groupsdb.get('groups').push({
+					id: absentGroups[0], // defect: create ALL groups
+					name: absentGroups[0].toString(),
+					created: Date.now(),
+					active: true
+				}).last().write();
+			}
+			res.status(200).json({res:usersArr.length + " users loaded"});		
 			/*
 			fs.writeFile('db/users.json', req.rawBody, function (err) {
 				if (err) throw err;
