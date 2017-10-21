@@ -6,8 +6,8 @@ const session = require('express-session');
 const low = require('lowdb');
 const app = express();
 
-const port = process.env.PORT || 8888;
-const ip = process.env.IP || '127.0.0.1';
+const port = process.env.PORT || 8080;
+const ip = process.env.IP || '0.0.0.0';
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.set('views', __dirname + '/views');
