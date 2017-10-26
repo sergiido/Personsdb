@@ -496,10 +496,10 @@ module.exports = function(app) {
 			name: user.name,
 			secondname: user.secondname,
 			//group: group.name,
-			hw1: 0,
-			hw2: 0,
-			cw1: 0,
-			cw2: 0
+			hw1: "0",
+			hw2: "0",
+			cw1: "0",
+			cw2: "0"
 		};
 		marks.forEach(function(mark){
 			if (user.id == mark.userid) {
@@ -520,40 +520,39 @@ module.exports = function(app) {
 
 	app.get('/marks/group/:id', checkAuth, function(req, res) {
 		const id = parseInt(req.params.id);
-		var group = groupsdb.get('groups').find({ id: id }).value();
+		// var group = groupsdb.get('groups').find({ id: id }).value();
 		var users = usersdb.get('users').filter({groupid: id}).value();
-		var marks = marksdb.get('marks').value();
-		if (users == 'undefined') {
-			res.status(200).json({message: "no users in group"});
-		} else {
+		// var marks = marksdb.get('marks').value();
+		if (users != null) {
 			var output = [];
 			users.forEach(function(user) {
-				var obj = {
-					id: null,
-					userid: user.id,
-					name: user.name,
-					secondname: user.secondname,
-					//group: group.name,
-					hw1: null,
-					hw2: null,
-					cw1: null,
-					cw2: null
-				};
-				marks.forEach(function(mark) {
-					if (user.id == mark.userid) {
+				var userMarks = marksdb.get('marks').filter({userid: user.id}).value();
+				// console.log(userMarks);
+					if (userMarks.length != 0) {
 						obj = {
-							id: mark.id,
+							id: userMarks[0].id,
 							userid: user.id,
 							name: user.name,
 							secondname: user.secondname,
 							//group: group.name,
-							hw1: mark.hw1.mark,
-							hw2: mark.hw2.mark,
-							cw1: mark.cw1.mark,
-							cw2: mark.cw2.mark
+							hw1: userMarks[0].hw1.mark,
+							hw2: userMarks[0].hw2.mark,
+							cw1: userMarks[0].cw1,
+							cw2: userMarks[0].cw2.mark
+						};
+					} else {
+						var obj = {
+							id: null,
+							userid: user.id,
+							name: user.name,
+							secondname: user.secondname,
+							//group: group.name,
+							hw1: null,
+							hw2: null,
+							cw1: null,
+							cw2: null
 						};
 					}
-				});
 				output.push(obj);
 			});
 			res.status(200).json(output);
@@ -566,7 +565,7 @@ module.exports = function(app) {
 		if (allowedUsers.indexOf(req.session.user.role) != -1) {
 
 			var userMarks = marksdb.get('marks').find({ userid: id }).value();
-			console.log(userMarks);
+			// console.log(userMarks);
 			if (!userMarks) {
 				marksdb.get('marks').push({
 					id: Date.now(),

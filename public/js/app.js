@@ -385,8 +385,8 @@ function getGroupMarks() {
 			row.insertCell(4).innerHTML = '<div class="markincell" oninput="paintBtn(this)" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
 			if (res[i].hw2 == null) res[i].hw2=0
 			row.insertCell(5).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
-			if (res[i].cw1 == null) res[i].cw1=0
-			row.insertCell(6).innerHTML = '<div class="center">'+ res[i].cw1 +'</div>';
+			if (res[i].cw1.mark == null) res[i].cw1.mark=0
+			row.insertCell(6).innerHTML = '<div class="center" title="'+ formatDate(res[i].cw1.created) + '">'+ res[i].cw1.mark +'</div>';
 			if (res[i].cw2 == null) res[i].cw2=0
 			row.insertCell(7).innerHTML = '<div class="center">'+ res[i].cw2 +'</div>';
 			var updateBtn = '<button class="customfont" onclick="updateMarks(this)" data-userid= ' +res[i].userid + ' data-markid=' +res[i].id + ' style="color: #7FB3D5;"> &#xf14a;</button>';
