@@ -319,7 +319,7 @@ module.exports = function(app) {
 		if (user == 'undefined') {
 			res.status(200).json({message: "user is not found"});
 		} else {
-// перебрать пришедший объект и удалить из него ключи с null или undefined
+		// перебрать пришедший объект и удалить из него ключи с null или undefined
 			var group = groupsdb.get('groups').find({ id: user.groupid }).value();
 			// console.log ("group: ") + group;
 			if (group != null) {
@@ -403,7 +403,7 @@ module.exports = function(app) {
 		const id = parseInt(req.params.id);
 		var user = usersdb.get('users').find({ id: id }).value();
 		if (req.body.pwd == "") {
-// DEFECT: заменяет null на пустую строку в базе			
+			// DEFECT: заменяет null на пустую строку в базе			
 			usersdb.get('users').find({ id: id })
 				.assign({
 					name: req.body.name,
@@ -476,7 +476,6 @@ module.exports = function(app) {
 		}
 	});
 
-
 	function checkAuth(req, res, next) {
 		if (typeof req.session.user == 'undefined') {
 			res.redirect('/login');
@@ -523,40 +522,48 @@ module.exports = function(app) {
 		// var group = groupsdb.get('groups').find({ id: id }).value();
 		var users = usersdb.get('users').filter({groupid: id}).value();
 		// var marks = marksdb.get('marks').value();
+		var output = [];
 		if (users != null) {
-			var output = [];
-			users.forEach(function(user) {
-				var userMarks = marksdb.get('marks').filter({userid: user.id}).value();
+			// users.forEach(function(user) {
+			for (var user = 0; user < users.length; user++) {
+				var userMarks = marksdb.get('marks').filter({userid: users[user].id}).value();
 				// console.log(userMarks);
-					if (userMarks.length != 0) {
-						obj = {
-							id: userMarks[0].id,
-							userid: user.id,
-							name: user.name,
-							secondname: user.secondname,
-							//group: group.name,
-							hw1: userMarks[0].hw1.mark,
-							hw2: userMarks[0].hw2.mark,
-							cw1: userMarks[0].cw1,
-							cw2: userMarks[0].cw2.mark
-						};
-					} else {
-						var obj = {
-							id: null,
-							userid: user.id,
-							name: user.name,
-							secondname: user.secondname,
-							//group: group.name,
-							hw1: null,
-							hw2: null,
-							cw1: null,
-							cw2: null
-						};
-					}
+				if (userMarks.length != 0) {
+					obj = {
+						id: userMarks[0].id,
+						userid: users[user].id,
+						name: users[user].name,
+						secondname: users[user].secondname,
+						//group: group.name,
+						hw1: userMarks[0].hw1.mark,
+						hw2: userMarks[0].hw2.mark,
+						cw1: {
+							created: userMarks[0].cw1.created,
+							mark: userMarks[0].cw1.mark
+						},
+						cw2: userMarks[0].cw2.mark
+					};
+				} else {
+					var obj = {
+						id: null,
+						userid: users[user].id,
+						name: users[user].name,
+						secondname: users[user].secondname,
+						//group: group.name,
+						hw1: null,
+						hw2: null,
+						cw1: {
+							created: null,
+							mark: null
+						},
+						cw2: null
+					};
+				}
 				output.push(obj);
-			});
-			res.status(200).json(output);
+			}
+			// });
 		}
+		res.status(200).json(output);
 	});
 
 	app.put('/mark/:id', checkAuth, function (req, res) {
@@ -604,7 +611,6 @@ module.exports = function(app) {
 			}
 		}
 	});
-
 
 	app.get('/quizstart', (req, res) => {
 		quiz.getQuestions(function(resp) {
