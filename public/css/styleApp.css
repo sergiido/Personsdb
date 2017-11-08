@@ -48,11 +48,6 @@ label {
 	font-weight: 100;
 }
 
-
-#appWrapper {
-
-}
-
 #infoArea {
 	margin: 0 auto;
 	text-align: center;
@@ -313,7 +308,6 @@ div.button:hover .customfont{
       border: none;
       /*margin-left:-450px;*/
   }
-
 
 
 .cssload-loader{

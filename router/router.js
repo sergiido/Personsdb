@@ -17,6 +17,9 @@ const fs = require('fs');
 const bcrypt = require('bcrypt-nodejs');
 // const salt = 'personspwdhash';
 
+// e-mail smptp service
+const sgMail = require('@sendgrid/mail');
+
 /*
 bcrypt.hash("123", null, null, function(err, hash) {
     // Store hash in your password DB
@@ -401,7 +404,8 @@ module.exports = function(app) {
 		// console.log(req.params.id);
 		// console.log(req.body.pwd);
 		const id = parseInt(req.params.id);
-		var user = usersdb.get('users').find({ id: id }).value();
+var user = usersdb.get('users').find({ id: id }).value();
+var prevUserActive = user.active;
 		if (req.body.pwd == "") {
 			// DEFECT: заменяет null на пустую строку в базе			
 			usersdb.get('users').find({ id: id })
@@ -433,6 +437,18 @@ module.exports = function(app) {
 						created: user.created,
 						active: user.active
 					};
+					// send e-mail
+					if (!prevUserActive && user.active) {
+						sgMail.setApiKey("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");
+						const msg = {
+						  to: user.email,
+						  from: 'htmljs@qastartup.com',
+						  subject: 'Your account is activated',
+						  text: 'Your account is activated. HTML + JS QA StartUp',
+						  html: 'Hi ' + user.name + '. <br/>Your account '+user.login+ ' is activated. <br/>You can log in now using your credentials. <br/><br/> HTML + JS QA StartUp',
+						};
+						sgMail.send(msg);	
+					}
 					res.status(200).json(output);
 				})
 				.catch(err => res.status(200).json({message: "failed to add"}));

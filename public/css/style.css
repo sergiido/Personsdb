@@ -3,14 +3,18 @@ html {
 }
 
 body {
-    background: linear-gradient(#204854, #284c2e);
+    background: linear-gradient(
+    	rgb(27, 30, 35), 
+    	rgb(101, 137, 164)
+    );
 }
 
-p{
+p {
 	position: relative;
 }
 
-h2{
+
+h2 {
 	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
 }
 
@@ -59,3 +63,4 @@ input[type="text"], input[type="password"]{
 	color: grey;
 	background-color: lightgrey;
 }
+

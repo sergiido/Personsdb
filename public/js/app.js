@@ -385,7 +385,7 @@ function getGroupMarks() {
 			if (res[i].hw1 == null) res[i].hw1=0
 			row.insertCell(4).innerHTML = '<div class="markincell" oninput="paintBtn(this)" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw1 +'</div>';
 			if (res[i].hw2 == null) res[i].hw2=0
-			row.insertCell(5).innerHTML = '<div class="markincell" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
+			row.insertCell(5).innerHTML = '<div class="markincell" oninput="paintBtn(this)" style="border: 1px solid #0B4C5F" contenteditable="true">'+ res[i].hw2 +'</div>';
 			if (res[i].cw1.mark == null) res[i].cw1.mark=0
 			row.insertCell(6).innerHTML = '<div class="center" title="'+ formatDate(res[i].cw1.created) + '"><u>'+ res[i].cw1.mark +'</u></div>';
 			if (res[i].cw2 == null) res[i].cw2=0
@@ -395,6 +395,7 @@ function getGroupMarks() {
 		}
 	});
 }
+
 
 function paintBtn(elem) {
 	elem.parentNode.parentNode.childNodes[8].childNodes[0].style.color= "#DC7633";

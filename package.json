@@ -16,6 +16,7 @@
     "npm": "*"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.1.4",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.16.0",
     "cookie-parser": "*",

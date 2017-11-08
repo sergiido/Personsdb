@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
-
+app.disable('x-powered-by');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
@@ -27,9 +27,9 @@ app.use( function( req, res, next ) {
 app.use(express.static(__dirname + '/public'));
 
 app.use(session({
-  resave: true, // false=don't save session if unmodified
+  resave: false, // false=don't save session if unmodified
   //path: '/',
-  saveUninitialized: true, // false=don't create session until something stored
+  saveUninitialized: false, // false=don't create session until something stored
   secret: 'sessionsecret'
   // cookie: { maxAge: 60000 }
 }));
