@@ -1,3 +1,20 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": 1508254825865,
+      "name": "Test",
+      "secondname": "Test",
+      "age": "28",
+      "gender": "female",
+      "groupid": 1508253514059,
+      "email": "test@gmail.com",
+      "login": "kris",
+      "pwd": "$2a$10$Rxd6slhVatSHDGIYX8ZnqeNaNFsxV0E10hI59HBVgPS568b.8X1fy",
+      "role": "user",
+      "ava": null,
+      "quiz": "html",
+      "created": 1508254825865,
+      "active": true
+    }
+  ]
 }
