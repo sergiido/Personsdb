@@ -47,8 +47,8 @@ function showPersonPop(action) {
 	var personmodal = document.getElementById('personpopup');
 	document.forms[0].reset();
 	// document.forms.addperson.reset();
-	document.querySelector('img').src = "images/no_ava.png";
 	if (action == 'add') {
+		document.getElementById('userava').src = "images/no_ava.png";
 		document.querySelector('.form-app fieldset').disabled = false;
 		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Add person";
 		document.querySelector('.form-app>form').setAttribute("name", "addperson");
@@ -70,16 +70,13 @@ function showPersonPop(action) {
 			personmodal.querySelector('input[name="userid"]').value = res.id;
 			personmodal.querySelector('input[name="name"]').value = res.name;
 			var img = new Image();
-			if (res.ava) {
-				img.src = 'uploads/'+ res.ava;
-			} else {
-				img.src = "images/no_ava.png";
-			}
+			img.src = 'uploads/'+ res.ava;
 			img.onload = function () {
 				document.getElementById('userava').src = img.src;
 				document.getElementById('spinner').classList.remove("cssload-loader");
 			};
 			img.onerror = function(){
+				document.getElementById('userava').src = "images/no_ava.png";
 				document.getElementById('spinner').classList.remove("cssload-loader");
 			}
 			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
@@ -94,7 +91,7 @@ function showPersonPop(action) {
 			personmodal.querySelector('input[name="login"]').value = res.login;
 			// personmodal.querySelector('input[name="pwd"]').value = res.pwd;
 			personmodal.querySelector('select[name="roles"]').value = res.role;
-			personmodal.querySelector('label#quizLabel').innerHTML = res.quiz || " - ";
+			personmodal.querySelector('select[name="quiz"]').value = res.quiz;
 			personmodal.querySelector('input[type="checkbox"]').checked = res.active;
 			document.querySelector('.form-app fieldset').disabled = false;
 		});
@@ -152,6 +149,7 @@ function updatePerson(){
 	var personmodal = document.getElementById('personpopup');
 	// personmodal.querySelector('select[name="groupid"]').disabled = false;
 	personmodal.querySelector('input[name="status"]').disabled = false;
+	personmodal.querySelector('select[name="quiz"]').disabled = false;
 
 	var formData = new FormData(document.forms.updateperson);
 	var userId = formData.get('userid');
@@ -159,7 +157,8 @@ function updatePerson(){
 	var reqDataObj = {
 		method: "PUT",
 		uri: "/update/" + userId,
-		objData: {name: formData.get('name'),
+		objData: {
+			name: formData.get('name'),
 			secondname: formData.get('secondname'),
 			age: formData.get('age'),
 			gender: formData.get('gender'),
@@ -168,12 +167,15 @@ function updatePerson(){
 			login: formData.get('login'),
 			pwd: formData.get('pwd'),
 			role: formData.get('roles'),
-			ava:  document.getElementById('userava').src,
-			// quiz: formData. ...
+			//ava:  document.getElementById('userava').src,
+			quiz: formData.get('quiz'),
 			active: formData.get('status')
 		},
 		action: "Update"
 	};
+	if ((/base64/).test(document.getElementById('userava').src)) {
+		reqDataObj.objData.ava = document.getElementById('userava').src;
+	}
 	sendAjax(reqDataObj, function(res){
 		document.getElementById('personpopup').style.display = "none";
 		// console.log(res);

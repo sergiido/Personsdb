@@ -69,7 +69,14 @@ h3.tabName Maintenance
                         option(value="editor") editor
                         if userDetails.role== 'admin'
                           option(value="admin") admin
-                  label#quizLabel -quiz-
+                  if userDetails.role!= 'user'
+                    select#groupselect(name="quiz")
+                      option(value="empty" selected)
+                      option(value="html") html
+                  else
+                    select#groupselect(name="quiz" disabled)
+                      option(value="empty" selected)
+                      option(value="html") html
                 if userDetails.role== 'user'
                   input(type="checkbox" id="status_chb" name="status" checked disabled)
                 else

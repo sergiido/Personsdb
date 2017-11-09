@@ -408,14 +408,16 @@ module.exports = function(app) {
 
 	app.put('/update/:id', checkAuth, function (req, res) {
 		// console.log(req.params.id);
-		// console.log(req.body.pwd);
-
-		var extension = (req.body.ava).substring("data:image/".length, (req.body.ava).indexOf(";base64")).toLowerCase();
-		var base64Data = req.body.ava.replace(/^data:image\/png;base64,/, "");
-		require("fs").writeFile("./public/uploads/user"+ req.params.id+"."+ extension, base64Data, 'base64', function(err, res) {
-			if (err) console.log(err);
-		});
-
+		// console.log(req.body.quiz);
+		var oldAva = true;
+		if (req.body.ava) {
+			var extension = (req.body.ava).substring("data:image/".length, (req.body.ava).indexOf(";base64")).toLowerCase();
+			var base64Data = req.body.ava.replace(/^data:image\/([a-zA-Z]*);base64,/, "");
+			require("fs").writeFile("./public/uploads/user"+ req.params.id+"."+ extension, base64Data, 'base64', function(err) {
+				if (err) console.log(err);
+			});
+			oldAva = false;
+		}
 		const id = parseInt(req.params.id);
 		var user = usersdb.get('users').find({ id: id }).value();
 		var prevUserActive = user.active;
@@ -430,9 +432,9 @@ module.exports = function(app) {
 					groupid: parseInt(req.body.groupid),
 					email: req.body.email,
 					login: req.body.login,
-					ava: "user"+ req.params.id +"."+ extension,
+					ava: (oldAva) ? (user.ava) : ("user"+ req.params.id +"."+ extension),
 					role: req.body.role,
-					quiz: 'html',
+					quiz: req.body.quiz,
 					active: (req.body.active === 'on') ? true : false,
 				}).write()
 				.then(function(user){
@@ -447,7 +449,7 @@ module.exports = function(app) {
 						email: user.email,
 						login: user.login,
 						role: user.role,
-						quiz: 'html',
+						quiz: user.quiz,
 						created: user.created,
 						active: user.active
 					};

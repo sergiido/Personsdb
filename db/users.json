@@ -43,9 +43,25 @@
       "login": "usern2",
       "pwd": "$2a$10$tZraiYzBWkvo38z7BQLw0u43ZVopiKXgXDRaX55Ocmx61DD.ovPju",
       "role": "user",
-      "ava": "user1510224400594.png",
+      "ava": "user1510224400594.jpeg",
       "quiz": "html",
       "created": 1510224400594,
+      "active": true
+    },
+    {
+      "id": 1510235364480,
+      "name": "Usern3",
+      "secondname": "Suser3",
+      "age": "28",
+      "gender": "male",
+      "groupid": 2,
+      "email": "usern3@mail.ua",
+      "login": "usern3",
+      "pwd": "$2a$10$iZwcK7U.ulruKjzG6I/vMedlLZaBJublo73ckDeo8iZ8m9YOP7Ua.",
+      "role": "user",
+      "ava": "user1510235364480.png",
+      "quiz": "empty",
+      "created": 1510235364480,
       "active": true
     }
   ]
