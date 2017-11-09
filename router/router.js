@@ -149,6 +149,7 @@ module.exports = function(app) {
 		res.render('app', {userDetails: req.session.user, users: users, groups: groups});
 	});
 
+
 	app.get('/json/maint', function(req, res) {
 		var data = usersdb.get('users').cloneDeep().value();
 		res.header('Access-Control-Allow-Origin', '*');
@@ -315,6 +316,7 @@ module.exports = function(app) {
 
 	});
 
+
 	app.get('/user/:id', checkAuth, function(req, res) {
 	 	const id = parseInt(req.params.id);
 	 	var user = usersdb.get('users').find({ id: id }).value();
@@ -356,6 +358,7 @@ module.exports = function(app) {
 		}
 	});
 
+
 	app.post('/addgroup', checkAuth, (req, res) => {
 		// console.log(util.inspect(req.body, {showHidden: false, depth: 2}));
 		const allowedUsers = ['admin', 'editor'];
@@ -371,6 +374,7 @@ module.exports = function(app) {
 		}
 	});
 
+
  	app.get('/logout', function(req, res) {
 		if (req.session.user) {
 			// res.clearCookie('rememberme');
@@ -378,6 +382,7 @@ module.exports = function(app) {
 		}
 		res.redirect('/login');
 	});
+
 
 	app.delete('/delete/:id', checkAuth, function (req, res) {
 		// console.log(req.params.id);
@@ -400,12 +405,20 @@ module.exports = function(app) {
 		}
 	});
 
+
 	app.put('/update/:id', checkAuth, function (req, res) {
 		// console.log(req.params.id);
 		// console.log(req.body.pwd);
+
+		var extension = (req.body.ava).substring("data:image/".length, (req.body.ava).indexOf(";base64")).toLowerCase();
+		var base64Data = req.body.ava.replace(/^data:image\/png;base64,/, "");
+		require("fs").writeFile("./public/uploads/user"+ req.params.id+"."+ extension, base64Data, 'base64', function(err, res) {
+			if (err) console.log(err);
+		});
+
 		const id = parseInt(req.params.id);
-var user = usersdb.get('users').find({ id: id }).value();
-var prevUserActive = user.active;
+		var user = usersdb.get('users').find({ id: id }).value();
+		var prevUserActive = user.active;
 		if (req.body.pwd == "") {
 			// DEFECT: заменяет null на пустую строку в базе			
 			usersdb.get('users').find({ id: id })
@@ -417,6 +430,7 @@ var prevUserActive = user.active;
 					groupid: parseInt(req.body.groupid),
 					email: req.body.email,
 					login: req.body.login,
+					ava: "user"+ req.params.id +"."+ extension,
 					role: req.body.role,
 					quiz: 'html',
 					active: (req.body.active === 'on') ? true : false,
@@ -676,6 +690,7 @@ var prevUserActive = user.active;
 						.assign({
 							quiz: null
 						}).write();
+req.session.user.quiz = null;
 					res.status(200).json({score: resp})})
 				.catch(err => console.log("failed to find the user in marks table"))
 			}

@@ -47,8 +47,8 @@ function showPersonPop(action) {
 	var personmodal = document.getElementById('personpopup');
 	document.forms[0].reset();
 	// document.forms.addperson.reset();
+	document.querySelector('img').src = "images/no_ava.png";
 	if (action == 'add') {
-		document.querySelector('img').src = "images/no_ava.png";
 		document.querySelector('.form-app fieldset').disabled = false;
 		document.querySelector('.form-app>h3').innerHTML = "&#xf2bb; Add person";
 		document.querySelector('.form-app>form').setAttribute("name", "addperson");
@@ -77,6 +77,9 @@ function showPersonPop(action) {
 			}
 			img.onload = function () {
 				document.getElementById('userava').src = img.src;
+				document.getElementById('spinner').classList.remove("cssload-loader");
+			};
+			img.onerror = function(){
 				document.getElementById('spinner').classList.remove("cssload-loader");
 			}
 			personmodal.querySelector('input[name="secondname"]').value = res.secondname;
@@ -165,6 +168,7 @@ function updatePerson(){
 			login: formData.get('login'),
 			pwd: formData.get('pwd'),
 			role: formData.get('roles'),
+			ava:  document.getElementById('userava').src,
 			// quiz: formData. ...
 			active: formData.get('status')
 		},

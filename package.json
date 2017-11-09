@@ -18,15 +18,15 @@
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.16.0",
+    "body-parser": "^1.18.2",
     "cookie-parser": "*",
     "express": "~4.14.0",
-    "express-session": "^1.15.0",
+    "express-session": "^1.15.6",
     "formidable": "^1.1.1",
     "lowdb": "^0.16.2",
-    "method-override": "^2.3.7",
-    "pug": "^2.0.0-rc.2",
-    "serve-favicon": "^2.3.2"
+    "method-override": "^2.3.10",
+    "pug": "^2.0.0-rc.4",
+    "serve-favicon": "^2.4.5"
   },
   "license": "MIT"
 }
