@@ -18,7 +18,7 @@ const bcrypt = require('bcrypt-nodejs');
 // const salt = 'personspwdhash';
 
 // e-mail smptp service
-const sgMail = require('@sendgrid/mail');
+// const sgMail = require('@sendgrid/mail');
 
 /*
 bcrypt.hash("123", null, null, function(err, hash) {
@@ -146,9 +146,17 @@ module.exports = function(app) {
 			delete user.pwd;   //remove pwd key
 		});
 		var groups = groupsdb.get('groups').value();
-		res.render('app', {userDetails: req.session.user, users: users, groups: groups});
+		res.render('app', {activeTab: "maint", userDetails: req.session.user, users: users, groups: groups});
 	});
 
+	app.get('/marks', checkAuth, function(req, res) {
+		var users = usersdb.get('users').cloneDeep().value();
+		users.forEach(function(user){
+			delete user.pwd;   //remove pwd key
+		});
+		var groups = groupsdb.get('groups').value();		
+		res.render('app', {activeTab: "marks", userDetails: req.session.user, users: users, groups: groups});
+	});
 
 	app.get('/json/maint', function(req, res) {
 		var data = usersdb.get('users').cloneDeep().value();
@@ -455,7 +463,7 @@ module.exports = function(app) {
 						active: user.active
 					};
 					// send e-mail
-					if (!prevUserActive && user.active) {
+					/*if (!prevUserActive && user.active) {
 						sgMail.setApiKey("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");
 						const msg = {
 						  to: user.email,
@@ -465,7 +473,7 @@ module.exports = function(app) {
 						  html: 'Hi ' + user.name + '. <br/>Your account '+user.login+ ' is activated. <br/>You can log in now using your credentials. <br/><br/> HTML + JS QA StartUp',
 						};
 						sgMail.send(msg);	
-					}
+					}*/
 					res.status(200).json(output);
 				})
 				.catch(err => res.status(200).json({message: "failed to add"}));
