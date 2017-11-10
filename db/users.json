@@ -60,7 +60,7 @@
       "pwd": "$2a$10$iZwcK7U.ulruKjzG6I/vMedlLZaBJublo73ckDeo8iZ8m9YOP7Ua.",
       "role": "user",
       "ava": "user1510235364480.png",
-      "quiz": "empty",
+      "quiz": null,
       "created": 1510235364480,
       "active": true
     }

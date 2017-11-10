@@ -128,7 +128,7 @@ module.exports = function(app) {
 					pwd: hash,
 					role: "user",
 					ava: null,
-					quiz: null,
+					quiz: "empty",
 					created: Date.now(),
 					active: false
 				}).last().write();
@@ -255,7 +255,7 @@ module.exports = function(app) {
 							pwd: hash, //fields.pwd,
 							role: fields.roles,
 							ava: file.ava.name,
-							quiz: null,
+							quiz: fields.qiuz,
 							created: Date.now(),
 							active: true
 						}).last()//.assign({ id: Date.now() })
@@ -351,6 +351,7 @@ module.exports = function(app) {
 					email: user.email,
 					login: user.login,
 					role: user.role,
+					quiz: user.quiz,
 					active: user.active
 				};
 			}
@@ -656,6 +657,7 @@ module.exports = function(app) {
 		// console.log((req.body).a1);
 		quiz.checkAnswers(req.body, function(resp) {
 			// console.log (req.session.user.id);
+			req.session.user.quiz = null;
 			var userMarks = marksdb.get('marks').find({ userid: req.session.user.id }).value();
 			if (!userMarks) {
 				marksdb.get('marks').push({
@@ -692,7 +694,6 @@ module.exports = function(app) {
 						.assign({
 							quiz: null
 						}).write();
-req.session.user.quiz = null;
 					res.status(200).json({score: resp})})
 				.catch(err => console.log("failed to find the user in marks table"))
 			}
