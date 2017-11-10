@@ -38,8 +38,8 @@ block content
     div.tab-content
       #maintenance.tab-pane.fade.in.active
         include maint
-      #quiz.tab-pane.fade
-        include quiz
+      #marks.tab-pane.fade
+        include marks
       if userDetails.quiz!= null
-        #marks.tab-pane.fade
-          include marks
+        #quiz.tab-pane.fade
+          include quiz

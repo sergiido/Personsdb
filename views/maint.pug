@@ -59,10 +59,10 @@ h3.tabName Maintenance
                       - for (var i = 0; i < groups.length; i++)
                         option(value=groups[i].id) #{groups[i].name}
                 div
-                  input(name="email", type="text", placeholder="e-mail")
+                  input(name="email", type="text", placeholder="e-mail", size="25")
                 div
-                  input(name="login", type="text", placeholder="login", size="10", required="")
-                  input(name="pwd", type="password", placeholder="pwd", size="10")
+                  input(name="login", type="text", placeholder="login", size="11", required="")
+                  input(name="pwd", type="password", placeholder="pwd", size="11")
                   select(name="roles")
                     option(value="user") user
                       if userDetails.role!= 'user'
@@ -149,10 +149,14 @@ h3.tabName Maintenance
             td= user.active
             td
               if userDetails.role== 'admin'
-                button.customfont(onclick="showPersonPop('"+ user.id +"')" data-userid= user.id style="color: orange") &#xe804;
-                button.customfont(onclick="deletePerson('"+user.id+"')" style="color: #FE2E2E") &#xe802;
-                //- a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+                if userDetails.id!= user.id
+                  button.customfont(onclick="showPersonPop('"+ user.id +"')" data-userid= user.id style="color: orange") &#xe804;
+                  button.customfont(onclick="deletePerson('"+user.id+"')" style="color: #FE2E2E") &#xe802;
+                  //- a.customfont.size16(href='/delete/#{user.id}?_method=DELETE' style="color: #FE2E2E") &#xe802;
+                else
+                  button.customfont(onclick="showPersonPop('"+ user.id +"')" data-userid= user.id style="color: orange") &#xe804;
               else
+                //- editor and user cannot update admin users
                 if user.role== 'admin'
                   button.customfont(style="color: grey" disabled) &#xe804;
                 else
