@@ -14,6 +14,7 @@
       "ava": "user1510157759392.png",
       "quiz": "html",
       "created": 1510157759392,
+      "lastlogin": 1513009036881,
       "active": true
     },
     {
@@ -30,6 +31,7 @@
       "ava": "user1510224177427.png",
       "quiz": "html",
       "created": 1510224177427,
+      "lastlogin": 1510157759392,
       "active": true
     },
     {
@@ -46,6 +48,7 @@
       "ava": "user1510224400594.jpeg",
       "quiz": "html",
       "created": 1510224400594,
+      "lastlogin": 1510157759392,
       "active": true
     },
     {
@@ -62,6 +65,23 @@
       "ava": "user1510235364480.png",
       "quiz": null,
       "created": 1510235364480,
+      "lastlogin": 1510157759392,
+      "active": true
+    },
+    {
+      "id": 1513008338629,
+      "name": "Usern4",
+      "secondname": "Suser4",
+      "age": "36",
+      "gender": "male",
+      "groupid": 1508078870728,
+      "email": "usern4@mail.ua",
+      "login": "usern4",
+      "pwd": "$2a$10$k8FnqZeyOEqVYjMn3dhNxeI9sKswF4oFhmfHfftz0VvPwxDrtDMri",
+      "role": "user",
+      "ava": "",
+      "created": 1513008338629,
+      "lastlogin": null,
       "active": true
     }
   ]

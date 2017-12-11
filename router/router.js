@@ -73,13 +73,7 @@ module.exports = function(app) {
 		// console.log(authUserList[req.body.login]['pwd']);
 
 		if (authUserList.hasOwnProperty(req.body.login) && (authUserList[req.body.login]['pwd'] == req.body.pwd)) {
-			if (req.body.rememberMe == 'on') {
-				var oneMin = 60000;
-				req.session.cookie.expires = new Date(Date.now() + oneMin*10);
-    			req.session.cookie.maxAge = oneMin*10;
-			} else {
-				req.session.cookie.expires = false; // enable the cookie to remain for only the duration of the user-agent
-			}
+
 			req.session.user = {
 				id:   authUserList[req.body.login].id,
 				name: authUserList[req.body.login].name,
@@ -88,17 +82,28 @@ module.exports = function(app) {
 			};
 			res.redirect('/app');
 		} else {
-			var userLoginDb = usersdb.get('users').find({ login: req.body.login, active: true }).value();
-			if (userLoginDb != null) { //userLoginDb.pwd == req.body.pwd
-				bcrypt.compare(req.body.pwd, userLoginDb.pwd, function(err, pwdComp) {
+			var userLoginDb = usersdb.get('users').find({ login: req.body.login, active: true });
+			userLoginDbValue = userLoginDb.value();
+			if (userLoginDbValue != null) { //userLoginDbValue.pwd == req.body.pwd
+				bcrypt.compare(req.body.pwd, userLoginDbValue.pwd, function(err, pwdComp) {
 					if (pwdComp) {
-						req.session.cookie.expires = false;
+						if (req.body.rememberMe == 'on') {
+							var oneMin = 60000;
+							req.session.cookie.expires = new Date(Date.now() + oneMin * 10);
+			    			req.session.cookie.maxAge = oneMin * 10;
+						} else {
+							req.session.cookie.expires = false; // enable the cookie to remain for only the duration of the user-agent
+						}
 						req.session.user = {
-							id:   userLoginDb.id,
-							name: userLoginDb.name +" "+ userLoginDb.secondname,
-							role: userLoginDb.role,
-							quiz: userLoginDb.quiz
+							id:   userLoginDbValue.id,
+							name: userLoginDbValue.name +" "+ userLoginDbValue.secondname,
+							role: userLoginDbValue.role,
+							quiz: userLoginDbValue.quiz
 						};
+
+						// update last login value
+						userLoginDb.assign({'lastlogin': Date.now()}).write();
+
 						res.redirect('/app');
 					} else {
 						res.render('login', {title: 'Login', message: 'Login', errMsg: 'login or pwd is not valid(active)'});
@@ -130,6 +135,7 @@ module.exports = function(app) {
 					ava: null,
 					quiz: "empty",
 					created: Date.now(),
+					lastlogin: null,
 					active: false
 				}).last().write();
 			});
@@ -200,6 +206,7 @@ module.exports = function(app) {
 					ava: usersArr[i].ava,
 					quiz: usersArr[i].quiz,
 					created: usersArr[i].created,
+					lastlogin: usersArr[i].lastlogin,
 					active: usersArr[i].active
 				}).last()
 				.write();
@@ -265,6 +272,7 @@ module.exports = function(app) {
 							ava: file.ava.name,
 							quiz: fields.qiuz,
 							created: Date.now(),
+							lastlogin: null,
 							active: true
 						}).last()//.assign({ id: Date.now() })
 						.write()
@@ -282,6 +290,7 @@ module.exports = function(app) {
 								// pwd: newUser.pwd,
 								role: newUser.role,
 								created: newUser.created,
+								lastlogin: null,
 								active: newUser.active
 							};
 							res.status(200).json(output);
