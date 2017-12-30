@@ -10,11 +10,11 @@ h3.tabName Maintenance
       span Add group
     div.button
       a(href= '/json/maint' target='_blank' style="color: lightgrey")
-        span.customfont.fontSize2 &#xe800;
+        span.customfont.fontSize2 &#xe81c;
         span to JSON
     if userDetails.role== 'admin'
       div#loadPersons.button(onclick="showLoadPop()")
-        span.customfont.fontSize2 💊
+        span.customfont.fontSize2 &#xe81b;
         span load JSON
         input(type="file" name="uploadJson" onclick="event.stopPropagation();" style="display: none" accept=".json")
   div.button
@@ -148,7 +148,7 @@ h3.tabName Maintenance
             - var date = new Date(user.created)
             td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
             - var date = new Date(user.lastlogin)
-            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)            
+            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
             td= user.active
             td
               if userDetails.role== 'admin'
@@ -195,7 +195,7 @@ h3.tabName Maintenance
               - var date = new Date(user.created)
               td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
             - var date = new Date(user.lastlogin)
-            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)              
+            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
               td= user.active
               td
                 button.customfont(onclick="showPersonPop('"+ user.id +"')" data-userid= user.id style="color: orange") &#xe804;

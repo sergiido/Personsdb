@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fontlogin';
-  src: url('../font/fontlogin.eot?99180082');
-  src: url('../font/fontlogin.eot?99180082#iefix') format('embedded-opentype'),
-       url('../font/fontlogin.woff2?99180082') format('woff2'),
-       url('../font/fontlogin.woff?99180082') format('woff'),
-       url('../font/fontlogin.ttf?99180082') format('truetype'),
-       url('../font/fontlogin.svg?99180082#fontlogin') format('svg');
+  src: url('../font/fontlogin.eot?91929910');
+  src: url('../font/fontlogin.eot?91929910#iefix') format('embedded-opentype'),
+       url('../font/fontlogin.woff2?91929910') format('woff2'),
+       url('../font/fontlogin.woff?91929910') format('woff'),
+       url('../font/fontlogin.ttf?91929910') format('truetype'),
+       url('../font/fontlogin.svg?91929910#fontlogin') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontlogin';
-    src: url('../font/fontlogin.svg?99180082#fontlogin') format('svg');
+    src: url('../font/fontlogin.svg?91929910#fontlogin') format('svg');
   }
 }
 */
@@ -83,6 +83,7 @@
 .icon-lock-1:before { content: '\e819'; } /* '' */
 .icon-lock-open:before { content: '\e81a'; } /* '' */
 .icon-download:before { content: '\e81b'; } /* '' */
+.icon-export:before { content: '\e81c'; } /* '' */
 .icon-tree:before { content: '\e83f'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */
 .icon-folder-open-empty:before { content: '\f115'; } /* '' */

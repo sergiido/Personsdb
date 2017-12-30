@@ -27,6 +27,7 @@
 .icon-lock-1:before { content: '\e819'; } /* '' */
 .icon-lock-open:before { content: '\e81a'; } /* '' */
 .icon-download:before { content: '\e81b'; } /* '' */
+.icon-export:before { content: '\e81c'; } /* '' */
 .icon-tree:before { content: '\e83f'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */
 .icon-folder-open-empty:before { content: '\f115'; } /* '' */
