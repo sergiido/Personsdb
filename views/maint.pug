@@ -148,7 +148,7 @@ h3.tabName Maintenance
             - var date = new Date(user.created)
             td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
             - var date = new Date(user.lastlogin)
-            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)            
+              td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours())
             td= user.active
             td
               if userDetails.role== 'admin'
@@ -194,9 +194,9 @@ h3.tabName Maintenance
               td= user.role
               - var date = new Date(user.created)
               td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
-            - var date = new Date(user.lastlogin)
-            td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)              
-              td= user.active
-              td
-                button.customfont(onclick="showPersonPop('"+ user.id +"')" data-userid= user.id style="color: orange") &#xe804;
+              - var date = new Date(user.lastlogin)
+              td= ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)              
+                td= user.active
+                td
+                  button.customfont(onclick="showPersonPop('"+ user.id +"')" data-userid= user.id style="color: orange") &#xe804;
 

@@ -203,7 +203,7 @@ function updatePerson(){
 		// personRow.childNodes[8].innerHTML = res.pwd;
 		personRow.childNodes[8].innerHTML = res.role;
 		personRow.childNodes[9].innerHTML = formatDate(res.created);
-		personRow.childNodes[10].innerHTML = res.active;
+		personRow.childNodes[11].innerHTML = res.active;
 	});
 	// href='/update/#{item._id}?_method=PUT'
 }
@@ -321,9 +321,10 @@ function addRow(tableName, res) {
 	row.insertCell(7).innerHTML = res.login;
 	row.insertCell(8).innerHTML = res.role;
 	row.insertCell(9).innerHTML = res.created;
-	row.insertCell(10).innerHTML = res.active;
+	row.insertCell(10).innerHTML = res.lastlogin || "";
+	row.insertCell(11).innerHTML = res.active;
 	var updateBtn = '<button class="customfont" onclick="showPersonPop(' +res.id+ ')" data-userid=' +res.id+ ' style="color: orange"> &#xe804; </button>';
-	row.insertCell(11).innerHTML = updateBtn;
+	row.insertCell(12).innerHTML = updateBtn;
 }
 
 
