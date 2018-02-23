@@ -26,20 +26,23 @@ var quizModule = (function () {
 			sendAjax(reqDataObj, function(res) {
 				btn.style.display = "none";
 				document.getElementById('squeezeContainer').style.display = "block";
-				console.log(res);
-
-				res.forEach (function(question){
-					var htmlQuests = "<div class='layer' style='display:"+display+"'><div>" + question.q + "</div><hr><ul>";
-					question.options.forEach(function(option, index) {
-						htmlQuests += '<li> <input type="'+question.tag+'" id="answ' + question.id + index + '" name="' + question.id + '" value="' + option + '" />';
-						htmlQuests += '<label class="radio-inline" for="answ' + question.id + index + '">' + option + '</li>';
+				console.log(res.resp);
+				if (res.resp == false) {
+					alert (" You can't pass the test 2nd time");
+					document.getElementById('squeezeContainer').style.display = "none";
+				} else {
+					res.forEach (function(question){
+						var htmlQuests = "<div class='layer' style='display:"+display+"'><div>" + question.q + "</div><hr><ul>";
+						question.options.forEach(function(option, index) {
+							htmlQuests += '<li> <input type="'+question.tag+'" id="answ' + question.id + index + '" name="' + question.id + '" value="' + option + '" />';
+							htmlQuests += '<label class="radio-inline" for="answ' + question.id + index + '">' + option + '</li>';
+						});
+						htmlQuests += "</ul></div>"
+						document.getElementById('qContainer').innerHTML += htmlQuests;
+						display = "none";
 					});
-					htmlQuests += "</ul></div>"
-
-					document.getElementById('qContainer').innerHTML += htmlQuests;
-					display = "none";
-				});
-				currQuestion = document.getElementById("qContainer").firstChild;
+					currQuestion = document.getElementById("qContainer").firstChild;
+				}
 			});
 		},
 		nextQuestion: function(){
