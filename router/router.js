@@ -1,10 +1,6 @@
-// const util = require('util');
-
 const quiz = require('./quests');
 
 const low = require('lowdb');
-// https://github.com/typicode/lowdb
-// https://github.com/typicode/lowdb/tree/master/examples
 const fileAsync = require('lowdb/lib/storages/file-async');
 
 const usersdb = low('db/users.json', {storage: fileAsync});
@@ -15,21 +11,6 @@ const formidable = require('formidable');
 const fs = require('fs');
 
 const bcrypt = require('bcrypt-nodejs');
-// const salt = 'personspwdhash';
-
-// e-mail smptp service
-// const sgMail = require('@sendgrid/mail');
-
-/*
-bcrypt.hash("123", null, null, function(err, hash) {
-    // Store hash in your password DB
-    console.log("hash: " + hash);
-});
-bcrypt.compare("123", "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y4Nm", function(err, res) {
-    // res == true
-    console.log("compare: 123 " + res);
-});
-*/
 
 console.log('router - started ...');
 console.log('process.env.OPENSHIFT_KEY_1: ' + process.env.OPENSHIFT_KEY_1);
