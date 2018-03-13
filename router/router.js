@@ -32,6 +32,7 @@ bcrypt.compare("123", "$2a$10$EkXLthH/0qigJRHXJEYqoeA3peRwzyY0z0QA1dPXvhUN2GEZ5Y
 */
 
 console.log('router - started ...');
+console.log('process.env.OPENSHIFT_KEY_1: ' + process.env.OPENSHIFT_KEY_1);
 
 module.exports = function(app) {
 
