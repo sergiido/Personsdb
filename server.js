@@ -7,7 +7,7 @@ const low = require('lowdb');
 const app = express();
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
-const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 app.disable('x-powered-by');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
